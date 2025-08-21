@@ -5,10 +5,12 @@ export interface RouteItem {
     title: string;
     url: string;
     icon: LucideIcon;
-    items?: {
+    items: {
         title: string;
         url: string;
         icon: LucideIcon;
-        component: ComponentType
+        Component: ComponentType
     }[];
 }
+
+export type TRole = "ADMIN" | "SENDER" | "RECEIVER"

@@ -3,7 +3,13 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 import About from "@/pages/About";
 import login from "@/pages/Login";
 import Register from "@/pages/Register";
+import { generateRoutes } from "@/utils/generateRoutes";
 import { createBrowserRouter } from "react-router";
+import { adminRoutes } from "./AdminRoutes";
+import { userRoutes } from "./UserRoutes";
+import { withAuth } from "@/utils/withAuth";
+import { Role } from "@/constants/role";
+import Unauthorized from "@/pages/Unauthorize";
 
 export const router = createBrowserRouter([
     {
@@ -25,25 +31,21 @@ export const router = createBrowserRouter([
         path: "/register"
     },
     {
-        Component: DashboardLayout,
-        path: "/dashboard",
+        Component: Unauthorized,
+        path: "/unauthorized"
+    },
+    {
+        Component: withAuth(DashboardLayout, Role.ADMIN),
+        path: "/dashboard/admin",
         children: [
-            {
-                // Component: ,
-                element: <div>Hello</div>,
-                path: 'hello'
-            }
+            ...generateRoutes(adminRoutes)
         ]
     },
     {
-        Component: DashboardLayout,
-        path: "/dashboard",
+        Component: withAuth(DashboardLayout, (Role.RECEIVER )),
+        path: "/dashboard/user",
         children: [
-            {
-                // Component: ,
-                element: <div>Hello</div>,
-                path: 'hello'
-            }
+            ...generateRoutes(userRoutes)
         ]
     }
 ])

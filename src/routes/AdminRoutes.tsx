@@ -5,14 +5,14 @@ import { History, LayoutDashboard } from "lucide-react";
 export const adminRoutes: RouteItem[] = [
     {
       title: "Dashboard",
-      url: "/hello",
+      url: "hello",
       icon: LayoutDashboard,
       items: [
         {
           title: "History",
-          url: "/dashboard/hello",
+          url: "hello",
           icon: History,
-          component: About
+          Component: About
         },
       ],
     }

@@ -14,14 +14,24 @@ import {
 } from "@/components/ui/popover"
 import { Link } from "react-router"
 import { ModeToggle } from "../ModeToggle"
+import { useGetMeQuery } from "@/redux/feature/user/user.api"
+import { Role } from "@/constants/role"
+import { LoaderIcon } from "lucide-react"
 
 // Navigation links array to be used in both desktop and mobile menus
-const navigationLinks = [
-    { href: "/", label: "Home" },
-    { href: "about", label: "About" },
-]
+
 
 export default function Navbar() {
+    const { data, isLoading } = useGetMeQuery(undefined)
+    if (isLoading) {
+        return <LoaderIcon />
+    }
+    const role = data?.data?.sleected?.role
+    const navigationLinks = [
+        { href: "/", label: "Home" },
+        { href: "about", label: "About" },
+        { href: role == Role.ADMIN ? "/dashboard/admin" : "/dashboard/user", label: "Dashboard" },
+    ]
     return (
         <header className="border-b px-4 md:px-6   ">
             <div className="flex h-16 items-center justify-between gap-4 container mx-auto">
@@ -109,7 +119,7 @@ export default function Navbar() {
                 </div>
                 {/* Right side */}
                 <div className="flex items-center gap-2">
-                    <ModeToggle/>
+                    <ModeToggle />
                     <Button asChild >
                         <Link to="/login">Sign In</Link>
                     </Button>

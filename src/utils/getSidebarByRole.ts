@@ -1,22 +1,26 @@
 import { Role } from "@/constants/role";
-import { generateRoutes } from "./generateRoutes";
 import { adminRoutes } from "@/routes/AdminRoutes";
 import { userRoutes } from "@/routes/UserRoutes";
+import type { TRole } from "@/types/route.type";
 
-export const generateSidebarByRole = (role) => {
+
+
+ const getSidebarByRole = (role: TRole) => {
 
     switch (role) {
 
-        case role == Role.ADMIN:
-            return generateRoutes(adminRoutes)
-        case role == Role.RECEIVER:
-            return generateRoutes(userRoutes)
-        case role == Role.SENDER:
-            return generateRoutes(userRoutes)
+        case Role.ADMIN:
+            return [...adminRoutes]
+        case Role.RECEIVER:
+            return [...userRoutes]
+        case Role.SENDER:
+            return [...userRoutes]
 
         default:
-            return generateRoutes(userRoutes)
+            return [...userRoutes]
     }
 
 
 }
+
+export {getSidebarByRole}

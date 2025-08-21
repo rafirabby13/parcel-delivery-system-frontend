@@ -65,7 +65,7 @@ export function LoginForm({
                                             <FormItem>
                                                 <FormLabel>Email</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Your email here.." {...field} />
+                                                    <Input type="email" placeholder="Your email here.." {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -78,7 +78,7 @@ export function LoginForm({
                                             <FormItem>
                                                 <FormLabel>Password</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Your password here.." {...field} />
+                                                    <Input type="password" placeholder="Your password here.." {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>

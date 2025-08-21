@@ -10,15 +10,15 @@ export const userRoutes: RouteItem[] = [
       items: [
         {
           title: "Parcel",
-          url: "/dashboard/parcel",
+          url: "parcel",
           icon: BookA,
-          component: About
+          Component: About
         },
         {
           title: "User",
-          url: "/dashboard/user",
+          url: "user",
           icon: User2Icon,
-          component: About
+          Component: About
         },
       ],
     }
