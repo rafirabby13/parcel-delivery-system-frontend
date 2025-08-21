@@ -17,21 +17,32 @@ import { ModeToggle } from "../ModeToggle"
 import { useGetMeQuery } from "@/redux/feature/user/user.api"
 import { Role } from "@/constants/role"
 import { LoaderIcon } from "lucide-react"
+import { authApi, useLogoutMutation } from "@/redux/feature/auth/auth.api"
+import { useDispatch } from "react-redux"
 
 // Navigation links array to be used in both desktop and mobile menus
 
 
 export default function Navbar() {
-    const { data, isLoading } = useGetMeQuery(undefined)
+    const { data, isLoading, refetch } = useGetMeQuery(undefined)
+    const [logout] = useLogoutMutation(undefined)
+    const dispatch = useDispatch()
     if (isLoading) {
         return <LoaderIcon />
     }
-    const role = data?.data?.sleected?.role
+    
+    const role = data?.data?.user?.role
     const navigationLinks = [
         { href: "/", label: "Home" },
         { href: "about", label: "About" },
         { href: role == Role.ADMIN ? "/dashboard/admin" : "/dashboard/user", label: "Dashboard" },
     ]
+    const handleLogout = async () => {
+        logout(undefined).unwrap()
+        refetch()
+        dispatch(authApi.util.resetApiState())
+
+    }
     return (
         <header className="border-b px-4 md:px-6   ">
             <div className="flex h-16 items-center justify-between gap-4 container mx-auto">
@@ -120,12 +131,20 @@ export default function Navbar() {
                 {/* Right side */}
                 <div className="flex items-center gap-2">
                     <ModeToggle />
-                    <Button asChild >
-                        <Link to="/login">Sign In</Link>
-                    </Button>
-                    <Button asChild >
-                        <a href="#">Get Started</a>
-                    </Button>
+                    {
+                        data?.data?.user ? <div>
+
+                            <Button onClick={handleLogout}>
+                                Sign Out
+                            </Button>
+                        </div> :
+                            <div>
+
+                                <Button asChild >
+                                    <Link to="/login">Sign In</Link>
+                                </Button>
+                            </div>
+                    }
                 </div>
             </div>
         </header>

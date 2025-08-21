@@ -7,10 +7,11 @@ export const userApi = baseApi.injectEndpoints({
             query: () => ({
                 url: "/user/me",
                 method: "GET",
-            })
+            }),
+            providesTags: ["USER"]
         }),
     })
 })
 
 
-export const {useGetMeQuery} = userApi
+export const { useGetMeQuery } = userApi
