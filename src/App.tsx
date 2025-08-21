@@ -1,16 +1,17 @@
+import { Outlet } from "react-router"
+import CommonLayout from "./components/layout/CommonLayout"
+
 
 
 
 function App() {
 
   return (
-    <>
-
-
-      <p className="read-the-docs text-8xl font-bold">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div >
+      <CommonLayout>
+        <Outlet/>
+      </CommonLayout>
+    </div>
   )
 }
 
