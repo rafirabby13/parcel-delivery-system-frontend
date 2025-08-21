@@ -4,11 +4,15 @@ import './index.css'
 import { RouterProvider } from 'react-router'
 import { router } from './routes/index.routes.tsx'
 import { ThemeProvider } from './components/theme-provider.tsx'
+import { Provider } from 'react-redux'
+import { store } from './redux/store.ts'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeProvider defaultTheme='light'>
-    <RouterProvider router={router}/>
+    <Provider store={store}>
+      <ThemeProvider defaultTheme='light'>
+        <RouterProvider router={router} />
       </ThemeProvider>
+    </Provider>
   </StrictMode>,
 )
