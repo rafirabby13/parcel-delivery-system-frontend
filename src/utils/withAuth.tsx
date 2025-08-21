@@ -6,7 +6,7 @@ export const withAuth = (Component: ComponentType, role: string) => {
     return function Authwrapper() {
         const { data, isLoading } = useGetMeQuery(undefined)
 
-        console.log(data)
+        // console.log(data)
 
         if (!isLoading && !data?.data?.sleecteduser?.email) {
             return <Navigate to="/login" />
