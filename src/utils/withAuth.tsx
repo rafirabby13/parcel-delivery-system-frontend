@@ -8,10 +8,13 @@ export const withAuth = (Component: ComponentType, role: string) => {
 
         // console.log(data)
 
-        if (!isLoading && !data?.data?.sleecteduser?.email) {
+        if (!isLoading && !data?.data?.user?.email) {
+            console.log("data?.data?.user?.email", data?.data?.user?.role, role)
             return <Navigate to="/login" />
         }
-        if (role && !isLoading && role !== data?.data?.sleecteduser?.role) {
+        if (role && !isLoading && role !== data?.data?.user?.role) {
+            console.log("data?.data?.user?.email", data?.data?.user?.role, role)
+
             return <Navigate to="/unauthorized" />
 
         }

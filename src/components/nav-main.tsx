@@ -1,6 +1,6 @@
 
 
-import {  type LucideIcon } from "lucide-react"
+import { type LucideIcon } from "lucide-react"
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -30,27 +30,27 @@ export function NavMain({
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
-          
-            <SidebarMenuItem>
-           
-                
-            
-            
-                <SidebarMenu>
-                  {item.items?.map((subItem) => (
-                    <SidebarMenuItem key={subItem.title}>
-                      <SidebarMenuButton asChild>
-                        <Link to={subItem.url}>
-                         <subItem.icon/>
-                          <span>{subItem.title}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </SidebarMenu>
-          
-            </SidebarMenuItem>
-    
+
+          <SidebarMenuItem key={item.title}>
+
+
+
+
+            <SidebarMenu>
+              {item.items?.map((subItem) => (
+                <SidebarMenuItem key={subItem.title}>
+                  <SidebarMenuButton asChild>
+                    <Link to={subItem.url}>
+                      <subItem.icon />
+                      <span>{subItem.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+
+          </SidebarMenuItem>
+
         ))}
       </SidebarMenu>
     </SidebarGroup>

@@ -30,12 +30,13 @@ export default function Navbar() {
     if (isLoading) {
         return <LoaderIcon />
     }
-    
+
     const role = data?.data?.user?.role
+    console.log(role)
     const navigationLinks = [
         { href: "/", label: "Home" },
         { href: "about", label: "About" },
-        { href: role == Role.ADMIN ? "/dashboard/admin" : "/dashboard/user", label: "Dashboard" },
+        { href: role == Role.ADMIN ? "/dashboard/admin" : Role.SENDER ? "/dashboard/sender" : "/dashboard/receiver", label: "Dashboard" },
     ]
     const handleLogout = async () => {
         logout(undefined).unwrap()
