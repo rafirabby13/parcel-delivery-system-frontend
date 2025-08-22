@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -10,6 +11,8 @@ import { z } from "zod"
 import { Link, useNavigate } from "react-router"
 import { useLoginMutation } from "@/redux/feature/auth/auth.api"
 import { toast } from "sonner"
+import { useId, useState } from "react"
+import { EyeIcon, EyeOffIcon } from "lucide-react"
 
 const formSchema = z.object({
     email: z.email(),
@@ -21,8 +24,11 @@ export function LoginForm({
     className,
     ...props
 }: React.ComponentProps<"div">) {
+    const id = useId()
+    const [isVisible, setIsVisible] = useState<boolean>(false)
 
-    const navigate =  useNavigate()
+    const toggleVisibility = () => setIsVisible((prevState) => !prevState)
+    const navigate = useNavigate()
 
     const [login] = useLoginMutation(undefined)
 
@@ -37,11 +43,19 @@ export function LoginForm({
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
         // console.log(values)
-        const res = await login(values)
-        // console.log(res.data)
-        if (res.data.success) {
-            toast.success("logged in successfully")
-            navigate("/")
+        try {
+            const res = await login(values).unwrap()
+            console.log(res)
+            if (res?.success) {
+                toast.success("logged in successfully")
+                navigate("/")
+            }
+        } catch (error: any) {
+            console.log(error)
+            if (!error?.data?.success) {
+                navigate("/verify", { state: values?.email })
+            }
+            toast.error(error?.data?.message)
         }
     }
     return (
@@ -78,7 +92,32 @@ export function LoginForm({
                                             <FormItem>
                                                 <FormLabel>Password</FormLabel>
                                                 <FormControl>
-                                                    <Input type="password" placeholder="Your password here.." {...field} />
+                                                    {/* <Input type="password" placeholder="Your password here.." {...field} /> */}
+                                                    <div className="*:not-first:mt-2">
+                                                        <div className="relative">
+                                                            <Input
+                                                             {...field}
+                                                                id={id}
+                                                                className="pe-9"
+                                                                placeholder="Password"
+                                                                type={isVisible ? "text" : "password"}
+                                                            />
+                                                            <button
+                                                                className="text-muted-foreground/80 hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md transition-[color,box-shadow] outline-none focus:z-10 focus-visible:ring-[3px] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+                                                                type="button"
+                                                                onClick={toggleVisibility}
+                                                                aria-label={isVisible ? "Hide password" : "Show password"}
+                                                                aria-pressed={isVisible}
+                                                                aria-controls="password"
+                                                            >
+                                                                {isVisible ? (
+                                                                    <EyeOffIcon size={16} aria-hidden="true" />
+                                                                ) : (
+                                                                    <EyeIcon size={16} aria-hidden="true" />
+                                                                )}
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -89,7 +128,7 @@ export function LoginForm({
                             <Button type="submit" className="w-full" form="login-form">
                                 Login
                             </Button>
-                            <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
+                            {/* <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                                 <span className="bg-card text-muted-foreground relative z-10 px-2">
                                     Or continue with
                                 </span>
@@ -122,7 +161,7 @@ export function LoginForm({
                                     </svg>
                                     <span className="sr-only">Login with Meta</span>
                                 </Button>
-                            </div>
+                            </div> */}
                             <div className="text-center text-sm">
                                 Don&apos;t have an account?{" "}
                                 <Link to={"/register"} className="underline underline-offset-4">

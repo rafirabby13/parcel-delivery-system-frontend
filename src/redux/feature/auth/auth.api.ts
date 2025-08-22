@@ -24,9 +24,27 @@ export const authApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["USER"]
 
+        }),
+        sendOTP: builder.mutation({
+            query: (otpData) => ({
+                url: "/otp/send",
+                method: "POST",
+                data:otpData
+            }),
+            invalidatesTags: ["USER"]
+
+        }),
+        verifyOTP: builder.mutation({
+            query: (verifyOTPData) => ({
+                url: "/otp/verify",
+                method: "POST",
+                data: verifyOTPData
+            }),
+            invalidatesTags: ["USER"]
+
         })
     })
 })
 
 
-export const { useRegisterMutation, useLoginMutation, useLogoutMutation } = authApi
+export const { useRegisterMutation, useLoginMutation, useLogoutMutation, useSendOTPMutation, useVerifyOTPMutation } = authApi
