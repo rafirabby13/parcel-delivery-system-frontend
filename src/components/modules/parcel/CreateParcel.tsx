@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { formSchema, Parcel_Type2, Payment_Method2, type Parcel_Type, type Payment_Method } from "@/formValidationSchema/parcel.schema"
 import { useGetMeQuery } from "@/redux/feature/user/user.api"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { MapPinIcon, PackageIcon, UserIcon } from "lucide-react"
+import { MapPinIcon, PackageIcon,  PlusCircle, UserIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
 import { toast } from "sonner"
@@ -101,7 +101,7 @@ export function CreateParcel() {
             const res = await createparcel(parcelData).unwrap()
             console.log(res)
             if (res?.success) {
-                
+
                 toast.success("Parcel created successfully")
                 navigate("/dashboard/sender/create-parcel")
             }
@@ -122,7 +122,7 @@ export function CreateParcel() {
         <Dialog >
 
             <DialogTrigger asChild>
-                <Button>Create Parcel</Button>
+                <Button><PlusCircle />Create Parcel</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-fit">
 
@@ -409,13 +409,13 @@ export function CreateParcel() {
                         </CardContent>
                     </Card>
                 </div>
-            <DialogFooter className="w-fit ml-auto">
-                <DialogClose asChild>
-                    <Button type="button">
-                        Close
-                    </Button>
-                </DialogClose>
-            </DialogFooter>
+                <DialogFooter className="w-fit ml-auto">
+                    <DialogClose asChild>
+                        <Button type="button">
+                            Close
+                        </Button>
+                    </DialogClose>
+                </DialogFooter>
             </DialogContent>
 
         </Dialog>

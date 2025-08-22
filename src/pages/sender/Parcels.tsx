@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table"
 import { useGetAllParcelByIdQuery } from "@/redux/feature/parcel/parcel.api"
 import { useGetMeQuery } from "@/redux/feature/user/user.api"
-import { Trash2 } from "lucide-react"
+import { CircleX, CircleXIcon, Delete, DeleteIcon, Trash2 } from "lucide-react"
 
 const Parcels = () => {
     const { data } = useGetMeQuery(undefined)
@@ -46,7 +46,7 @@ const Parcels = () => {
                                     <TableCell className="border-2 bg-gray-50">{item.parcelType}</TableCell>
                                     <TableCell className="border-2 bg-orange-50">{item.status}</TableCell>
                                     <TableCell className="border-2 bg-pink-50">{item.receiverInfo.name}</TableCell>
-                                    <TableCell><Button disabled={item.status !== "REQUESTED" && item.status !== "APPROVED"} onClick={() => handleDelete(item._id)}><Trash2 /></Button></TableCell>
+                                    <TableCell><Button disabled={item.status !== "REQUESTED" && item.status !== "APPROVED"} onClick={() => handleDelete(item._id)}><CircleXIcon /></Button></TableCell>
 
                                 </TableRow>)
                             )
