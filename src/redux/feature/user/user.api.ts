@@ -10,8 +10,22 @@ export const userApi = baseApi.injectEndpoints({
             }),
             providesTags: ["USER"]
         }),
+        getAllUsers: builder.query({
+            query: () => ({
+                url: "/user/all-users",
+                method: "GET",
+            }),
+            providesTags: ["USER"]
+        }),
+        blockUnblockUser: builder.mutation({
+            query: (userId) => ({
+                url: `user/${userId}/block-unblock`,
+                method: "PATCH",
+            }),
+            invalidatesTags: ["USER"]
+        }),
     })
 })
 
 
-export const { useGetMeQuery } = userApi
+export const { useGetMeQuery, useGetAllUsersQuery, useBlockUnblockUserMutation } = userApi

@@ -1,6 +1,7 @@
-import About from "@/pages/About";
+
+import ManageUsers from "@/pages/admin/ManageUsers";
 import type { RouteItem } from "@/types/route.type";
-import { History, LayoutDashboard } from "lucide-react";
+import {  LayoutDashboard, Users2 } from "lucide-react";
 
 export const AdminRoutes: RouteItem[] = [
     {
@@ -9,10 +10,10 @@ export const AdminRoutes: RouteItem[] = [
       icon: LayoutDashboard,
       items: [
         {
-          title: "History",
+          title: "Manage Users",
           url: "hello",
-          icon: History,
-          Component: About
+          icon: Users2,
+          Component: ManageUsers
         },
       ],
     }
