@@ -14,6 +14,8 @@ import type {  TRole } from "@/types/route.type";
 
         case Role.ADMIN:
             return [...AdminRoutes]
+        case Role.SUPER_ADMIN:
+            return [...AdminRoutes]
         case Role.RECEIVER:
             return [...ReceiverRoutes]
         case Role.SENDER:

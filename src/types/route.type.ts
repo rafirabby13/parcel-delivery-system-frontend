@@ -13,4 +13,4 @@ export interface RouteItem {
     }[];
 }
 
-export type TRole = "ADMIN" | "SENDER" | "RECEIVER"
+export type TRole = "ADMIN" | "SENDER" | "RECEIVER" | "SUPER_ADMIN" | "DELIVERY_PERSON"

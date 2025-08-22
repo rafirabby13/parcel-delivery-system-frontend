@@ -16,9 +16,7 @@ import { EyeIcon, EyeOffIcon } from "lucide-react"
 
 const formSchema = z.object({
     email: z.email(),
-    password: z.string().min(8, {
-        message: "Must be at least 8 character"
-    }),
+    password: z.string(),
 })
 export function LoginForm({
     className,

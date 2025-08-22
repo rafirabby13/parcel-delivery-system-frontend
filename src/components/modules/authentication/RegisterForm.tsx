@@ -14,6 +14,7 @@ import { useRegisterMutation } from "@/redux/feature/auth/auth.api"
 import { Role } from "@/constants/role"
 import { useId, useState } from "react"
 import { EyeIcon, EyeOffIcon } from "lucide-react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 
 const formSchema = z.object({
@@ -30,6 +31,7 @@ const formSchema = z.object({
         .regex(/^01[3-9]\d{8}$/, {
             message: "Invalid Bangladeshi phone number (must be 11 digits, start with 013–019)",
         }),
+    role: z.string()
 }).refine((data) => data.password == data.confirmPassword, {
     message: " Password do not matched",
     path: ['confirmPassword']
@@ -53,16 +55,17 @@ export function RegisterForm({
             name: "",
             email: "",
             password: "",
-            phone: ""
+            phone: "",
+            role: ""
         },
     })
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { confirmPassword, ...rest } = values
-            const data = { ...rest, role: Role.SENDER }
-            console.log(data)
-            const res = await register(data)
+
+            console.log(rest)
+            const res = await register(rest)
             if (res?.data?.success) {
                 toast.success("Registered Successfully..")
                 navigate("/login")
@@ -93,7 +96,7 @@ export function RegisterForm({
                                 </p>
                             </div>
                             <Form {...form} >
-                                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8" id="login-form">
+                                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5" id="login-form">
                                     <FormField
                                         control={form.control}
                                         name="name"
@@ -163,7 +166,7 @@ export function RegisterForm({
                                         name="confirmPassword"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Password</FormLabel>
+                                                <FormLabel>Confirm Password</FormLabel>
                                                 <FormControl>
                                                     {/* <Input placeholder="Your password here.." {...field} /> */}
                                                     <div className="*:not-first:mt-2">
@@ -210,6 +213,36 @@ export function RegisterForm({
                                             </FormItem>
                                         )}
                                     />
+
+
+                                    <FormField
+                                        control={form.control}
+                                        name="role"
+                                        
+                                        render={({ field }) => (
+                                            <FormItem >
+                                                <FormLabel>Select Your Role</FormLabel>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value} >
+                                                    <FormControl className="w-full">
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Select Your Role" />
+                                                        </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent >
+                                                        {[Role.SENDER, Role.RECEIVER, Role.DELIVERY_PERSON].map((type) => (
+                                                            <SelectItem key={type} value={type}>
+                                                                {type.charAt(0) + type.slice(1).toLowerCase()}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+
+
+
                                 </form>
                             </Form>
                             <Button type="submit" className="w-full" form="login-form">

@@ -41,7 +41,7 @@ export const router = createBrowserRouter([
         path: "/unauthorized"
     },
     {
-        Component: withAuth(DashboardLayout, Role.ADMIN),
+        Component: withAuth(DashboardLayout, Role.SUPER_ADMIN),
         path: "/dashboard/admin",
         children: [
             ...generateRoutes(AdminRoutes)

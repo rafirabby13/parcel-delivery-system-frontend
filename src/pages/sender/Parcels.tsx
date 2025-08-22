@@ -43,7 +43,7 @@ const Parcels = () => {
     return (
         <div className="w-full max-w-7xl mx-auto px-5 space-y-5">
             <div className="flex justify-between items-center ">
-                <h1 className="font-bold text-2xl underline">Your Bookings's</h1>
+                <h1 className="font-bold text-2xl underline">Your Booking's</h1>
                 <CreateParcel />
             </div>
             <div className="border border-muted rounded-lg">

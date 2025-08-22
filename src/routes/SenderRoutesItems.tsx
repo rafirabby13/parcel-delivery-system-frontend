@@ -12,7 +12,7 @@ export const SenderRoutesItems: RouteItem[] = [
         icon: LayoutDashboard,
         items: [
             {
-                title: "Create Parcel",
+                title: "Manage Parcel",
                 url: "create-parcel",
                 icon: Package2,
                 Component: Parcels
