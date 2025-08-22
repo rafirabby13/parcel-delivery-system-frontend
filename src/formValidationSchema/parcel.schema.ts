@@ -4,7 +4,7 @@ import z from "zod";
 export const Parcel_Type2 = ["PACKAGE", "DOCUMENT", "FRAGILE", "ELECTRONICS"] as const;
 export type Parcel_Type = (typeof Parcel_Type2)[number];
 
-export const Payment_Method2 = ["PREPAID", "POSTPAID", "COD"] as const;
+export const Payment_Method2 = ["PREPAID" , "COD"] as const;
 export type Payment_Method = (typeof Payment_Method2)[number];
 
 // Bangladesh phone regex
@@ -38,7 +38,7 @@ export const formSchema = z.object({
     parcelType: z.enum(Parcel_Type2, {
         required_error: "Please select a parcel type"
     }),
-    weight: z.number().min(0.1, { message: "Weight must be greater than 0" }),
+    weight: z.number().min(0.1, { message: "Weight must be greater than 0" }).max(50, 'Weight cannot exceed 50 kg'),
     senderDivision: z.string().min(1, { message: "Division is required" }),
     senderCity: z.string().min(1, { message: "City is required" }),
     senderArea: z.string().min(1, { message: "Area is required" }),

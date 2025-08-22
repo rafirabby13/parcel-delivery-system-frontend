@@ -4,7 +4,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { formSchema, Parcel_Type2, Payment_Method2, type Parcel_Type, type Payment_Method } from "@/formValidationSchema/parcel.schema"
-import { cn } from "@/lib/utils"
 import { useGetMeQuery } from "@/redux/feature/user/user.api"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MapPinIcon, PackageIcon, UserIcon } from "lucide-react"
@@ -17,21 +16,18 @@ import {
     DialogClose,
     DialogContent,
     DialogFooter,
-    DialogHeader,
-    DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import { useCreateparcelMutation } from "@/redux/feature/parcel/parcel.api"
 
 
 
 
-export function CreateParcel({
-    className,
-    ...props
-}: React.ComponentProps<"div">) {
+export function CreateParcel() {
 
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [createparcel] = useCreateparcelMutation(undefined)
+
     const navigate = useNavigate()
     // const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -102,10 +98,14 @@ export function CreateParcel({
             // console.log("Parcel Data:", parcelData)
 
             // Here you would make your API call
-            // const res = await createParcel(parcelData).unwrap()
+            const res = await createparcel(parcelData).unwrap()
+            console.log(res)
+            if (res?.success) {
+                
+                toast.success("Parcel created successfully")
+                navigate("/dashboard/sender/create-parcel")
+            }
 
-            // toast.success("Parcel created successfully")
-            // navigate("/dashboard")
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.log(error)
@@ -126,7 +126,7 @@ export function CreateParcel({
             </DialogTrigger>
             <DialogContent className="sm:max-w-fit">
 
-                <div className={cn("flex flex-col gap-6 h-full", className)} {...props}>
+                <div >
                     <Card className="overflow-hidden p-0">
                         <CardContent className="p-6 md:p-8 overflow-y-auto max-h-[70vh]">
                             <div className="flex flex-col gap-6">
@@ -409,6 +409,13 @@ export function CreateParcel({
                         </CardContent>
                     </Card>
                 </div>
+            <DialogFooter className="w-fit ml-auto">
+                <DialogClose asChild>
+                    <Button type="button">
+                        Close
+                    </Button>
+                </DialogClose>
+            </DialogFooter>
             </DialogContent>
 
         </Dialog>
