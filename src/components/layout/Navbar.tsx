@@ -18,24 +18,25 @@ import { useGetMeQuery, userApi } from "@/redux/feature/user/user.api"
 import { Role } from "@/constants/role"
 import { authApi, useLogoutMutation } from "@/redux/feature/auth/auth.api"
 import { useDispatch } from "react-redux"
+import { LoaderIcon } from "lucide-react"
 
 // Navigation links array to be used in both desktop and mobile menus
 
 
 export default function Navbar() {
-    const { data, refetch } = useGetMeQuery(undefined)
+    const { data, refetch, isLoading } = useGetMeQuery(undefined)
     const [logout] = useLogoutMutation(undefined)
     const dispatch = useDispatch()
-    // if (isLoading) {
-    //     return <LoaderIcon />
-    // }
-
+    if (isLoading) {
+        return <LoaderIcon />
+    }
+    console.log(data?.data?.user)
     const role = data?.data?.user?.role
     console.log(role)
     const navigationLinks = [
         { href: "/", label: "Home" },
         { href: "about", label: "About" },
-        { href: role == Role.ADMIN ? "/dashboard/admin" : Role.SENDER ? "/dashboard/sender" : "/dashboard/receiver", label: "Dashboard" },
+        { href: role == Role.SUPER_ADMIN ? "/dashboard/admin" : Role.SENDER ? "/dashboard/sender" : "/dashboard/receiver", label: "Dashboard" },
     ]
     const handleLogout = async () => {
         logout(undefined).unwrap()

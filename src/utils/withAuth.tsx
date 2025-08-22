@@ -6,10 +6,10 @@ export const withAuth = (Component: ComponentType, role: string) => {
     return function Authwrapper() {
         const { data, isLoading } = useGetMeQuery(undefined)
 
-        // console.log(data)
+        // console.log("....................with auth.........")
 
+        // console.log("data?.data?.user?.email", data?.data?.user?.role, role)
         if (!isLoading && !data?.data?.user?.email) {
-            console.log("data?.data?.user?.email", data?.data?.user?.role, role)
             return <Navigate to="/login" />
         }
         if (role && !isLoading && role !== data?.data?.user?.role) {
