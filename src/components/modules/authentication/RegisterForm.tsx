@@ -12,6 +12,8 @@ import { Link, useNavigate } from "react-router"
 import { toast } from "sonner"
 import { useRegisterMutation } from "@/redux/feature/auth/auth.api"
 import { Role } from "@/constants/role"
+import { useId, useState } from "react"
+import { EyeIcon, EyeOffIcon } from "lucide-react"
 
 
 const formSchema = z.object({
@@ -20,18 +22,27 @@ const formSchema = z.object({
     password: z.string().min(8, {
         message: "Must be at least 8 characters",
     }),
+    confirmPassword: z.string().min(8, {
+        message: "Must be at least 8 characters",
+    }),
     phone: z
         .string()
         .regex(/^01[3-9]\d{8}$/, {
             message: "Invalid Bangladeshi phone number (must be 11 digits, start with 013–019)",
         }),
-});
+}).refine((data) => data.password == data.confirmPassword, {
+    message: " Password do not matched",
+    path: ['confirmPassword']
+})
 
 export function RegisterForm({
     className,
     ...props
 }: React.ComponentProps<"div">) {
+    const id = useId()
+    const [isVisible, setIsVisible] = useState<boolean>(false)
 
+    const toggleVisibility = () => setIsVisible((prevState) => !prevState)
     const [register] = useRegisterMutation(undefined)
 
     const navigate = useNavigate()
@@ -47,7 +58,9 @@ export function RegisterForm({
     })
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            const data = { ...values, role: Role.SENDER }
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { confirmPassword, ...rest } = values
+            const data = { ...rest, role: Role.SENDER }
             console.log(data)
             const res = await register(data)
             if (res?.data?.success) {
@@ -114,7 +127,70 @@ export function RegisterForm({
                                             <FormItem>
                                                 <FormLabel>Password</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Your password here.." {...field} />
+                                                    {/* <Input placeholder="Your password here.." {...field} /> */}
+                                                    <div className="*:not-first:mt-2">
+                                                        <div className="relative">
+                                                            <Input
+                                                                {...field}
+                                                                id={id}
+                                                                className="pe-9"
+                                                                placeholder="Password"
+                                                                type={isVisible ? "text" : "password"}
+                                                            />
+                                                            <button
+                                                                className="text-muted-foreground/80 hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md transition-[color,box-shadow] outline-none focus:z-10 focus-visible:ring-[3px] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+                                                                type="button"
+                                                                onClick={toggleVisibility}
+                                                                aria-label={isVisible ? "Hide password" : "Show password"}
+                                                                aria-pressed={isVisible}
+                                                                aria-controls="password"
+                                                            >
+                                                                {isVisible ? (
+                                                                    <EyeOffIcon size={16} aria-hidden="true" />
+                                                                ) : (
+                                                                    <EyeIcon size={16} aria-hidden="true" />
+                                                                )}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="confirmPassword"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Password</FormLabel>
+                                                <FormControl>
+                                                    {/* <Input placeholder="Your password here.." {...field} /> */}
+                                                    <div className="*:not-first:mt-2">
+                                                        <div className="relative">
+                                                            <Input
+                                                                {...field}
+                                                                id={id}
+                                                                className="pe-9"
+                                                                placeholder="Password"
+                                                                type={isVisible ? "text" : "password"}
+                                                            />
+                                                            <button
+                                                                className="text-muted-foreground/80 hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md transition-[color,box-shadow] outline-none focus:z-10 focus-visible:ring-[3px] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+                                                                type="button"
+                                                                onClick={toggleVisibility}
+                                                                aria-label={isVisible ? "Hide password" : "Show password"}
+                                                                aria-pressed={isVisible}
+                                                                aria-controls="password"
+                                                            >
+                                                                {isVisible ? (
+                                                                    <EyeOffIcon size={16} aria-hidden="true" />
+                                                                ) : (
+                                                                    <EyeIcon size={16} aria-hidden="true" />
+                                                                )}
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
