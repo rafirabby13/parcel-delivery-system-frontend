@@ -14,9 +14,8 @@ import {
 } from "@/components/ui/popover"
 import { Link } from "react-router"
 import { ModeToggle } from "../ModeToggle"
-import { useGetMeQuery } from "@/redux/feature/user/user.api"
+import { useGetMeQuery, userApi } from "@/redux/feature/user/user.api"
 import { Role } from "@/constants/role"
-import { LoaderIcon } from "lucide-react"
 import { authApi, useLogoutMutation } from "@/redux/feature/auth/auth.api"
 import { useDispatch } from "react-redux"
 
@@ -24,12 +23,12 @@ import { useDispatch } from "react-redux"
 
 
 export default function Navbar() {
-    const { data, isLoading, refetch } = useGetMeQuery(undefined)
+    const { data, refetch } = useGetMeQuery(undefined)
     const [logout] = useLogoutMutation(undefined)
     const dispatch = useDispatch()
-    if (isLoading) {
-        return <LoaderIcon />
-    }
+    // if (isLoading) {
+    //     return <LoaderIcon />
+    // }
 
     const role = data?.data?.user?.role
     console.log(role)
@@ -41,6 +40,7 @@ export default function Navbar() {
     const handleLogout = async () => {
         logout(undefined).unwrap()
         refetch()
+        dispatch(userApi.util.resetApiState())
         dispatch(authApi.util.resetApiState())
 
     }

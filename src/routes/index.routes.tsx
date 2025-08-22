@@ -10,6 +10,7 @@ import { userRoutes } from "./UserRoutes";
 import { withAuth } from "@/utils/withAuth";
 import { Role } from "@/constants/role";
 import Unauthorized from "@/pages/Unauthorize";
+import VerifyUser from "@/pages/VerifyUser";
 
 export const router = createBrowserRouter([
     {
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
     {
         Component: Register,
         path: "/register"
+    },
+    {
+        Component: VerifyUser,
+        path: "/verify"
     },
     {
         Component: Unauthorized,

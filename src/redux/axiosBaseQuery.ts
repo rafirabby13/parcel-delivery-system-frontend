@@ -4,9 +4,7 @@ import type { AxiosRequestConfig, AxiosError } from 'axios'
 
 
 const axiosBaseQuery =
-  (
-    { baseUrl }: { baseUrl: string } = { baseUrl: '' },
-  ): BaseQueryFn<
+  (): BaseQueryFn<
     {
       url: string
       method?: AxiosRequestConfig['method']
@@ -19,8 +17,9 @@ const axiosBaseQuery =
   > =>
   async ({ url, method, data, params, headers }) => {
     try {
+      // console.log(url)
       const result = await axiosInstance({
-        url: baseUrl + url,
+        url: url,
         method,
         data,
         params,

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -37,11 +38,19 @@ export function LoginForm({
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
         // console.log(values)
-        const res = await login(values)
-        // console.log(res.data)
-        if (res.data.success) {
+        try {
+            const res = await login(values).unwrap()
+        console.log(res)
+        if (res?.success) {
             toast.success("logged in successfully")
             navigate("/")
+        }
+        } catch (error: any) {
+            console.log(error)
+            if (!error?.data?.success) {
+                navigate("/verify", {state: values?.email})
+            }
+            toast.error(error?.data?.message)
         }
     }
     return (
