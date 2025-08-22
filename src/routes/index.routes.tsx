@@ -42,8 +42,15 @@ export const router = createBrowserRouter([
         ]
     },
     {
-        Component: withAuth(DashboardLayout, (Role.RECEIVER )),
-        path: "/dashboard/user",
+        Component: withAuth(DashboardLayout, Role.RECEIVER),
+        path: "/dashboard/receiver",
+        children: [
+            ...generateRoutes(userRoutes)
+        ]
+    },
+    {
+        Component: withAuth(DashboardLayout, Role.SENDER),
+        path: "/dashboard/sender",
         children: [
             ...generateRoutes(userRoutes)
         ]
