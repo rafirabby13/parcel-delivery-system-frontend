@@ -8,17 +8,36 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useGetAllParcelByIdQuery } from "@/redux/feature/parcel/parcel.api"
+import { useCancelParcelMutation, useGetAllParcelByIdQuery } from "@/redux/feature/parcel/parcel.api"
 import { useGetMeQuery } from "@/redux/feature/user/user.api"
-import { CircleX, CircleXIcon, Delete, DeleteIcon, Trash2 } from "lucide-react"
+import { ConfirmDialogue } from "@/utils/ConfirmDialogue"
+import { CircleXIcon } from "lucide-react"
+import { toast } from "sonner"
 
 const Parcels = () => {
     const { data } = useGetMeQuery(undefined)
-
+    const [cancelParcel] = useCancelParcelMutation(undefined)
     const { data: parcels } = useGetAllParcelByIdQuery(data?.data?.user?._id)
     // console.log(parcels?.data)
-    const handleDelete = (itemId: string) => {
-        console.log(itemId)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleDelete = async (item: { _id: any; trackingId?: string; status?: string; receiverInfo?: { name: string }; parcelType?: string }) => {
+        try {
+            // console.log(item)
+            const cancelData = {
+                parcelId: item._id,
+                updaterId: data?.data?.user?._id
+            }
+            // console.log(cancelData)
+            const res = await cancelParcel(cancelData).unwrap()
+            console.log(res)
+            if (res?.success) {
+                toast.success("Parcel Cancelled Successfully")
+            }
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            // console.log(error)
+            toast.error(error?.data?.message)
+        }
 
     }
     return (
@@ -46,7 +65,7 @@ const Parcels = () => {
                                     <TableCell className="border-2 bg-gray-50">{item.parcelType}</TableCell>
                                     <TableCell className="border-2 bg-orange-50">{item.status}</TableCell>
                                     <TableCell className="border-2 bg-pink-50">{item.receiverInfo.name}</TableCell>
-                                    <TableCell><Button disabled={item.status !== "REQUESTED" && item.status !== "APPROVED"} onClick={() => handleDelete(item._id)}><CircleXIcon /></Button></TableCell>
+                                    <TableCell><ConfirmDialogue onConfirm={() => handleDelete(item)}><Button className="w-fit" disabled={item.status !== "REQUESTED" && item.status !== "APPROVED"} ><CircleXIcon /></Button></ConfirmDialogue></TableCell>
 
                                 </TableRow>)
                             )

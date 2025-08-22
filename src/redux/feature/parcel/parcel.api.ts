@@ -19,8 +19,16 @@ export const parcelApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["PARCEL"]
         }),
+        cancelParcel: builder.mutation({
+            query: (cancelData) => ({
+                url: "/parcel/cancel-parcel",
+                method: "POST",
+                data: cancelData
+            }),
+            invalidatesTags: ["PARCEL"]
+        }),
     })
 })
 
 
-export const { useGetAllParcelByIdQuery, useCreateparcelMutation } = parcelApi
+export const { useGetAllParcelByIdQuery, useCreateparcelMutation, useCancelParcelMutation } = parcelApi
