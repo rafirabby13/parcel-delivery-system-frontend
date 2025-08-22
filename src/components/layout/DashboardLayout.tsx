@@ -9,6 +9,8 @@ import { AppSidebar } from "../app-sidebar"
 import { Outlet } from "react-router"
 
 export default function DashboardLayout() {
+  // const res = generateRoutes(SenderRoutesItems)
+  // console.log(res)
   return (
     <SidebarProvider>
       <AppSidebar />

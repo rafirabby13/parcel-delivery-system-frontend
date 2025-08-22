@@ -5,12 +5,13 @@ import login from "@/pages/Login";
 import Register from "@/pages/Register";
 import { generateRoutes } from "@/utils/generateRoutes";
 import { createBrowserRouter } from "react-router";
-import { adminRoutes } from "./AdminRoutes";
-import { userRoutes } from "./UserRoutes";
+import { ReceiverRoutes } from "./ReceiverRoutes";
 import { withAuth } from "@/utils/withAuth";
 import { Role } from "@/constants/role";
 import Unauthorized from "@/pages/Unauthorize";
 import VerifyUser from "@/pages/VerifyUser";
+import { AdminRoutes } from "./AdminRoutes";
+import { SenderRoutesItems } from "./SenderRoutesItems";
 
 export const router = createBrowserRouter([
     {
@@ -43,21 +44,21 @@ export const router = createBrowserRouter([
         Component: withAuth(DashboardLayout, Role.ADMIN),
         path: "/dashboard/admin",
         children: [
-            ...generateRoutes(adminRoutes)
+            ...generateRoutes(AdminRoutes)
         ]
     },
     {
         Component: withAuth(DashboardLayout, Role.RECEIVER),
         path: "/dashboard/receiver",
         children: [
-            ...generateRoutes(userRoutes)
+            ...generateRoutes(ReceiverRoutes)
         ]
     },
     {
         Component: withAuth(DashboardLayout, Role.SENDER),
         path: "/dashboard/sender",
         children: [
-            ...generateRoutes(userRoutes)
+            ...generateRoutes(SenderRoutesItems)
         ]
     }
 ])

@@ -2,7 +2,7 @@ import About from "@/pages/About";
 import type { RouteItem } from "@/types/route.type";
 import { BookA,  LayoutDashboard, User2Icon } from "lucide-react";
 
-export const userRoutes: RouteItem[] = [
+export const ReceiverRoutes: RouteItem[] = [
     {
       title: "User",
       url: "/",

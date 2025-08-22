@@ -1,23 +1,26 @@
 import { Role } from "@/constants/role";
-import { adminRoutes } from "@/routes/AdminRoutes";
-import { userRoutes } from "@/routes/UserRoutes";
-import type { TRole } from "@/types/route.type";
+import { AdminRoutes } from "@/routes/AdminRoutes";
+import { ReceiverRoutes } from "@/routes/ReceiverRoutes";
+import { SenderRoutesItems } from "@/routes/SenderRoutesItems";
+import type {  TRole } from "@/types/route.type";
 
 
 
- const getSidebarByRole = (role: TRole) => {
+ const getSidebarByRole= (role: TRole) => {
+
+    // console.log(role)
 
     switch (role) {
 
         case Role.ADMIN:
-            return [...adminRoutes]
+            return [...AdminRoutes]
         case Role.RECEIVER:
-            return [...userRoutes]
+            return [...ReceiverRoutes]
         case Role.SENDER:
-            return [...userRoutes]
+            return [...SenderRoutesItems]
 
         default:
-            return [...userRoutes]
+            return []
     }
 
 
