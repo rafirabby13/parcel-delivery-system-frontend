@@ -1,5 +1,5 @@
 import { useBlockUnblockUserMutation, useGetAllUsersQuery } from "@/redux/feature/user/user.api"
-import {   CircleOff, LoaderIcon, ShieldCheckIcon } from "lucide-react"
+import {   CircleOff, LoaderIcon,  SquareCheckBigIcon } from "lucide-react"
 import {
     Table,
     TableBody,
@@ -58,10 +58,10 @@ const ManageUsers = () => {
                                     <TableCell className="border-2 bg-blue-50">{user.name}</TableCell>
                                     <TableCell className="border-2 bg-gray-50">{user.email}</TableCell>
                                     <TableCell className="border-2 bg-orange-50">{user.role}</TableCell>
-                                    <TableCell className="border-2 bg-orange-50">{user.isActive}</TableCell>
+                                    <TableCell className="border-2 bg-red-50">{user.isActive}</TableCell>
                                     <TableCell className="border-2 bg-pink-50"><ConfirmDialogue
                                         onConfirm={() => handleBlockUnblock(user)}>{
-                                            user.isActive=== "ACTIVE" ? <CircleOff /> : <ShieldCheckIcon />
+                                            user.isActive=== "ACTIVE" ? <CircleOff /> : <SquareCheckBigIcon />
                                         }</ConfirmDialogue></TableCell>
 
 

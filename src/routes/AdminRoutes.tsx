@@ -1,7 +1,8 @@
 
 import ManageUsers from "@/pages/admin/ManageUsers";
+import ManagParcels from "@/pages/admin/ManagParcels";
 import type { RouteItem } from "@/types/route.type";
-import {  LayoutDashboard, Users2 } from "lucide-react";
+import {  BlocksIcon, LayoutDashboard, Users2 } from "lucide-react";
 
 export const AdminRoutes: RouteItem[] = [
     {
@@ -11,9 +12,15 @@ export const AdminRoutes: RouteItem[] = [
       items: [
         {
           title: "Manage Users",
-          url: "hello",
+          url: "manage-users",
           icon: Users2,
           Component: ManageUsers
+        },
+        {
+          title: "Manage Parcels",
+          url: "manage-parcels",
+          icon: BlocksIcon ,
+          Component: ManagParcels
         },
       ],
     }
