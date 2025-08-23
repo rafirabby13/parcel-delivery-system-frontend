@@ -13,14 +13,19 @@ import { ConfirmDialogue } from "@/utils/ConfirmDialogue"
 import { toast } from "sonner"
 import { useBlockUnbloParcelMutation, useGetAllParcelsQuery } from "@/redux/feature/parcel/parcel.api"
 import type { Parcel } from "@/types/parcel.types"
+// import { useGetAllUsersQuery } from "@/redux/feature/user/user.api"
+// import { Role } from "@/constants/role"
+import { AssignDeliveryPerson } from "@/components/modules/admin/AssignDeliveryPerson"
 
 const ManagParcels = () => {
     const [blockUnbloParcel] = useBlockUnbloParcelMutation(undefined)
     const { data: parcel, isLoading } = useGetAllParcelsQuery(undefined)
+    // const { data: users } = useGetAllUsersQuery(undefined)
     if (isLoading) {
         return <LoaderIcon />
     }
-    console.log(parcel?.data?.parcels)
+    // const deliveryPersons = users?.data?.users?.filter((user: { role: string })=> user.role == Role.DELIVERY_PERSON)
+    // console.log(deliveryPersons)
 
     const handleBlockUnblock = async (parcel: Parcel) => {
         // console.log(user)
@@ -51,10 +56,10 @@ const ManagParcels = () => {
                             <TableHead>parcelType</TableHead>
                             <TableHead>Sender__Phone</TableHead>
                             <TableHead>Receiver__Phone</TableHead>
-                            <TableHead>dDelivery Partner</TableHead>
+                            <TableHead>Delivery Partner__Phone</TableHead>
                             <TableHead>Parcel Status</TableHead>
                             <TableHead>paymentStatus</TableHead>
-                            <TableHead>Block/Unblock User</TableHead>
+                            <TableHead>Block/Unblock Parcel</TableHead>
                             <TableHead>Assign Delivery Partner</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -76,6 +81,7 @@ const ManagParcels = () => {
                                         onConfirm={() => handleBlockUnblock(parcel)}>{
                                             parcel.status === "BLOCKED" ? <CircleOff /> : <SquareCheckBigIcon />
                                         }</ConfirmDialogue></TableCell>
+                                    <TableCell className="border-2 bg-teal-50"><AssignDeliveryPerson parcelId={parcel._id}>{parcel.assignedDeliveryPartner ? "ASSIGNED" : "ASSIGN"}</AssignDeliveryPerson></TableCell>
 
 
                                 </TableRow>)
