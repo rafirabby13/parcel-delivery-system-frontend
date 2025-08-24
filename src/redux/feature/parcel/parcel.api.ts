@@ -11,6 +11,13 @@ export const parcelApi = baseApi.injectEndpoints({
             }),
             providesTags: ["PARCEL"]
         }),
+        getAllParcels: builder.query({
+            query: () => ({
+                url: "/parcel/all-parcel",
+                method: "GET",
+            }),
+            providesTags: ["PARCEL"]
+        }),
         createparcel: builder.mutation({
             query: (parcelData) => ({
                 url: "/parcel/create-parcel",
@@ -27,8 +34,23 @@ export const parcelApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["PARCEL"]
         }),
+        blockUnbloParcel: builder.mutation({
+            query: (parcelId) => ({
+                url: `/parcel/${parcelId}/block-parcel`,
+                method: "PATCH",
+            }),
+            invalidatesTags: ["PARCEL"]
+        }),
+        assignToDeliveryMan: builder.mutation({
+            query: (data) => ({
+                url: "parcel/assign-delivery",
+                method: "PATCH",
+                data: data
+            }),
+            invalidatesTags: ["PARCEL"]
+        }),
     })
 })
 
 
-export const { useGetAllParcelByIdQuery, useCreateparcelMutation, useCancelParcelMutation } = parcelApi
+export const { useGetAllParcelByIdQuery, useCreateparcelMutation, useCancelParcelMutation, useGetAllParcelsQuery, useBlockUnbloParcelMutation, useAssignToDeliveryManMutation } = parcelApi
