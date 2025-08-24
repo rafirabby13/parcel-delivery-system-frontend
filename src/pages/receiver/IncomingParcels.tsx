@@ -21,7 +21,7 @@ const IncomingParcels = () => {
     }
 
     const notConfirmed = parcels?.data?.filter((parcel: { status: string }) => parcel.status !== "CONFIRMED")
-    console.log(parcels.data, notConfirmed)
+    console.log(parcels?.data, notConfirmed)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleConfirm = async (item: { _id?: string; trackingId: any; status?: string; senderInfo?: { name: string; detailAddress: string }; parcelType?: string }) => {
         // console.log(item.trackingId)

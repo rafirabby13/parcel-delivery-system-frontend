@@ -63,8 +63,23 @@ export const parcelApi = baseApi.injectEndpoints({
             }), 
             invalidatesTags: ["PARCEL"]
         }),
+        trackParcelStatus: builder.query({
+            query: (trackingId) => ({
+                url: `/parcel/track-public-status?trackingId=${trackingId}`,
+                method: "GET"
+            }), 
+            providesTags: ["PARCEL"]
+        }),
+        updateParcelStatus: builder.mutation({
+            query: ({parcelId,data}) => ({
+                url: `/parcel/${parcelId}/update-status`,
+                method: "PATCH",
+                data: data
+            }), 
+            invalidatesTags: ["PARCEL"]
+        }),
     })
 })
 
 
-export const { useGetAllParcelByIdQuery, useCreateparcelMutation, useCancelParcelMutation, useGetAllParcelsQuery, useBlockUnbloParcelMutation, useAssignToDeliveryManMutation, useIncomingParcelQuery, useConfirmDeliveryMutation } = parcelApi
+export const { useGetAllParcelByIdQuery, useCreateparcelMutation, useCancelParcelMutation, useGetAllParcelsQuery, useBlockUnbloParcelMutation, useAssignToDeliveryManMutation, useIncomingParcelQuery, useConfirmDeliveryMutation, useTrackParcelStatusQuery, useUpdateParcelStatusMutation } = parcelApi
