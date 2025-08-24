@@ -23,7 +23,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   if (isLoading) {
     return <Loader2 className="h-6 w-6 animate-spin text-primary" />;
   }
-  // console.log(data?.data?.user)
+  console.log(data?.data?.user)
   const role = data?.data?.user?.role
   const navLinks = {
     user: data?.data?.user,
@@ -37,7 +37,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     // navMain: userRoutes
 
   }
-  // console.log(navLinks.navMain)
+  console.log(navLinks.navMain)
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>

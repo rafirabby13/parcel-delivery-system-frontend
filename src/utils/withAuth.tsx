@@ -8,7 +8,7 @@ export const withAuth = (Component: ComponentType, role: string) => {
 
         // console.log("....................with auth.........")
 
-        // console.log("data?.data?.user?.email", data?.data?.user?.role, role)
+        console.log("data?.data?.user?.email", data?.data?.user?.role, role)
         if (!isLoading && !data?.data?.user?.email) {
             return <Navigate to="/login" />
         }
