@@ -36,11 +36,12 @@ export function AssignDeliveryPerson({ children, parcelId }: AssignProps) {
     // const [isLoading, setIsLoading] = useState<boolean>(false)
     const { data: me } = useGetMeQuery(undefined)
     // console.log(me)
-    const { data, isLoading } = useGetAllUsersQuery(undefined)
+    const { data, isLoading } = useGetAllUsersQuery({page:1, limit :100})
     const [assignToDeliveryMan] = useAssignToDeliveryManMutation(undefined)
     if (isLoading) {
         return <LoaderIcon />
     }
+    // console.log(data)
     const deliveryPersons = data?.data?.users?.filter((user: { role: string }) => user.role == Role.DELIVERY_PERSON)
 
     const handleParcelAssign = async (user: IUser) => {
@@ -60,7 +61,7 @@ export function AssignDeliveryPerson({ children, parcelId }: AssignProps) {
             }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
-            console.log(error)
+            // console.log(error)
             toast.error(error?.data?.message)
         }
     }

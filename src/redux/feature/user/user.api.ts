@@ -11,8 +11,8 @@ export const userApi = baseApi.injectEndpoints({
             providesTags: ["USER"]
         }),
         getAllUsers: builder.query({
-            query: () => ({
-                url: "/user/all-users",
+            query: ({page, limit}) => ({
+                url: `/user/all-users?page=${page}&limit=${limit}`,
                 method: "GET",
             }),
             providesTags: ["USER"]
