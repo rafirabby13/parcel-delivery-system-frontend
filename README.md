@@ -20,7 +20,20 @@ A comprehensive, modern parcel delivery and tracking system built with React, Ty
 - Track Parcel: Public tracking with real-time - status updates
 - Status Updates: Delivery partner interface for status management
 - Payment Integration: Multiple payment methods (Prepaid, Postpaid, COD)
+### 🔒 Security Features
 
+- JWT Authentication with secure token storage
+- Role-based Access Control (RBAC)
+- Input Validation on client and server
+
+### 📱 Responsive Design
+
+The application is fully responsive and optimized for:
+
+- 📱 Mobile devices (320px+)
+- 📱 Tablets (768px+)
+- 💻 Desktop (1024px+)
+- 🖥️ Large screens (1440px+)
 ### 🚚 Delivery Operations
 
 - Delivery partner assignment
@@ -36,6 +49,14 @@ A comprehensive, modern parcel delivery and tracking system built with React, Ty
 - Smooth animations and transitions
 - Professional color-coded interfaces
 
+### 🌙 Dark Mode Support
+
+Full dark mode implementation with:
+
+- System preference detection
+- Manual toggle option
+- Persistent user preference
+- Smooth transitions
 ### 🌍 Bangladesh-Specific Features
 
 - Bangladesh phone number validation (01[3-9]XXXXXXXX)
@@ -127,19 +148,6 @@ http://localhost:5173
 │  ├─ App.tsx
 │  ├─ index.css
 │  ├─ main.tsx
-│  └─ vite-env.d.ts
-├─ .gitignore
-├─ bun.lock
-├─ components.json
-├─ eslint.config.js
-├─ index.html
-├─ package.json
-├─ README.md
-├─ structure.txt
-├─ tsconfig.app.json
-├─ tsconfig.json
-├─ tsconfig.node.json
-└─ vite.config.ts
 ```
 
 ## Tech Stack
@@ -176,4 +184,59 @@ http://localhost:5173
 *  Lint-staged - Run linters on staged files
 
 
+## 🔧 Available Scripts
 
+To run tests, run the following command
+
+```bash
+# Development
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+
+# Code Quality
+npm run lint         # Run ESLint
+npm run lint:fix     # Fix ESLint errors
+npm run format       # Format code with Prettier
+npm run type-check   # Run TypeScript compiler
+
+# Testing
+npm run test         # Run tests
+npm run test:watch   # Run tests in watch mode
+npm run test:coverage # Generate test coverage
+```
+
+
+##  🎨 Component Examples
+
+### Create Parcel Form
+
+```typescript
+import { CreateTour } from '@/components/forms/CreateTour'
+
+// Usage
+<CreateTour 
+  onSuccess={(parcel) => console.log('Parcel created:', parcel)}
+  className="max-w-4xl mx-auto"
+/>
+```
+### Track Parcel
+
+
+```typescript
+import { TrackParcel } from '@/components/tracking/TrackParcel'
+
+// Usage - Public route, no auth required
+<TrackParcel />
+```
+### Status Update Interface
+
+```typescript
+import { UpdateStatus } from '@/components/delivery/UpdateStatus'
+
+// Usage - For delivery partners
+<UpdateStatus 
+  parcels={assignedParcels}
+  onStatusUpdate={handleStatusUpdate}
+/>
+```
