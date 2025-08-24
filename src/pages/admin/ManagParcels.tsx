@@ -16,6 +16,7 @@ import type { Parcel } from "@/types/parcel.types"
 // import { useGetAllUsersQuery } from "@/redux/feature/user/user.api"
 // import { Role } from "@/constants/role"
 import { AssignDeliveryPerson } from "@/components/modules/admin/AssignDeliveryPerson"
+// import { useGetAllUsersQuery } from "@/redux/feature/user/user.api"
 
 const ManagParcels = () => {
     const [blockUnbloParcel] = useBlockUnbloParcelMutation(undefined)
@@ -24,12 +25,16 @@ const ManagParcels = () => {
     if (isLoading) {
         return <LoaderIcon />
     }
-    // const deliveryPersons = users?.data?.users?.filter((user: { role: string })=> user.role == Role.DELIVERY_PERSON)
     // console.log(deliveryPersons)
-
+    
     const handleBlockUnblock = async (parcel: Parcel) => {
         // console.log(user)
         try {
+            // if (parcel.assignedDeliveryPartner) {
+                
+            //     const deliveryPerson = users?.data?.users?.find((user: { _id: string })=> user._id == parcel.assignedDeliveryPartner)
+            //     clg
+            // }
             const res = await blockUnbloParcel(parcel._id).unwrap()
             // console.log(res)
             if (res?.success) {
