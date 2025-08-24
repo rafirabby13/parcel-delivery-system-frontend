@@ -1,5 +1,5 @@
 import { useBlockUnblockUserMutation, useGetAllUsersQuery } from "@/redux/feature/user/user.api"
-import {   CircleOff, LoaderIcon,  SquareCheckBigIcon } from "lucide-react"
+import { CircleOff, LoaderIcon, SquareCheckBigIcon } from "lucide-react"
 import {
     Table,
     TableBody,
@@ -11,14 +11,24 @@ import {
 import type { IUser } from "@/types/user.types"
 import { ConfirmDialogue } from "@/utils/ConfirmDialogue"
 import { toast } from "sonner"
-
+import { useState } from "react"
+import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
 const ManageUsers = () => {
-    const { data, isLoading } = useGetAllUsersQuery(undefined)
+    const [page, setPage] = useState(1)
+
+    const { data, isLoading } = useGetAllUsersQuery({ page, limit: 10 })
     const [blockUnblockUser] = useBlockUnblockUserMutation()
     if (isLoading) {
         return <LoaderIcon />
     }
-    // console.log(data?.data?.users)
+    console.log(data?.data?.meta)
 
     const handleBlockUnblock = async (user: IUser) => {
         console.log(user)
@@ -44,6 +54,7 @@ const ManageUsers = () => {
                 <Table className="px-10">
                     <TableHeader className="bg-purple-100">
                         <TableRow>
+                            <TableHead>#</TableHead>
                             <TableHead>Name</TableHead>
                             <TableHead>Email</TableHead>
                             <TableHead>Role</TableHead>
@@ -53,15 +64,16 @@ const ManageUsers = () => {
                     </TableHeader>
                     <TableBody className="">
                         {
-                            data?.data?.users?.map((user: IUser) => (
+                            data?.data?.users?.map((user: IUser, i: number) => (
                                 <TableRow>
+                                    <TableCell className="border-2 bg-purple-50">{i + 1 + ((page-1)*10)}</TableCell>
                                     <TableCell className="border-2 bg-blue-50">{user.name}</TableCell>
                                     <TableCell className="border-2 bg-gray-50">{user.email}</TableCell>
                                     <TableCell className="border-2 bg-orange-50">{user.role}</TableCell>
                                     <TableCell className="border-2 bg-red-50">{user.isActive}</TableCell>
                                     <TableCell className="border-2 bg-pink-50"><ConfirmDialogue
                                         onConfirm={() => handleBlockUnblock(user)}>{
-                                            user.isActive=== "ACTIVE" ? <CircleOff /> : <SquareCheckBigIcon />
+                                            user.isActive === "ACTIVE" ? <CircleOff /> : <SquareCheckBigIcon />
                                         }</ConfirmDialogue></TableCell>
 
 
@@ -71,6 +83,35 @@ const ManageUsers = () => {
                     </TableBody>
                 </Table>
             </div>
+            <Pagination>
+                <PaginationContent>
+                    <PaginationItem>
+                        <PaginationPrevious
+                            // href="#"
+                            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                        />
+                    </PaginationItem>
+
+                    {[...Array(data?.data?.meta?.totalPage)].map((_, i) => (
+                        <PaginationItem key={i}>
+                            <PaginationLink
+                                // href="#"
+                                isActive={page === i + 1}
+                                onClick={() => setPage(i + 1)}
+                            >
+                                {i + 1}
+                            </PaginationLink>
+                        </PaginationItem>
+                    ))}
+
+                    <PaginationItem>
+                        <PaginationNext
+                            // href="#"
+                            onClick={() => setPage((prev) => Math.min(prev + 1, data?.data?.meta?.totalPage))}
+                        />
+                    </PaginationItem>
+                </PaginationContent>
+            </Pagination>
         </div>
     )
 }

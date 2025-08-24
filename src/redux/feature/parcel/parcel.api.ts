@@ -12,8 +12,8 @@ export const parcelApi = baseApi.injectEndpoints({
             providesTags: ["PARCEL"]
         }),
         getAllParcels: builder.query({
-            query: () => ({
-                url: "/parcel/all-parcel",
+            query: ({page, limit}) => ({
+                url: `/parcel/all-parcel?page=${page}&&limit=${limit}`,
                 method: "GET",
             }),
             providesTags: ["PARCEL"]
@@ -63,8 +63,30 @@ export const parcelApi = baseApi.injectEndpoints({
             }), 
             invalidatesTags: ["PARCEL"]
         }),
+        trackParcelStatus: builder.query({
+            query: (trackingId) => ({
+                url: `/parcel/track-public-status?trackingId=${trackingId}`,
+                method: "GET"
+            }), 
+            providesTags: ["PARCEL"]
+        }),
+        updateParcelStatus: builder.mutation({
+            query: ({parcelId,data}) => ({
+                url: `/parcel/${parcelId}/update-status`,
+                method: "PATCH",
+                data: data
+            }), 
+            invalidatesTags: ["PARCEL"]
+        }),
+        collectCODAMount: builder.mutation({
+            query: ({deliveryPersonId,trackingId}) => ({
+                url: `/parcel/collect-cod?deliveryPersonId=${deliveryPersonId}&trackingId=${trackingId}`,
+                method: "PATCH"
+            }), 
+            invalidatesTags: ["PARCEL"]
+        }),
     })
 })
 
 
-export const { useGetAllParcelByIdQuery, useCreateparcelMutation, useCancelParcelMutation, useGetAllParcelsQuery, useBlockUnbloParcelMutation, useAssignToDeliveryManMutation, useIncomingParcelQuery, useConfirmDeliveryMutation } = parcelApi
+export const { useGetAllParcelByIdQuery, useCreateparcelMutation, useCancelParcelMutation, useGetAllParcelsQuery, useBlockUnbloParcelMutation, useAssignToDeliveryManMutation, useIncomingParcelQuery, useConfirmDeliveryMutation, useTrackParcelStatusQuery, useUpdateParcelStatusMutation, useCollectCODAMountMutation } = parcelApi

@@ -12,6 +12,8 @@ import Unauthorized from "@/pages/Unauthorize";
 import VerifyUser from "@/pages/VerifyUser";
 import { AdminRoutes } from "./AdminRoutes";
 import { SenderRoutesItems } from "./SenderRoutesItems";
+import TrackParcel from "@/pages/TrackParcel";
+import { DeliveryPersonRoutes } from "./DeliveryPersonRoutes";
 
 export const router = createBrowserRouter([
     {
@@ -21,6 +23,10 @@ export const router = createBrowserRouter([
             {
                 Component: About,
                 path: "about"
+            },
+            {
+                Component: TrackParcel,
+                path: "/track-parcel"
             }
         ]
     },
@@ -40,6 +46,7 @@ export const router = createBrowserRouter([
         Component: Unauthorized,
         path: "/unauthorized"
     },
+
     {
         Component: withAuth(DashboardLayout, Role.SUPER_ADMIN),
         path: "/dashboard/admin",
@@ -59,6 +66,13 @@ export const router = createBrowserRouter([
         path: "/dashboard/sender",
         children: [
             ...generateRoutes(SenderRoutesItems)
+        ]
+    },
+    {
+        Component: withAuth(DashboardLayout, Role.DELIVERY_PERSON),
+        path: "/dashboard/delivery-person",
+        children: [
+            ...generateRoutes(DeliveryPersonRoutes)
         ]
     }
 ])

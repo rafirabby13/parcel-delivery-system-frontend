@@ -9,6 +9,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+
 import { ConfirmDialogue } from "@/utils/ConfirmDialogue"
 import { toast } from "sonner"
 import { useBlockUnbloParcelMutation, useGetAllParcelsQuery } from "@/redux/feature/parcel/parcel.api"
@@ -17,21 +18,32 @@ import type { Parcel } from "@/types/parcel.types"
 // import { Role } from "@/constants/role"
 import { AssignDeliveryPerson } from "@/components/modules/admin/AssignDeliveryPerson"
 // import { useGetAllUsersQuery } from "@/redux/feature/user/user.api"
+import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
+import { useState } from "react"
+// const statusFlow = ["PICKED_UP", "IN_TRANSIT", "DELIVERED"]
 
 const ManagParcels = () => {
+    const [page, setPage] = useState(1)
     const [blockUnbloParcel] = useBlockUnbloParcelMutation(undefined)
-    const { data: parcel, isLoading } = useGetAllParcelsQuery(undefined)
+    const { data: parcel, isLoading } = useGetAllParcelsQuery({ page, limit: 10 })
     // const { data: users } = useGetAllUsersQuery(undefined)
     if (isLoading) {
         return <LoaderIcon />
     }
-    // console.log(deliveryPersons)
-    
+    console.log(parcel?.data?.meta)
+    // const { limit, page, total, totalPage } = parcel?.data?.meta
     const handleBlockUnblock = async (parcel: Parcel) => {
         // console.log(user)
         try {
             // if (parcel.assignedDeliveryPartner) {
-                
+
             //     const deliveryPerson = users?.data?.users?.find((user: { _id: string })=> user._id == parcel.assignedDeliveryPartner)
             //     clg
             // }
@@ -57,6 +69,7 @@ const ManagParcels = () => {
                 <Table className="px-10">
                     <TableHeader className="bg-purple-100">
                         <TableRow>
+                            <TableHead>#</TableHead>
                             <TableHead>trackingId</TableHead>
                             <TableHead>parcelType</TableHead>
                             <TableHead>Sender__Phone</TableHead>
@@ -70,8 +83,9 @@ const ManagParcels = () => {
                     </TableHeader>
                     <TableBody className="">
                         {
-                            parcel?.data?.parcels?.map((parcel: Parcel) => (
+                            parcel?.data?.parcels?.map((parcel: Parcel, i: number) => (
                                 <TableRow>
+                                    <TableCell className="border-2 bg-blue-50">{i + 1 + ((page-1)*10)}</TableCell>
                                     <TableCell className="border-2 bg-blue-50">{parcel.trackingId}</TableCell>
                                     <TableCell className="border-2 bg-gray-50">{parcel.parcelType}</TableCell>
                                     <TableCell className="border-2 bg-pink-50">{parcel.senderInfo.name}__{parcel.senderInfo.phone}</TableCell>
@@ -95,6 +109,36 @@ const ManagParcels = () => {
                     </TableBody>
                 </Table>
             </div>
+            <Pagination>
+                <PaginationContent>
+                    <PaginationItem>
+                        <PaginationPrevious
+                            // href="#"
+                            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                        />
+                    </PaginationItem>
+
+                    {[...Array(parcel?.data?.meta?.totalPage)].map((_, i) => (
+                        <PaginationItem key={i}>
+                            <PaginationLink
+                                // href="#"
+                                isActive={page === i + 1}
+                                onClick={() => setPage(i + 1)}
+                            >
+                                {i + 1}
+                            </PaginationLink>
+                        </PaginationItem>
+                    ))}
+
+                    <PaginationItem>
+                        <PaginationNext
+                            // href="#"
+                            onClick={() => setPage((prev) => Math.min(prev + 1, parcel?.data?.meta?.totalPage))}
+                        />
+                    </PaginationItem>
+                </PaginationContent>
+            </Pagination>
+
         </div>
     )
 }
