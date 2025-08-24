@@ -12,7 +12,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { Link } from "react-router"
+import { Link, NavLink } from "react-router"
 import { ModeToggle } from "../ModeToggle"
 import { useGetMeQuery, userApi } from "@/redux/feature/user/user.api"
 import { Role } from "@/constants/role"
@@ -36,7 +36,8 @@ export default function Navbar() {
     const navigationLinks = [
         { href: "/", label: "Home" },
         { href: "about", label: "About" },
-        { href: role === Role.SUPER_ADMIN ? "/dashboard/admin" : role === Role.SENDER ? "/dashboard/sender" : "/dashboard/receiver", label: "Dashboard" },
+        { href: "track-parcel", label: "Track Parcel" },
+        { href: role === Role.SUPER_ADMIN ? "/dashboard/admin" : role === Role.SENDER ? "/dashboard/sender" : role === Role.DELIVERY_PERSON ? "/dashboard/delivery-person" : "/dashboard/receiver", label: "Dashboard" },
     ]
     const handleLogout = async () => {
         logout(undefined).unwrap()
@@ -85,11 +86,11 @@ export default function Navbar() {
                                 </svg>
                             </Button>
                         </PopoverTrigger>
-                        <PopoverContent align="start" className="w-36 p-1 md:hidden">
+                        <PopoverContent align="start" className="w-40   md:hidden">
                             <NavigationMenu className="max-w-none *:w-full">
                                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
                                     {navigationLinks.map((link, index) => (
-                                        <NavigationMenuItem key={index} className="w-full">
+                                        <NavigationMenuItem key={index} className="w-full border-4 ">
                                             <NavigationMenuLink
                                                 asChild
                                                 className="py-1.5"
@@ -106,24 +107,36 @@ export default function Navbar() {
                         </PopoverContent>
                     </Popover>
                     {/* Main nav */}
-                    <div className="flex items-center gap-6">
-                        <a href="#" className="text-primary hover:text-primary/90">
+                    <div className="flex items-center gap-6 p-1">
+                        <Link to="/" className="text-primary hover:text-primary/90">
                             <Logo />
-                        </a>
+                        </Link>
                         {/* Navigation menu */}
-                        <NavigationMenu className="max-md:hidden">
-                            <NavigationMenuList className="gap-2">
+                        <NavigationMenu className="max-md:hidden ">
+                            <NavigationMenuList className="gap-2 flex">
                                 {navigationLinks.map((link, index) => (
-                                    <NavigationMenuItem key={index} className="w-full">
-                                        <NavigationMenuLink
+                                    <NavigationMenuItem key={index} >
+                                        {/* <NavigationMenuLink
                                             asChild
-                                            className="py-1.5"
-                                        >
-                                            <Link to={link.href}>
+                                            // className="py-1.5 px-3 rounded-md  transition-colors"
+                                        > */}
+                                        {/* <Link to={link.href}>
                                                 {link.label}
 
-                                            </Link>
-                                        </NavigationMenuLink>
+                                            </Link> */}
+                                        <NavLink
+                                            to={link.href}
+                                            end={link.href === "/"} // make Home exact
+
+                                            className={({ isActive }) =>
+                                                isActive
+                                                    ? " px-2 py-0.5 rounded-md bg-primary text-white transition-colors" // active style
+                                                    : "px-2 py-0.5  rounded-md hover:bg-gray-100 transition-colors" // normal style
+                                            }
+                                        >
+                                            {link.label}
+                                        </NavLink>
+                                        {/* </NavigationMenuLink> */}
                                     </NavigationMenuItem>
                                 ))}
                             </NavigationMenuList>

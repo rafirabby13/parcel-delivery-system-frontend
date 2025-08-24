@@ -18,7 +18,7 @@ const PArcelHistory = () => {
     }
 
     const notConfirmed = parcels?.data?.filter((parcel: { status: string }) => parcel.status == "CONFIRMED")
-    console.log(parcels.data, notConfirmed)
+    // console.log(parcels.data, notConfirmed)
     return (
         <div>
             <div className="border border-muted rounded-lg">
