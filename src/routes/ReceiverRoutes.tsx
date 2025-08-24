@@ -1,6 +1,7 @@
-import About from "@/pages/About";
+import IncomingParcels from "@/pages/receiver/IncomingParcels";
+import PArcelHistory from "@/pages/receiver/PArcelHistory";
 import type { RouteItem } from "@/types/route.type";
-import { BookA,  LayoutDashboard, User2Icon } from "lucide-react";
+import {  HistoryIcon, LayoutDashboard, PackageCheckIcon } from "lucide-react";
 
 export const ReceiverRoutes: RouteItem[] = [
     {
@@ -9,16 +10,16 @@ export const ReceiverRoutes: RouteItem[] = [
       icon: LayoutDashboard,
       items: [
         {
-          title: "Parcel",
-          url: "parcel",
-          icon: BookA,
-          Component: About
+          title: "Incoming Parcels",
+          url: "incoming-parcel",
+          icon: PackageCheckIcon,
+          Component: IncomingParcels
         },
         {
-          title: "User",
-          url: "user",
-          icon: User2Icon,
-          Component: About
+          title: "Delivery History",
+          url: "delivery-history",
+          icon: HistoryIcon,
+          Component: PArcelHistory
         },
       ],
     }
