@@ -43,13 +43,13 @@ export function LoginForm({
         // console.log(values)
         try {
             const res = await login(values).unwrap()
-            console.log(res)
+            // console.log(res)
             if (res?.success) {
                 toast.success("logged in successfully")
                 navigate("/")
             }
         } catch (error: any) {
-            console.log(error)
+            // console.log(error)
             if (error?.data?.message === "Not verified , please verify first") {
                 navigate("/verify", { state: values?.email })
             }

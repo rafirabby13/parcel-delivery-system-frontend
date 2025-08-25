@@ -64,7 +64,7 @@ const UpdateStatus = () => {
             if (res?.success) {
                 toast.success(res?.data?.message)
             }
-            console.log(res)
+            // console.log(res)
             // console.log(data)
         } catch (error: any) {
             toast.error(error?.data?.message)

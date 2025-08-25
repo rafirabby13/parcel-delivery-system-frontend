@@ -1,6 +1,6 @@
 
 
-import { CircleOff, LoaderIcon, SquareCheckBigIcon } from "lucide-react"
+import { CircleOff,  SquareCheckBigIcon } from "lucide-react"
 import {
     Table,
     TableBody,
@@ -27,6 +27,7 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination"
 import { useState } from "react"
+import { Loader } from "@/utils/Loader"
 // const statusFlow = ["PICKED_UP", "IN_TRANSIT", "DELIVERED"]
 
 const ManagParcels = () => {
@@ -35,9 +36,9 @@ const ManagParcels = () => {
     const { data: parcel, isLoading } = useGetAllParcelsQuery({ page, limit: 10 })
     // const { data: users } = useGetAllUsersQuery(undefined)
     if (isLoading) {
-        return <LoaderIcon />
+        return <Loader/>
     }
-    console.log(parcel?.data?.meta)
+    // console.log(parcel?.data?.meta)
     // const { limit, page, total, totalPage } = parcel?.data?.meta
     const handleBlockUnblock = async (parcel: Parcel) => {
         // console.log(user)

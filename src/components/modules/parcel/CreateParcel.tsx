@@ -94,12 +94,12 @@ export function CreateParcel() {
                 paymentStatus: "PENDING"
             }
 
-            console.log("Parcel Data:", parcelData)
+            // console.log("Parcel Data:", parcelData)
             // console.log("Parcel Data:", parcelData)
 
             // Here you would make your API call
             const res = await createparcel(parcelData).unwrap()
-            console.log(res)
+            // console.log(res)
             if (res?.success) {
 
                 toast.success("Parcel created successfully")
@@ -108,7 +108,7 @@ export function CreateParcel() {
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
-            console.log(error)
+            // console.log(error)
             toast.error(error?.data?.message || "Failed to create parcel")
         } finally {
             // setIsLoading(false)

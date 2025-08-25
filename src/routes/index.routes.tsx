@@ -4,7 +4,7 @@ import About from "@/pages/About";
 import login from "@/pages/Login";
 import Register from "@/pages/Register";
 import { generateRoutes } from "@/utils/generateRoutes";
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import { ReceiverRoutes } from "./ReceiverRoutes";
 import { withAuth } from "@/utils/withAuth";
 import { Role } from "@/constants/role";
@@ -61,6 +61,7 @@ export const router = createBrowserRouter([
         Component: withAuth(DashboardLayout, Role.SUPER_ADMIN),
         path: "/dashboard/admin",
         children: [
+            { index: true, element: <Navigate to={"/dashboard/admin/dashboard"} /> },
             ...generateRoutes(AdminRoutes)
         ]
     },
@@ -68,20 +69,27 @@ export const router = createBrowserRouter([
         Component: withAuth(DashboardLayout, Role.RECEIVER),
         path: "/dashboard/receiver",
         children: [
+            { index: true, element: <Navigate to={"/dashboard/receiver/incoming-parcel"} /> },
+
             ...generateRoutes(ReceiverRoutes)
         ]
     },
     {
         Component: withAuth(DashboardLayout, Role.SENDER),
         path: "/dashboard/sender",
+
         children: [
+            { index: true, element: <Navigate to={"/dashboard/sender/create-parcel"} /> },
+
             ...generateRoutes(SenderRoutesItems)
         ]
     },
     {
         Component: withAuth(DashboardLayout, Role.DELIVERY_PERSON),
         path: "/dashboard/delivery-person",
+        
         children: [
+            { index: true, element: <Navigate to={"/dashboard/delivery-person/update-percel-status"} /> },
             ...generateRoutes(DeliveryPersonRoutes)
         ]
     }

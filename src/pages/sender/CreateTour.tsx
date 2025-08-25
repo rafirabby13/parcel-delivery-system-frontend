@@ -86,7 +86,7 @@ export function CreateTour({
         paymentStatus: "PENDING"
       }
 
-      console.log("Parcel Data:", parcelData)
+      // console.log("Parcel Data:", parcelData)
 
       // Here you would make your API call
       // const res = await createParcel(parcelData).unwrap()

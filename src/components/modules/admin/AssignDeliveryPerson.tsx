@@ -54,7 +54,7 @@ export function AssignDeliveryPerson({ children, parcelId }: AssignProps) {
                 parcelId
             }
             const res = await assignToDeliveryMan(data).unwrap()
-            console.log(res)
+            // console.log(res)
             if (res?.success) {
                 toast.success(res?.message)
 

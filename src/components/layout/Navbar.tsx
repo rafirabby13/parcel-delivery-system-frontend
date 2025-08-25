@@ -32,7 +32,7 @@ export default function Navbar() {
     }
     // console.log(data?.data?.user)
     const role = data?.data?.user?.role
-    console.log(role)
+    // console.log(role)
     const navigationLinks = [
         { href: "/", label: "Home" },
         { href: "about", label: "About" },

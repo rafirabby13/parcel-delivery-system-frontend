@@ -1,29 +1,56 @@
+import React, { Suspense } from 'react';
 
-
-
-import ParcelStats from '@/components/modules/admin/ParcelStats'
-import PaymentStats from '@/components/modules/admin/PaymentStats'
-import UserStats from '@/components/modules/admin/UserStats'
+const ParcelStats = React.lazy(() => import('@/components/modules/admin/ParcelStats'));
+const PaymentStats = React.lazy(() => import('@/components/modules/admin/PaymentStats'));
+const UserStats = React.lazy(() => import('@/components/modules/admin/UserStats'));
 import { useGetParcelStatsQuery, useGetPaymentStatsQuery, useGetUsersStatsQuery } from '@/redux/feature/stats/stats.api'
 
-import { Loader2 } from 'lucide-react'
+import { Skeleton } from '@/utils/Skeleton';
 
 
 const Dashboard = () => {
-    const { data: userStats, isLoading } = useGetUsersStatsQuery(undefined) 
-    const { data: paymentStats } = useGetPaymentStatsQuery(undefined)
-    const { data: parcelStats } = useGetParcelStatsQuery(undefined)
-    if (isLoading) {
-        return <Loader2 />
-    }
-    console.log(paymentStats?.data)
+    const { data: userStats, isLoading: userLoading } = useGetUsersStatsQuery(undefined)
+    const { data: paymentStats, isLoading: paymentLoading } = useGetPaymentStatsQuery(undefined)
+    const { data: parcelStats, isLoading: parcelLoading } = useGetParcelStatsQuery(undefined)
+    // if (isLoading) {
+    //     return <Loader2 />
+    // }
+    // console.log(paymentStats?.data)
 
 
     return (
         <div>
-            <UserStats userStats={userStats?.data} />
-            <ParcelStats parcelStats={parcelStats?.data}/>
-            <PaymentStats paymentStats={paymentStats?.data}/>
+            {/* <UserStats userStats={userStats?.data} /> */}
+            <Suspense
+                fallback={<Skeleton className="h-12 w-full mb-4" />}
+            // fallback={
+            //     <div className="flex justify-center py-10">
+            //         <Loader />
+            //     </div>
+            // }
+            >
+                {!userLoading && <UserStats userStats={userStats?.data} />}
+            </Suspense>
+            {/* <ParcelStats parcelStats={parcelStats?.data} /> */}
+            <Suspense
+                fallback={
+                    <div className="flex justify-center py-10">
+                        <Skeleton className="h-12 w-full mb-4" />
+                    </div>
+                }
+            >
+                {!parcelLoading && <ParcelStats parcelStats={parcelStats?.data} />}
+            </Suspense>
+            {/* <PaymentStats paymentStats={paymentStats?.data} /> */}
+            <Suspense
+                fallback={
+                    <div className="flex justify-center py-10">
+                        <Skeleton className="h-12 w-full mb-4" />
+                    </div>
+                }
+            >
+                {!paymentLoading && <PaymentStats paymentStats={paymentStats?.data} />}
+            </Suspense>
         </div>
     )
 }

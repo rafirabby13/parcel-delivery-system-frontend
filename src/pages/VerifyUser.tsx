@@ -63,7 +63,7 @@ const VerifyUser = () => {
         try {
             setconfimred(true)
             const res = await sendOTP({ email: email })
-            console.log(res)
+            // console.log(res)
             if (res?.data?.success) {
                 toast.success("OTP sent....")
 
@@ -74,7 +74,7 @@ const VerifyUser = () => {
         }
     }
     async function onSubmit(data: z.infer<typeof FormSchema>) {
-        console.log(data)
+        // console.log(data)
         const userInfo = {
             email,
             otp: data.pin
@@ -82,7 +82,7 @@ const VerifyUser = () => {
 
         try {
             const res = await verifyOTP(userInfo).unwrap()
-            console.log(res)
+            // console.log(res)
             if (res?.success) {
                 toast.success("OTP Verified")
                 navigate("/login")

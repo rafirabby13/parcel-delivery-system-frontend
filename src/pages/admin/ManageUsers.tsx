@@ -1,5 +1,5 @@
 import { useBlockUnblockUserMutation, useGetAllUsersQuery } from "@/redux/feature/user/user.api"
-import { CircleOff, LoaderIcon, SquareCheckBigIcon } from "lucide-react"
+import { CircleOff, SquareCheckBigIcon } from "lucide-react"
 import {
     Table,
     TableBody,
@@ -20,21 +20,25 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
+import { Loader } from "@/utils/Loader"
+
+
+
 const ManageUsers = () => {
     const [page, setPage] = useState(1)
 
     const { data, isLoading } = useGetAllUsersQuery({ page, limit: 10 })
     const [blockUnblockUser] = useBlockUnblockUserMutation()
     if (isLoading) {
-        return <LoaderIcon />
+        return <Loader/>
     }
-    console.log(data?.data?.meta)
+    // console.log(data?.data?.meta)
 
     const handleBlockUnblock = async (user: IUser) => {
-        console.log(user)
+        // console.log(user)
         try {
             const res = await blockUnblockUser(user._id).unwrap()
-            console.log(res)
+            // console.log(res)
             if (res?.success) {
                 toast.success("User Updated Successfully")
             }
