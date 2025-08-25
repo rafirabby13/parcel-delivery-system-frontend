@@ -63,7 +63,7 @@ const About = () => {
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="container mx-auto ">
         {/* Mission & Vision */}
         <section className="py-20 grid grid-cols-1 md:grid-cols-2 gap-10">
           {[ 

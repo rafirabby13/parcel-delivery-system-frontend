@@ -113,8 +113,8 @@ export default function Navbar() {
                             <Logo />
                         </Link>
                         {/* Navigation menu */}
-                        <NavigationMenu className="max-md:hidden ">
-                            <NavigationMenuList className="gap-2 flex">
+                        <NavigationMenu className="max-lg:hidden ">
+                            <NavigationMenuList className="gap-1 flex">
                                 {navigationLinks.map((link, index) => (
                                     <NavigationMenuItem key={index} >
                                         {/* <NavigationMenuLink
@@ -131,8 +131,8 @@ export default function Navbar() {
 
                                             className={({ isActive }) =>
                                                 isActive
-                                                    ? " px-2 py-0.5 rounded-md bg-primary text-white transition-colors" // active style
-                                                    : "px-2 py-0.5  rounded-md hover:bg-gray-100 transition-colors" // normal style
+                                                    ? "border-b-4 border border-primary px-7 py-2 rounded-sm font-medium shadow-md transition-all duration-200" // active style
+                                                    : "px-7 py-2 border-t-2 border-l-2  border-primary  font-bold  rounded-md hover:bg-gray-100 transition-colors" // normal style
                                             }
                                         >
                                             {link.label}

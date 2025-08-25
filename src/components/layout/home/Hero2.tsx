@@ -10,6 +10,7 @@ import {
 } from "lucide-react"
 import { Link } from "react-router"
 import { motion, useTime, useTransform } from "framer-motion"
+import Typewriter from 'typewriter-effect';
 
 
 import img from "../../../assets/images/scooter-1027350_1280-removebg-preview (1).png"
@@ -51,28 +52,43 @@ const Hero2 = () => {
     }
     return (
         <section className="relative bg-gradient-to-br from-white via-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
-            <div className="max-w-7xl mx-auto px-6 lg:px-12 py-16  grid lg:grid-cols-2 gap-12 items-center relative z-10">
+            <div className="container mx-auto   py-8  grid lg:grid-cols-2 gap-12 items-center relative z-10">
 
                 {/* LEFT SIDE: Content */}
-                <div className="text-center lg:text-left space-y-6">
+                <div className="text-center lg:text-left space-y-3">
                     {/* Badge */}
-                    <Badge className="inline-flex items-center gap-2 bg-primary text-white px-4 py-1.5 rounded-xl text-sm shadow-md">
+                    <Badge className="inline-flex items-center gap-2 bg-primary text-white px-4 py-1.5 rounded-sm text-sm shadow-md">
                         <TruckIcon size={16} />
-                        Trusted by 50K+ customers
+                        <span className="text-xl sm:text-xl lg:text-2xl">Parcelo....</span>Trusted by 50K+ customers
                     </Badge>
 
                     {/* Headline */}
-                    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-gray-900 dark:text-white">
-                        <span className="bg-gradient-to-r from-primary to-primary/40 bg-clip-text text-transparent">
-                            {/* <TypingEffect text="Fast, Reliable & Secure"/> */}
-                           Fast, Reliable & Secure
-                        </span>
+                    <h1 className="text-4xl sm:text-5xl lg:text-6xl  font-extrabold tracking-tight leading-tight text-gray-900 dark:text-white">
+                        {/* <span className="text-4xl sm:text-5xl lg:text-6xl ">
+                            Parcelo....
+
+
+                        </span> */}
+
+                        {/* <br /> */}
+                        Parcel Delivery
+                        <br /> Across Bangladesh
                         <br />
-                        Parcel Delivery Across Bangladesh
+                        <span className="bg-gradient-to-r from-primary to-primary/40 bg-clip-text ">
+
+                            <Typewriter
+                                options={{
+                                    strings: ['Fast', 'Reliable', '& Secure '],
+                                    autoStart: true,
+                                    loop: true,
+                                }}
+
+                            />
+                        </span>
                     </h1>
 
                     {/* Subtext */}
-                    <p className="text-lg sm:text-xl text-secondary dark:text-gray-300 max-w-xl mx-auto lg:mx-0">
+                    <p className="text-lg sm:text-xl dark:text-gray-300 max-w-xl mx-auto lg:mx-0">
                         From pickup to doorstep, send parcels nationwide with real-time tracking,
                         same-day delivery, and total peace of mind.
                     </p>
