@@ -14,6 +14,8 @@ import { AdminRoutes } from "./AdminRoutes";
 import { SenderRoutesItems } from "./SenderRoutesItems";
 import TrackParcel from "@/pages/TrackParcel";
 import { DeliveryPersonRoutes } from "./DeliveryPersonRoutes";
+import Home from "@/pages/home/Home";
+import Contact from "@/components/layout/home/Contact";
 
 export const router = createBrowserRouter([
     {
@@ -23,6 +25,14 @@ export const router = createBrowserRouter([
             {
                 Component: About,
                 path: "about"
+            },
+            {
+                Component: Contact,
+                path: "/contact"
+            },
+            {
+                Component: Home,
+                path: "/"
             },
             {
                 Component: TrackParcel,

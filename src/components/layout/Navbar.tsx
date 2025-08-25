@@ -36,6 +36,7 @@ export default function Navbar() {
     const navigationLinks = [
         { href: "/", label: "Home" },
         { href: "about", label: "About" },
+        { href: "contact", label: "Contact" },
         { href: "track-parcel", label: "Track Parcel" },
         { href: role === Role.SUPER_ADMIN ? "/dashboard/admin" : role === Role.SENDER ? "/dashboard/sender" : role === Role.DELIVERY_PERSON ? "/dashboard/delivery-person" : "/dashboard/receiver", label: "Dashboard" },
     ]

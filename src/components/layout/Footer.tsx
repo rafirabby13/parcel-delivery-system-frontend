@@ -76,7 +76,7 @@ const Footer = ({
   ],
 }: Footer2Props) => {
   return (
-    <section className="py-32 ">
+    <section className="py-32 bg-gradient-to-br from-purple-50 via-blue-50 to-purple-50">
       <div >
         <footer className="container mx-auto">
           <div className="grid grid-cols-2 gap-8 lg:grid-cols-6">

@@ -50,7 +50,7 @@ export function LoginForm({
             }
         } catch (error: any) {
             console.log(error)
-            if (!error?.data?.success) {
+            if (error?.data?.message === "Not verified , please verify first") {
                 navigate("/verify", { state: values?.email })
             }
             toast.error(error?.data?.message)
