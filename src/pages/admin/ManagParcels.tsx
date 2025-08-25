@@ -85,7 +85,7 @@ const ManagParcels = () => {
                         {
                             parcel?.data?.parcels?.map((parcel: Parcel, i: number) => (
                                 <TableRow>
-                                    <TableCell className="border-2 bg-blue-50">{i + 1 + ((page-1)*10)}</TableCell>
+                                    <TableCell className="border-2 bg-blue-50">{i + 1 + ((page - 1) * 10)}</TableCell>
                                     <TableCell className="border-2 bg-blue-50">{parcel.trackingId}</TableCell>
                                     <TableCell className="border-2 bg-gray-50">{parcel.parcelType}</TableCell>
                                     <TableCell className="border-2 bg-pink-50">{parcel.senderInfo.name}__{parcel.senderInfo.phone}</TableCell>
