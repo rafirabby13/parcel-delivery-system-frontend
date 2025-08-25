@@ -1,5 +1,8 @@
 
 
+
+import ParcelStats from '@/components/modules/admin/ParcelStats'
+import PaymentStats from '@/components/modules/admin/PaymentStats'
 import UserStats from '@/components/modules/admin/UserStats'
 import { useGetParcelStatsQuery, useGetPaymentStatsQuery, useGetUsersStatsQuery } from '@/redux/feature/stats/stats.api'
 
@@ -13,12 +16,14 @@ const Dashboard = () => {
     if (isLoading) {
         return <Loader2 />
     }
-    console.log(userStats?.data?.usersByRole)
+    console.log(paymentStats?.data)
 
 
     return (
         <div>
             <UserStats userStats={userStats?.data} />
+            <ParcelStats parcelStats={parcelStats?.data}/>
+            <PaymentStats paymentStats={paymentStats?.data}/>
         </div>
     )
 }
