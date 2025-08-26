@@ -36,17 +36,18 @@ const UpdateStatus = () => {
         try {
 
             const parcelId = id
-            const data = {
+            const updateData = {
                 updaterId: user?.data?.user?._id,
                 status: statusMap[id]
             }
-            // console.log(data)
-            const res = await updateParcelStatus({ parcelId, data }).unwrap()
+            console.log(updateData)
+            const res = await updateParcelStatus({ parcelId, updateData }).unwrap()
             if (res?.success) {
                 toast.success(res.message)
             }
             // console.log(res)
         } catch (error: any) {
+            console.log(error)
             toast.error(error?.data?.message)
         }
         // TODO: call backend mutation API here

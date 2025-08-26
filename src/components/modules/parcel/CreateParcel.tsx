@@ -21,7 +21,7 @@ import {
 import { useCreateparcelMutation } from "@/redux/feature/parcel/parcel.api"
 
 import { useGetAllAreasQuery, useGetAllDistrictsQuery, useGetAllDivisionsQuery, useGetAllUpazillasQuery } from "@/redux/feature/BDAPI/bd.api"
-import { useEffect, useState } from "react"
+import {  useState } from "react"
 import ImageUpload from "@/components/comp-544"
 import { Spinner } from "@/components/ui/shadcn-io/spinner"
 
@@ -57,12 +57,12 @@ export function CreateParcel() {
     const { data } = useGetMeQuery(undefined)
     // console.log(data?.data?.user)
     const user = data?.data?.user
-    useEffect(() => {
-        console.log("division", division)
-        console.log("districts", district)
-        console.log("cities", city)
+    // useEffect(() => {
+    //     console.log("division", division)
+    //     console.log("districts", district)
+    //     console.log("cities", city)
 
-    }, [division, district, city])
+    // }, [division, district, city])
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -150,8 +150,10 @@ export function CreateParcel() {
 
             // Here you would make your API call
             const res = await createparcel(formData).unwrap()
-            // console.log(res)
             if (res?.success) {
+                console.log(res?.data?.paymentURL)
+
+                window.open(res?.data?.paymentURL)
                 // setLoading(false)
                 toast.success("Parcel created successfully")
                 navigate("/dashboard/sender/create-parcel")
@@ -282,7 +284,7 @@ export function CreateParcel() {
                                                                 <SelectContent>
                                                                     {
                                                                         divisions?.data?.map((division: { name: string, id: string }) =>
-                                                                            <SelectItem value={division.id}>{division.name}</SelectItem>
+                                                                            <SelectItem key={division.id} value={division.id}>{division.name}</SelectItem>
                                                                         )
                                                                     }
                                                                 </SelectContent>

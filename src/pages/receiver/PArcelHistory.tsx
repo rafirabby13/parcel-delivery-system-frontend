@@ -18,7 +18,7 @@ const PArcelHistory = () => {
     }
 
     const notConfirmed = parcels?.data?.filter((parcel: { status: string }) => parcel.status == "CONFIRMED")
-    // console.log(parcels.data, notConfirmed)
+    console.log(notConfirmed)
     return (
         <div>
             <div className="border border-muted rounded-lg">
@@ -30,18 +30,29 @@ const PArcelHistory = () => {
                             <TableHead>Parcel Type</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Sender__Address</TableHead>
+                            <TableHead>Updated At</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody className="">
                         {
-                            notConfirmed?.map((item: { _id: string, trackingId: string, status: string, senderInfo: { name: string, detailAddress: string }, parcelType: string }, index: number) => (
+                            notConfirmed?.map((item: { _id: string, trackingId: string, status: string, senderInfo: { name: string, detailAddress: string }, parcelType: string, trackingEvents: { updaterId: string, status: string, note: string, createdAt: string, updatedAt: string }[] }, index: number) => (
                                 <TableRow key={index}>
                                     <TableCell className="border-2 bg-orange-50">{index + 1}</TableCell>
                                     <TableCell className="border-2 bg-blue-50">{item.trackingId}</TableCell>
                                     <TableCell className="border-2 bg-gray-50">{item.parcelType}</TableCell>
                                     <TableCell className="border-2 bg-orange-50">{item.status}</TableCell>
                                     <TableCell className="border-2 bg-pink-50">{item.senderInfo.name}__{item.senderInfo.detailAddress}</TableCell>
-
+                                    <TableCell className="border-2 bg-pink-50">
+                                        {new Date(item.trackingEvents[item.trackingEvents.length - 1].updatedAt)
+                                            .toLocaleString("en-US", {
+                                                year: "numeric",
+                                                month: "short",
+                                                day: "2-digit",
+                                                hour: "2-digit",
+                                                minute: "2-digit",
+                                                hour12: true,
+                                            })}
+                                    </TableCell>
                                 </TableRow>)
                             )
                         }

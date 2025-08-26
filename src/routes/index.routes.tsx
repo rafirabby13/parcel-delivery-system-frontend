@@ -16,6 +16,9 @@ import TrackParcel from "@/pages/TrackParcel";
 import { DeliveryPersonRoutes } from "./DeliveryPersonRoutes";
 import Home from "@/pages/home/Home";
 import Contact from "@/components/layout/home/Contact";
+import Successed from "@/pages/payment/Successed";
+import Cancel from "@/pages/payment/Cancel";
+import Failed from "@/pages/payment/Failed";
 
 export const router = createBrowserRouter([
     {
@@ -55,6 +58,18 @@ export const router = createBrowserRouter([
     {
         Component: Unauthorized,
         path: "/unauthorized"
+    },
+    {
+        Component: Successed,
+        path: "/payment/success"
+    },
+    {
+        Component: Cancel,
+        path: "/payment/cancel"
+    },
+    {
+        Component: Failed,
+        path: "/payment/fail"
     },
 
     {
