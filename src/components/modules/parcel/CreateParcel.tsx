@@ -23,12 +23,14 @@ import { useCreateparcelMutation } from "@/redux/feature/parcel/parcel.api"
 import { useGetAllAreasQuery, useGetAllDistrictsQuery, useGetAllDivisionsQuery, useGetAllUpazillasQuery } from "@/redux/feature/BDAPI/bd.api"
 import { useEffect, useState } from "react"
 import ImageUpload from "@/components/comp-544"
+import { Spinner } from "@/components/ui/shadcn-io/spinner"
 
 
 
 
 export function CreateParcel() {
     const [image, setImage] = useState<File | null>(null)
+    const [loading, setLoading] = useState<boolean>(false)
     const [division, setDivision] = useState<string>("")
     const [district, setDistrict] = useState<string>("")
     const [city, setCity] = useState<string>("")
@@ -79,7 +81,7 @@ export function CreateParcel() {
             receiverCity: "",
             receiverArea: "",
             receiverDetailAddress: "",
-       
+
             paymentMethod: "PREPAID" as Payment_Method,
         },
     })
@@ -93,6 +95,7 @@ export function CreateParcel() {
         const receiverDistrictName = receiverDistricts?.data?.find((d: { id: string }) => d.id === values.receiverDistrict)?.name
         const receiverCityName = receiverCities?.data?.find((c: { id: string }) => c.id === values.receiverCity)?.name
         const receiverAreaName = receiverAreas?.data?.find((a: { id: string }) => a.id === values.receiverArea)?.name
+        setLoading(true)
 
         // setIsLoading(true)
         try {
@@ -135,31 +138,32 @@ export function CreateParcel() {
                 paymentStatus: "PENDING",
 
             }
-
            
-            const parcelData = {
-                // data: JSON.stringify(data),
-                data,
-                file: image as File
-            }
-            console.log("Parcel Data:", parcelData)
+            const formData = new FormData()
+            formData.append('data', JSON.stringify(data));
+            formData.append('file', image as File);
+            console.log(formData)
+
+
+            // console.log("Parcel Data:", parcelData)
             // console.log("Parcel Data:", parcelData)
 
             // Here you would make your API call
-            const res = await createparcel(parcelData).unwrap()
+            const res = await createparcel(formData).unwrap()
             // console.log(res)
             if (res?.success) {
-
+                // setLoading(false)
                 toast.success("Parcel created successfully")
                 navigate("/dashboard/sender/create-parcel")
+                form.reset()
             }
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
-            console.log(error)
+            // console.log(error)
             toast.error(error?.data?.message || "Failed to create parcel")
         } finally {
-            // setIsLoading(false)
+            setLoading(false)
         }
     }
 
@@ -564,49 +568,7 @@ export function CreateParcel() {
                                                 />
                                             </div>
 
-                                            {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                                <FormField
-                                                    control={form.control}
-                                                    name="receiverDivision"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Division</FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="Enter division" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
 
-                                                <FormField
-                                                    control={form.control}
-                                                    name="receiverCity"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>City</FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="Enter city" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-
-                                                <FormField
-                                                    control={form.control}
-                                                    name="receiverArea"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Area</FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="Enter area" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </div> */}
 
                                             <FormField
                                                 control={form.control}
@@ -659,13 +621,15 @@ export function CreateParcel() {
                                 </Form>
 
                                 <Button
+                                    // onClick={() => setLoading(true)}
                                     type="submit"
                                     className="w-full"
                                     form="create-parcel-form"
-                                // disabled={isLoading}
+                                    disabled={loading}
                                 >
-                                    {/* {isLoading ? "Creating Parcel..." : "Create Parcel"} */}
-                                    Create Parcel
+                                    {loading ? <Spinner /> : "Create Parcel"}
+                                    {/* Create Parcel */}
+
                                 </Button>
                             </div>
                         </CardContent>
