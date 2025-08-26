@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { formSchema, Parcel_Type2, Payment_Method2, type Parcel_Type, type Payment_Method } from "@/formValidationSchema/parcel.schema"
 import { useGetMeQuery } from "@/redux/feature/user/user.api"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { MapPinIcon, PackageIcon,  PlusCircle, UserIcon } from "lucide-react"
+import { MapPinIcon, PackageIcon, PlusCircle, UserIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
 import { toast } from "sonner"
@@ -20,13 +20,34 @@ import {
 } from "@/components/ui/dialog"
 import { useCreateparcelMutation } from "@/redux/feature/parcel/parcel.api"
 
+import { useGetAllAreasQuery, useGetAllDistrictsQuery, useGetAllDivisionsQuery, useGetAllUpazillasQuery } from "@/redux/feature/BDAPI/bd.api"
+import { useEffect, useState } from "react"
+import ImageUpload from "@/components/comp-544"
+
 
 
 
 export function CreateParcel() {
-
+    const [image, setImage] = useState<File | null>(null)
+    const [division, setDivision] = useState<string>("")
+    const [district, setDistrict] = useState<string>("")
+    const [city, setCity] = useState<string>("")
+    const [, setArea] = useState<string>("")
+    const [receiverDivision, setReceiverDivision] = useState<string>("")
+    const [receiverDistrict, setReceiverDistrict] = useState<string>("")
+    const [receiverCity, setReceiverCity] = useState<string>("")
+    const [, setReceiverArea] = useState<string>("")
 
     const [createparcel] = useCreateparcelMutation(undefined)
+
+    const { data: divisions } = useGetAllDivisionsQuery(undefined)
+    const { data: districts } = useGetAllDistrictsQuery(division)
+    const { data: cities } = useGetAllUpazillasQuery(district)
+    const { data: areas } = useGetAllAreasQuery(city)
+    const { data: receiverDivisions } = useGetAllDivisionsQuery(undefined)
+    const { data: receiverDistricts } = useGetAllDistrictsQuery(receiverDivision)
+    const { data: receiverCities } = useGetAllUpazillasQuery(receiverDistrict)
+    const { data: receiverAreas } = useGetAllAreasQuery(receiverCity)
 
     const navigate = useNavigate()
     // const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -34,6 +55,12 @@ export function CreateParcel() {
     const { data } = useGetMeQuery(undefined)
     // console.log(data?.data?.user)
     const user = data?.data?.user
+    useEffect(() => {
+        console.log("division", division)
+        console.log("districts", district)
+        console.log("cities", city)
+
+    }, [division, district, city])
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -41,41 +68,55 @@ export function CreateParcel() {
             parcelType: "PACKAGE" as Parcel_Type,
             weight: 0,
             senderDivision: "",
+            senderDistrict: "",
             senderCity: "",
             senderArea: "",
             senderDetailAddress: "",
             receiverName: "",
             receiverPhone: "",
             receiverDivision: "",
+            receiverDistrict: "",
             receiverCity: "",
             receiverArea: "",
             receiverDetailAddress: "",
+       
             paymentMethod: "PREPAID" as Payment_Method,
         },
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
+        const divisionName = divisions.data.find((d: { id: string }) => d.id === values.senderDivision)?.name
+        const districtName = districts.data.find((d: { id: string }) => d.id === values.senderDistrict)?.name
+        const cityName = cities.data.find((c: { id: string }) => c.id === values.senderCity)?.name
+        const areaName = areas.data.find((a: { id: string }) => a.id === values.senderArea)?.name
+        const receiverDivisionName = receiverDivisions?.data?.find((d: { id: string }) => d.id === values.receiverDivision)?.name
+        const receiverDistrictName = receiverDistricts?.data?.find((d: { id: string }) => d.id === values.receiverDistrict)?.name
+        const receiverCityName = receiverCities?.data?.find((c: { id: string }) => c.id === values.receiverCity)?.name
+        const receiverAreaName = receiverAreas?.data?.find((a: { id: string }) => a.id === values.receiverArea)?.name
+
         // setIsLoading(true)
         try {
             // Transform form data to match the exact backend structure
-            const parcelData = {
+            const data = {
                 senderId: user?._id,
                 parcelType: values.parcelType,
                 weight: values.weight,
                 senderInfo: {
                     name: user?.name,
                     phone: user?.phone,
-                    division: values.senderDivision,
-                    city: values.senderCity,
-                    area: values.senderArea,
+                    division: divisionName,
+                    district: districtName,
+                    city: cityName,
+                    area: areaName,
                     detailAddress: values.senderDetailAddress
                 },
                 receiverInfo: {
                     name: values.receiverName,
                     phone: values.receiverPhone,
-                    division: values.receiverDivision,
-                    city: values.receiverCity,
-                    area: values.receiverArea,
+                    division: receiverDivisionName,
+                    district: receiverDistrictName,
+                    city: receiverCityName,
+                    area: receiverAreaName,
                     detailAddress: values.receiverDetailAddress
                 },
                 trackingEvents: [
@@ -91,10 +132,17 @@ export function CreateParcel() {
                     totalFee: 60 + (values.weight * 8) + 50
                 },
                 paymentMethod: values.paymentMethod,
-                paymentStatus: "PENDING"
+                paymentStatus: "PENDING",
+
             }
 
-            // console.log("Parcel Data:", parcelData)
+           
+            const parcelData = {
+                // data: JSON.stringify(data),
+                data,
+                file: image as File
+            }
+            console.log("Parcel Data:", parcelData)
             // console.log("Parcel Data:", parcelData)
 
             // Here you would make your API call
@@ -108,12 +156,14 @@ export function CreateParcel() {
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
-            // console.log(error)
+            console.log(error)
             toast.error(error?.data?.message || "Failed to create parcel")
         } finally {
             // setIsLoading(false)
         }
     }
+
+    // console.log(divisions)
 
     return (
 
@@ -208,47 +258,127 @@ export function CreateParcel() {
                                             </div>
 
                                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+
                                                 <FormField
                                                     control={form.control}
                                                     name="senderDivision"
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel>Division</FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="Enter division" {...field} />
-                                                            </FormControl>
+                                                            <FormLabel>Select Division</FormLabel>
+                                                            <Select onValueChange={(value) => {
+                                                                field.onChange(value)
+                                                                setDivision(value)
+                                                            }
+                                                            } defaultValue={field.value}>
+                                                                <FormControl>
+                                                                    <SelectTrigger>
+                                                                        <SelectValue placeholder="S" />
+                                                                    </SelectTrigger>
+                                                                </FormControl>
+                                                                <SelectContent>
+                                                                    {
+                                                                        divisions?.data?.map((division: { name: string, id: string }) =>
+                                                                            <SelectItem value={division.id}>{division.name}</SelectItem>
+                                                                        )
+                                                                    }
+                                                                </SelectContent>
+                                                            </Select>
+
                                                             <FormMessage />
                                                         </FormItem>
                                                     )}
                                                 />
+                                                <FormField
+                                                    control={form.control}
+                                                    name="senderDistrict"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel>Select District</FormLabel>
+                                                            <Select onValueChange={(value) => {
+                                                                field.onChange(value)
+                                                                setDistrict(value)
+                                                            }
+                                                            } defaultValue={field.value}>
+                                                                <FormControl>
+                                                                    <SelectTrigger>
+                                                                        <SelectValue placeholder="S" />
+                                                                    </SelectTrigger>
+                                                                </FormControl>
+                                                                <SelectContent>
+                                                                    {
+                                                                        districts?.data?.map((division: { name: string, id: string }) =>
+                                                                            <SelectItem value={division.id}>{division.name}</SelectItem>
+                                                                        )
+                                                                    }
+                                                                </SelectContent>
+                                                            </Select>
 
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
                                                 <FormField
                                                     control={form.control}
                                                     name="senderCity"
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel>City</FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="Enter city" {...field} />
-                                                            </FormControl>
+                                                            <FormLabel>Select City</FormLabel>
+                                                            <Select onValueChange={(value) => {
+                                                                field.onChange(value)
+                                                                setCity(value)
+                                                            }
+                                                            } defaultValue={field.value}>
+                                                                <FormControl>
+                                                                    <SelectTrigger>
+                                                                        <SelectValue placeholder="S" />
+                                                                    </SelectTrigger>
+                                                                </FormControl>
+                                                                <SelectContent>
+                                                                    {
+                                                                        cities?.data?.map((division: { name: string, id: string }) =>
+                                                                            <SelectItem value={division.id}>{division.name}</SelectItem>
+                                                                        )
+                                                                    }
+                                                                </SelectContent>
+                                                            </Select>
+
                                                             <FormMessage />
                                                         </FormItem>
                                                     )}
                                                 />
-
                                                 <FormField
                                                     control={form.control}
                                                     name="senderArea"
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel>Area</FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="Enter area" {...field} />
-                                                            </FormControl>
+                                                            <FormLabel>Select Area</FormLabel>
+                                                            <Select onValueChange={(value) => {
+                                                                field.onChange(value)
+                                                                setArea(value)
+                                                            }
+                                                            } defaultValue={field.value}>
+                                                                <FormControl>
+                                                                    <SelectTrigger>
+                                                                        <SelectValue placeholder="S" />
+                                                                    </SelectTrigger>
+                                                                </FormControl>
+                                                                <SelectContent>
+                                                                    {
+                                                                        areas?.data?.map((division: { name: string, id: string }) =>
+                                                                            <SelectItem value={division.id}>{division.name}</SelectItem>
+                                                                        )
+                                                                    }
+                                                                </SelectContent>
+                                                            </Select>
+
                                                             <FormMessage />
                                                         </FormItem>
                                                     )}
                                                 />
+
+
+
+
                                             </div>
 
                                             <FormField
@@ -303,7 +433,138 @@ export function CreateParcel() {
                                                 />
                                             </div>
 
+
                                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                {/* Receiver Division */}
+                                                <FormField
+                                                    control={form.control}
+                                                    name="receiverDivision"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel>Division</FormLabel>
+                                                            <Select
+                                                                value={field.value}
+                                                                onValueChange={(value) => {
+                                                                    field.onChange(value)
+                                                                    setReceiverDivision(value)
+                                                                }}
+                                                            >
+                                                                <FormControl>
+                                                                    <SelectTrigger>
+                                                                        <SelectValue placeholder="Select Division" />
+                                                                    </SelectTrigger>
+                                                                </FormControl>
+                                                                <SelectContent>
+                                                                    {receiverDivisions?.data?.map((d: { id: string; name: string }) => (
+                                                                        <SelectItem key={d.id} value={d.id}>
+                                                                            {d.name}
+                                                                        </SelectItem>
+                                                                    ))}
+                                                                </SelectContent>
+                                                            </Select>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+
+                                                {/* Receiver District */}
+                                                <FormField
+                                                    control={form.control}
+                                                    name="receiverDistrict"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel>District</FormLabel>
+                                                            <Select
+                                                                value={field.value}
+                                                                onValueChange={(value) => {
+                                                                    field.onChange(value)
+                                                                    setReceiverDistrict(value)
+                                                                }}
+                                                            >
+                                                                <FormControl>
+                                                                    <SelectTrigger>
+                                                                        <SelectValue placeholder="Select District" />
+                                                                    </SelectTrigger>
+                                                                </FormControl>
+                                                                <SelectContent>
+                                                                    {receiverDistricts?.data?.map((d: { id: string; name: string }) => (
+                                                                        <SelectItem key={d.id} value={d.id}>
+                                                                            {d.name}
+                                                                        </SelectItem>
+                                                                    ))}
+                                                                </SelectContent>
+                                                            </Select>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+
+                                                {/* Receiver City */}
+                                                <FormField
+                                                    control={form.control}
+                                                    name="receiverCity"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel>City</FormLabel>
+                                                            <Select
+                                                                value={field.value}
+                                                                onValueChange={(value) => {
+                                                                    field.onChange(value)
+                                                                    setReceiverCity(value)
+                                                                }}
+                                                            >
+                                                                <FormControl>
+                                                                    <SelectTrigger>
+                                                                        <SelectValue placeholder="Select City" />
+                                                                    </SelectTrigger>
+                                                                </FormControl>
+                                                                <SelectContent>
+                                                                    {receiverCities?.data?.map((c: { id: string; name: string }) => (
+                                                                        <SelectItem key={c.id} value={c.id}>
+                                                                            {c.name}
+                                                                        </SelectItem>
+                                                                    ))}
+                                                                </SelectContent>
+                                                            </Select>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+
+                                                {/* Receiver Area */}
+                                                <FormField
+                                                    control={form.control}
+                                                    name="receiverArea"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel>Area</FormLabel>
+                                                            <Select
+                                                                value={field.value}
+                                                                onValueChange={(value) => {
+                                                                    field.onChange(value)
+                                                                    setReceiverArea(value)
+                                                                }}
+                                                            >
+                                                                <FormControl>
+                                                                    <SelectTrigger>
+                                                                        <SelectValue placeholder="Select Area" />
+                                                                    </SelectTrigger>
+                                                                </FormControl>
+                                                                <SelectContent>
+                                                                    {receiverAreas?.data?.map((a: { id: string; name: string }) => (
+                                                                        <SelectItem key={a.id} value={a.id}>
+                                                                            {a.name}
+                                                                        </SelectItem>
+                                                                    ))}
+                                                                </SelectContent>
+                                                            </Select>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                            </div>
+
+                                            {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                                 <FormField
                                                     control={form.control}
                                                     name="receiverDivision"
@@ -345,7 +606,7 @@ export function CreateParcel() {
                                                         </FormItem>
                                                     )}
                                                 />
-                                            </div>
+                                            </div> */}
 
                                             <FormField
                                                 control={form.control}
@@ -393,6 +654,7 @@ export function CreateParcel() {
                                                 )}
                                             />
                                         </div>
+                                        <ImageUpload setImage={setImage} />
                                     </form>
                                 </Form>
 
