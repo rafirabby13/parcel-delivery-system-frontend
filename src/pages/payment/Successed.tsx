@@ -1,5 +1,6 @@
 
-import { CheckCircle, Package, Home, Receipt } from 'lucide-react';
+import { CheckCircle, Package, Home } from 'lucide-react';
+import { Link } from 'react-router';
 
 const Successed = () => {
   return (
@@ -43,20 +44,17 @@ const Successed = () => {
 
         {/* Action Buttons */}
         <div className="space-y-3">
-          <button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-medium transition duration-200 flex items-center justify-center">
-            <Receipt className="w-5 h-5 mr-2" />
-            Download Receipt
-          </button>
+         
           
-          <button className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-medium transition duration-200 flex items-center justify-center">
+          <Link to={"/track-parcel"} className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-medium transition duration-200 flex items-center justify-center">
             <Package className="w-5 h-5 mr-2" />
             Track My Parcel
-          </button>
+          </Link>
           
-          <button className="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 py-3 px-4 rounded-lg font-medium transition duration-200 flex items-center justify-center">
+          <Link to={'/'} className="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 py-3 px-4 rounded-lg font-medium transition duration-200 flex items-center justify-center">
             <Home className="w-5 h-5 mr-2" />
             Back to Dashboard
-          </button>
+          </Link>
         </div>
 
         {/* Support Info */}
