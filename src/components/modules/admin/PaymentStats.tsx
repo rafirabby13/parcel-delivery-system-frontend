@@ -210,7 +210,7 @@ const PaymentStats: React.FC<PaymentStatsProps> = ({ paymentStats }) => {
                                         label={({ _id, count }) => `${_id}: ${count}`}
                                         labelLine={false}
                                     >
-                                        {paymentStats?.totalPaymentByStatus?.map((entry, index) => (
+                                        {paymentStats?.totalPaymentByStatus?.map(( index) => (
                                             <Cell key={`cell-${index}`} fill='#8884d8' />
                                         ))}
                                     </Pie>

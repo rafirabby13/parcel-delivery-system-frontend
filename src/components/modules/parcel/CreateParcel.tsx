@@ -3,7 +3,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { formSchema, Parcel_Type2, Payment_Method2, type Parcel_Type, type Payment_Method } from "@/formValidationSchema/parcel.schema"
 import { useGetMeQuery } from "@/redux/feature/user/user.api"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MapPinIcon, PackageIcon, PlusCircle, UserIcon } from "lucide-react"
@@ -24,6 +23,7 @@ import { useGetAllAreasQuery, useGetAllDistrictsQuery, useGetAllDivisionsQuery, 
 import {  useState } from "react"
 import ImageUpload from "@/components/comp-544"
 import { Spinner } from "@/components/ui/shadcn-io/spinner"
+import { formSchema, ParcelType2, PaymentMethod2, type ParcelType, type PaymentMethod } from "@/formValidationSchema/parcel.schema"
 
 
 
@@ -67,7 +67,7 @@ export function CreateParcel() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            parcelType: "PACKAGE" as Parcel_Type,
+            parcelType: "PACKAGE" as ParcelType,
             weight: 0,
             senderDivision: "",
             senderDistrict: "",
@@ -82,7 +82,7 @@ export function CreateParcel() {
             receiverArea: "",
             receiverDetailAddress: "",
 
-            paymentMethod: "PREPAID" as Payment_Method,
+            paymentMethod: "PREPAID" as PaymentMethod,
         },
     })
 
@@ -218,7 +218,7 @@ export function CreateParcel() {
                                                                     </SelectTrigger>
                                                                 </FormControl>
                                                                 <SelectContent>
-                                                                    {Parcel_Type2.map((type) => (
+                                                                    {ParcelType2.map((type) => (
                                                                         <SelectItem key={type} value={type}>
                                                                             {type.charAt(0) + type.slice(1).toLowerCase()}
                                                                         </SelectItem>
@@ -606,7 +606,7 @@ export function CreateParcel() {
                                                                 </SelectTrigger>
                                                             </FormControl>
                                                             <SelectContent>
-                                                                {Payment_Method2.map((method) => (
+                                                                {PaymentMethod2.map((method) => (
                                                                     <SelectItem key={method} value={method}>
                                                                         {method === "COD" ? "Cash on Delivery" : method.charAt(0) + method.slice(1).toLowerCase()}
                                                                     </SelectItem>

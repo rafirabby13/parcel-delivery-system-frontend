@@ -206,7 +206,7 @@ const ParcelStats: React.FC<ParcelStatsProps> = ({ parcelStats }) => {
                                         label={({ _id, count }) => `${formatStatusName(_id)}: ${count}`}
                                         labelLine={false}
                                     >
-                                        {parcelStats?.parcelsByStatus?.map((entry, index) => (
+                                        {parcelStats?.parcelsByStatus?.map(( index) => (
                                             <Cell key={`cell-${index}`} fill= '#8884d8' />
                                         ))}
                                     </Pie>

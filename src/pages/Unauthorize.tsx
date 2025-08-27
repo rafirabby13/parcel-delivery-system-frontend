@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { AlertTriangle, ArrowLeft, Home, Shield } from 'lucide-react';
 
 const Unauthorized = () => {
