@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { cn } from "@/lib/utils"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -37,10 +37,7 @@ const formSchema = z.object({
     path: ['confirmPassword']
 })
 
-export function RegisterForm({
-    className,
-    ...props
-}: React.ComponentProps<"div">) {
+export function RegisterForm() {
     const id = useId()
     const [isVisible, setIsVisible] = useState<boolean>(false)
 
@@ -77,9 +74,9 @@ export function RegisterForm({
         }
     }
     return (
-        <div className={cn("flex flex-col gap-6", className)} {...props}>
-            <Card className="overflow-hidden p-0">
-                <CardContent className="grid p-0 md:grid-cols-2">
+        <div className="">
+            <Card className="overflow-hidden p-0 ">
+                <CardContent className="grid p-0 md:grid-cols-2 ">
                     <div className="bg-muted relative hidden md:block border-r-2 ">
                         <img
                             src={img}

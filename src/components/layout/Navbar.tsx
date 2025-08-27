@@ -216,9 +216,9 @@ export default function Navbar() {
                     <Popover>
                         <PopoverTrigger asChild>
                             <Button
-                                className="group size-8 md:hidden text-primary-foreground hover:bg-primary-foreground/10"
+                                className="group size-8 lg:hidden text-primary-foreground hover:bg-primary-foreground/10"
                                 variant="ghost"
-                                size="icon"
+                                size="default"
                             >
                                 <svg
                                     className="pointer-events-none"
@@ -247,14 +247,14 @@ export default function Navbar() {
                                 </svg>
                             </Button>
                         </PopoverTrigger>
-                        <PopoverContent align="start" className="w-40 md:hidden bg-card border">
+                        <PopoverContent align="start" className="w-40 lg:hidden  border z-999 bg-background">
                             <NavigationMenu className="max-w-none *:w-full">
                                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
                                     {navigationLinks.map((link, index) => (
                                         <NavigationMenuItem key={index} className="w-full">
                                             <NavigationMenuLink
                                                 asChild
-                                                className="py-1.5 text-card-foreground hover:text-primary"
+                                                className="py-1 text-card-foreground hover:text-primary border my-1"
                                             >
                                                 <Link to={link.href}>
                                                     {link.label}
