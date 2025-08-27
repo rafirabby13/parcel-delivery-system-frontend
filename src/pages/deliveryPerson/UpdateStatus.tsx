@@ -36,17 +36,18 @@ const UpdateStatus = () => {
         try {
 
             const parcelId = id
-            const data = {
+            const updateData = {
                 updaterId: user?.data?.user?._id,
                 status: statusMap[id]
             }
-            // console.log(data)
-            const res = await updateParcelStatus({ parcelId, data }).unwrap()
+            console.log(updateData)
+            const res = await updateParcelStatus({ parcelId, updateData }).unwrap()
             if (res?.success) {
                 toast.success(res.message)
             }
             // console.log(res)
         } catch (error: any) {
+            console.log(error)
             toast.error(error?.data?.message)
         }
         // TODO: call backend mutation API here
@@ -64,7 +65,7 @@ const UpdateStatus = () => {
             if (res?.success) {
                 toast.success(res?.data?.message)
             }
-            console.log(res)
+            // console.log(res)
             // console.log(data)
         } catch (error: any) {
             toast.error(error?.data?.message)
@@ -74,7 +75,7 @@ const UpdateStatus = () => {
     return (
         <div className="border border-muted rounded-lg">
             <Table className="px-10">
-                <TableHeader className="bg-purple-100">
+                <TableHeader className="bg-purple-100 dark:bg-background">
                     <TableRow>
                         <TableHead>#</TableHead>
                         <TableHead>Tracking Id</TableHead>
@@ -90,13 +91,13 @@ const UpdateStatus = () => {
                 <TableBody>
                     {parcels?.data?.map((item: any, i: number) => (
                         <TableRow key={item._id}>
-                            <TableCell className="border-2 bg-gray-50">{i + 1}</TableCell>
-                            <TableCell className="border-2 bg-blue-50">{item.trackingId}</TableCell>
-                            <TableCell className="border-2 bg-gray-50">{item.parcelType}</TableCell>
-                            <TableCell className="border-2 bg-orange-50">{item.status}</TableCell>
-                            <TableCell className="border-2 bg-orange-50">{item.paymentMethod}</TableCell>
-                            <TableCell className="border-2 bg-orange-50">{item.paymentStatus === "PAID" ? <p className="flex items-center gap-1">{item.paymentStatus}<CheckCheckIcon /> </p> : item.paymentStatus}</TableCell>
-                            <TableCell className="border-2 bg-pink-50">{item.receiverInfo?.name}</TableCell>
+                            <TableCell className="border-2 dark:bg-background bg-gray-50">{i + 1}</TableCell>
+                            <TableCell className="border-2 dark:bg-background bg-blue-50">{item.trackingId}</TableCell>
+                            <TableCell className="border-2 dark:bg-background bg-gray-50">{item.parcelType}</TableCell>
+                            <TableCell className="border-2 dark:bg-background bg-orange-50">{item.status}</TableCell>
+                            <TableCell className="border-2 dark:bg-background bg-orange-50">{item.paymentMethod}</TableCell>
+                            <TableCell className="border-2 dark:bg-background bg-orange-50">{item.paymentStatus === "PAID" ? <p className="flex items-center gap-1">{item.paymentStatus}<CheckCheckIcon /> </p> : item.paymentStatus}</TableCell>
+                            <TableCell className="border-2 dark:bg-background bg-pink-50">{item.receiverInfo?.name}</TableCell>
                             <TableCell className="flex items-center gap-2 bg-emerald-50 border">
                                 <Select
                                     value={statusMap[item._id] || ""}
@@ -116,14 +117,23 @@ const UpdateStatus = () => {
                                     </SelectContent>
                                 </Select>
 
-                                <ConfirmDialogue onConfirm={() => handleConfirm(item._id)}>
+                                <ConfirmDialogue
+                                    title="Confirm Parcel Status Update"
+                                    description="Are you sure you want to change the status of this parcel? This action will be recorded and cannot be undone."
+
+
+                                    onConfirm={() => handleConfirm(item._id)}>
                                     <Button className="w-fit">
                                         <SquarePenIcon />
                                     </Button>
                                 </ConfirmDialogue>
                             </TableCell>
-                            <TableCell className="border-2 bg-pink-50">
-                                <ConfirmDialogue onConfirm={() => handleConfirmPayment(item.trackingId)}>
+                            <TableCell className="border-2 dark:bg-background bg-pink-50">
+                                <ConfirmDialogue
+                                    title="Confirm Payment Collection"
+                                    description="Are you sure you want to confirm that the payment has been collected for this parcel? This action will update the payment status and cannot be undone."
+
+                                    onConfirm={() => handleConfirmPayment(item.trackingId)}>
                                     <Button className="w-fit">
                                         <CheckCheckIcon />
                                     </Button>

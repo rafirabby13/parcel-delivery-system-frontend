@@ -13,6 +13,7 @@ import { useLoginMutation } from "@/redux/feature/auth/auth.api"
 import { toast } from "sonner"
 import { useId, useState } from "react"
 import { EyeIcon, EyeOffIcon } from "lucide-react"
+import { Loader1 } from "@/utils/Loader1"
 
 const formSchema = z.object({
     email: z.email(),
@@ -28,7 +29,7 @@ export function LoginForm({
     const toggleVisibility = () => setIsVisible((prevState) => !prevState)
     const navigate = useNavigate()
 
-    const [login] = useLoginMutation(undefined)
+    const [login, { isLoading }] = useLoginMutation(undefined)
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -43,14 +44,14 @@ export function LoginForm({
         // console.log(values)
         try {
             const res = await login(values).unwrap()
-            console.log(res)
+            // console.log(res)
             if (res?.success) {
                 toast.success("logged in successfully")
                 navigate("/")
             }
         } catch (error: any) {
-            console.log(error)
-            if (!error?.data?.success) {
+            // console.log(error)
+            if (error?.data?.message === "Not verified , please verify first") {
                 navigate("/verify", { state: values?.email })
             }
             toast.error(error?.data?.message)
@@ -94,7 +95,7 @@ export function LoginForm({
                                                     <div className="*:not-first:mt-2">
                                                         <div className="relative">
                                                             <Input
-                                                             {...field}
+                                                                {...field}
                                                                 id={id}
                                                                 className="pe-9"
                                                                 placeholder="Password"
@@ -163,7 +164,7 @@ export function LoginForm({
                             <div className="text-center text-sm">
                                 Don&apos;t have an account?{" "}
                                 <Link to={"/register"} className="underline underline-offset-4">
-                                    Sign up
+                                    {isLoading ? <Loader1 /> : "Sign up"}
                                 </Link>
                             </div>
                         </div>

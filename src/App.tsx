@@ -9,6 +9,7 @@ function App() {
   return (
     <div >
       <CommonLayout>
+        {/* <Hero/> */}
         <Outlet/>
       </CommonLayout>
     </div>
