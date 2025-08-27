@@ -139,10 +139,10 @@ const Contact = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white  dark:from-background  dark:to-card">
 
             {/* Hero Section */}
-            <section className="pt-20 pb-16 bg-gradient-to-br from-white via-blue-50 to-purple-50">
+            <section className="pt-20 pb-16 bg-gradient-to-br from-white via-blue-50 to-purple-50  dark:from-background dark:via-muted/95 dark:to-card">
                 <div className="container mx-auto ">
                     <div className="text-center">
                         <Badge className=" px-4 py-2 text-sm font-medium border-0 mb-6">

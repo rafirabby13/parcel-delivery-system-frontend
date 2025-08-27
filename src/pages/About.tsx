@@ -35,7 +35,7 @@ const About = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 text-primary">
       {/* Hero Section */}
-      <section className="pt-24 pb-16 relative bg-gradient-to-br from-white via-blue-50 to-purple-50 ">
+      <section className="pt-24 pb-16 relative bg-gradient-to-br from-white via-blue-50 to-purple-50 dark:bg-gradient-to-br  dark:from-background dark:via-muted/95 dark:to-card">
         <div className="max-w-5xl mx-auto text-center px-6">
           <Badge className="bg-white/20 text-white px-4 py-2 mb-6 border-0">
             About Us
@@ -159,7 +159,7 @@ const About = () => {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.2 }}
               >
-                <Card className="bg-gradient-to-br from-white via-blue-50 to-purple-50 dark:bg-gray-800 border-0 shadow-lg hover:shadow-xl hover:scale-[1.03] transition duration-300">
+                <Card className="bg-gradient-to-br from-white via-blue-50 to-purple-50  dark:from-background dark:via-muted/95 dark:to-card border-0 shadow-lg hover:shadow-xl hover:scale-[1.03] transition duration-300">
                   <CardContent className="p-6 text-center">
                     <div className="bg-gradient-to-r from-primary to-primary/70 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">
                       {member.avatar}

@@ -74,7 +74,7 @@ const Parcels = () => {
             </div>
             <div className="border border-muted rounded-lg">
                 <Table className="px-10">
-                    <TableHeader className="bg-purple-100">
+                    <TableHeader className="bg-purple-100 dark:bg-background">
                         <TableRow>
                             <TableHead>Tracking Id</TableHead>
                             <TableHead>Parcel Type</TableHead>
@@ -91,13 +91,13 @@ const Parcels = () => {
                         {
                             parcels?.data?.map((item: { _id: string, trackingId: string, status: string, receiverInfo: { name: string }, parcelType: string, image: string[], paymentStatus: string, paymentMethod: string }) => (
                                 <TableRow>
-                                    <TableCell className="border-2 bg-blue-50">{item.trackingId}</TableCell>
-                                    <TableCell className="border-2 bg-gray-50">{item.parcelType}</TableCell>
-                                    <TableCell className="border-2 bg-blue-50"><img className="h-20 w-full" src={item.image && item.image[0]} alt="__No_parcel_image_Available" /></TableCell>
-                                    <TableCell className="border-2 bg-orange-50">{item.status}</TableCell>
-                                    <TableCell className="border-2 bg-orange-50">{item.paymentMethod}</TableCell>
-                                    <TableCell className="border-2 bg-red-100">{item.paymentStatus}</TableCell>
-                                    <TableCell className="border-2 bg-pink-50">{item.receiverInfo.name}</TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-blue-50">{item.trackingId}</TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-gray-50">{item.parcelType}</TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-blue-50"><img className="h-20 w-full" src={item.image && item.image[0]} alt="__No_parcel_image_Available" /></TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-orange-50">{item.status}</TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-orange-50">{item.paymentMethod}</TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-red-100">{item.paymentStatus}</TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-pink-50">{item.receiverInfo.name}</TableCell>
                                     <TableCell><ConfirmDialogue onConfirm={() => handleDelete(item)}><Button className="w-fit" disabled={item.status !== "REQUESTED" && item.status !== "APPROVED"} ><CircleXIcon /></Button></ConfirmDialogue></TableCell>
                                     <TableCell><ConfirmDialogue onConfirm={() => handleMakePayment(item)}><Button className="w-fit"  ><WalletCardsIcon /></Button></ConfirmDialogue></TableCell>
 

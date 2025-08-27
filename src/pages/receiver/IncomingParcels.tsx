@@ -51,7 +51,7 @@ const IncomingParcels = () => {
         <div>
             <div className="border border-muted rounded-lg">
                 <Table className="px-10">
-                    <TableHeader className="bg-purple-100">
+                    <TableHeader className="bg-purple-100 dark:bg-background">
                         <TableRow className="border-2">
                             <TableHead>#</TableHead>
                             <TableHead>Tracking Id</TableHead>
@@ -65,15 +65,15 @@ const IncomingParcels = () => {
                     </TableHeader>
                     <TableBody className="">
                         {
-                            notConfirmed?.map((item: { _id: string, trackingId: string, status: string, senderInfo: { name: string, detailAddress: string }, parcelType: string, paymentStatus: string,paymentMethod: string }, index: number) => (
+                            notConfirmed?.map((item: { _id: string, trackingId: string, status: string, senderInfo: { name: string, detailAddress: string }, parcelType: string, paymentStatus: string, paymentMethod: string }, index: number) => (
                                 <TableRow key={index}>
-                                    <TableCell className="border-2 bg-orange-50">{index + 1}</TableCell>
-                                    <TableCell className="border-2 bg-blue-50">{item.trackingId}</TableCell>
-                                    <TableCell className="border-2 bg-gray-50">{item.parcelType}</TableCell>
-                                    <TableCell className="border-2 bg-orange-50">{item.status}</TableCell>
-                                    <TableCell className="border-2 bg-pink-50">{item.senderInfo.name}__{item.senderInfo.detailAddress}</TableCell>
-                                    <TableCell className="border-2 bg-orange-50">{item.paymentStatus === "PAID" ? <p className="flex items-center gap-1">{item.paymentStatus}<CheckCheckIcon /> </p> : item.paymentStatus}</TableCell>
-                                    <TableCell className="border-2 bg-orange-50">{item.paymentMethod}</TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-orange-50 ">{index + 1}</TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-blue-50">{item.trackingId}</TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-gray-50">{item.parcelType}</TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-orange-50">{item.status}</TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-pink-50">{item.senderInfo.name}__{item.senderInfo.detailAddress}</TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-orange-50">{item.paymentStatus === "PAID" ? <p className="flex items-center gap-1">{item.paymentStatus}<CheckCheckIcon /> </p> : item.paymentStatus}</TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-orange-50">{item.paymentMethod}</TableCell>
 
                                     <TableCell><ConfirmDialogue onConfirm={() => handleConfirm(item)}><Button className="w-fit" >Confirm</Button></ConfirmDialogue></TableCell>
 

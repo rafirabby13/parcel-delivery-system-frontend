@@ -161,11 +161,11 @@ const TrackParcel = ({
     }
 
     return (
-        <div className={cn("min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-8 px-4", className)} {...props}>
+        <div className={cn("min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50  dark:from-background dark:via-muted/95 dark:to-card py-8 px-4", className)} {...props}>
             <div className="max-w-4xl mx-auto space-y-8">
                 {/* Search Section */}
                 <Card className="overflow-hidden border-0 shadow-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl">
-                    <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50">
+                    <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50 py-10  dark:from-background dark:via-muted/95 dark:to-card">
                         <div className="flex flex-col items-center text-center">
                             <div className="bg-white/20 p-3 rounded-full mb-4">
                                 <SearchIcon size={32} />
@@ -200,7 +200,7 @@ const TrackParcel = ({
                                                     />
                                                     <Button
                                                         type="submit"
-                                                        className="px-8 h-12 bg-gradient-to-r from-primary to-primary/80 hover:from-indigo-700 hover:to-purple-700 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                                                        className="px-8 h-12 bg-gradient-to-r from-primary to-primary/80 hover:from-primary hover:to-primary  dark:from-background dark:via-muted/95 dark:to-card text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                                                         disabled={isLoading}
                                                     >
                                                         {isLoading ? (

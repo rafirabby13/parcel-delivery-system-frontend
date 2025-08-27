@@ -208,7 +208,7 @@ export default function Navbar() {
     }
     
     return (
-        <header className="border-b border-primary-foreground/20 px-4 md:px-6 w-full fixed top-0 bg-primary z-10 text-primary-foreground">
+        <header className="border-b border-primary-foreground/20 px-4 md:px-6 w-full fixed top-0 bg-primary z-10 text-primary-foreground ">
             <div className="flex h-24 items-center justify-between gap-4 container mx-auto">
                 {/* Left side */}
                 <div className="flex items-center gap-2">

@@ -1,6 +1,6 @@
 
 
-import { CircleOff,  SquareCheckBigIcon } from "lucide-react"
+import { CircleOff, SquareCheckBigIcon } from "lucide-react"
 import {
     Table,
     TableBody,
@@ -36,7 +36,7 @@ const ManagParcels = () => {
     const { data: parcel, isLoading } = useGetAllParcelsQuery({ page, limit: 10 })
     // const { data: users } = useGetAllUsersQuery(undefined)
     if (isLoading) {
-        return <Loader/>
+        return <Loader />
     }
     // console.log(parcel?.data?.meta)
     // const { limit, page, total, totalPage } = parcel?.data?.meta
@@ -68,7 +68,7 @@ const ManagParcels = () => {
             </div>
             <div className="border border-muted rounded-lg">
                 <Table className="px-10">
-                    <TableHeader className="bg-purple-100">
+                    <TableHeader className="bg-purple-100 dark:bg-background">
                         <TableRow>
                             <TableHead>#</TableHead>
                             <TableHead>trackingId</TableHead>
@@ -86,22 +86,22 @@ const ManagParcels = () => {
                         {
                             parcel?.data?.parcels?.map((parcel: Parcel, i: number) => (
                                 <TableRow>
-                                    <TableCell className="border-2 bg-blue-50">{i + 1 + ((page - 1) * 10)}</TableCell>
-                                    <TableCell className="border-2 bg-blue-50">{parcel.trackingId}</TableCell>
-                                    <TableCell className="border-2 bg-gray-50">{parcel.parcelType}</TableCell>
-                                    <TableCell className="border-2 bg-pink-50">{parcel.senderInfo.name}__{parcel.senderInfo.phone}</TableCell>
-                                    <TableCell className="border-2 bg-yellow-50">{parcel.receiverInfo
+                                    <TableCell className="border-2 dark:bg-background bg-blue-50">{i + 1 + ((page - 1) * 10)}</TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-blue-50">{parcel.trackingId}</TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-gray-50">{parcel.parcelType}</TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-pink-50">{parcel.senderInfo.name}__{parcel.senderInfo.phone}</TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-yellow-50">{parcel.receiverInfo
                                         .name}__{parcel.receiverInfo
                                             .phone}</TableCell>
-                                    <TableCell className="border-2 bg-green-50">{parcel.assignedDeliveryPartner ? parcel.assignedDeliveryPartner : "NOT ASSIGNED"}</TableCell>
-                                    <TableCell className="border-2 bg-orange-50">{parcel.status}</TableCell>
-                                    <TableCell className="border-2 bg-purple-50">{parcel.paymentStatus}</TableCell>
-                                    {/* <TableCell className="border-2 bg-red-50">{parcel.isActive}</TableCell> */}
-                                    <TableCell className="border-2 bg-ocean-50"><ConfirmDialogue
+                                    <TableCell className="border-2 dark:bg-background bg-green-50">{parcel.assignedDeliveryPartner ? parcel.assignedDeliveryPartner : "NOT ASSIGNED"}</TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-orange-50">{parcel.status}</TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-purple-50">{parcel.paymentStatus}</TableCell>
+                                    {/* <TableCell className="border-2 dark:bg-background bg-red-50">{parcel.isActive}</TableCell> */}
+                                    <TableCell className="border-2 dark:bg-background bg-ocean-50"><ConfirmDialogue
                                         onConfirm={() => handleBlockUnblock(parcel)}>{
                                             parcel.status === "BLOCKED" ? <CircleOff /> : <SquareCheckBigIcon />
                                         }</ConfirmDialogue></TableCell>
-                                    <TableCell className="border-2 bg-teal-50"><AssignDeliveryPerson parcelId={parcel._id}>{parcel.assignedDeliveryPartner ? "ASSIGNED" : "ASSIGN"}</AssignDeliveryPerson></TableCell>
+                                    <TableCell className="border-2 dark:bg-background bg-teal-50"><AssignDeliveryPerson parcelId={parcel._id}>{parcel.assignedDeliveryPartner ? "ASSIGNED" : "ASSIGN"}</AssignDeliveryPerson></TableCell>
 
 
                                 </TableRow>)

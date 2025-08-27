@@ -73,7 +73,7 @@ const Footer = ({
   ],
 }: FooterProps) => {
   return (
-    <footer className="bg-primary text-primary-foreground">
+    <footer className="bg-primary dark:bg-primary text-primary-foreground">
       <div className="container mx-auto px-6 py-16">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
