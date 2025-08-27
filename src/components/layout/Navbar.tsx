@@ -185,14 +185,16 @@ import { Role } from "@/constants/role"
 import { authApi, useLogoutMutation } from "@/redux/feature/auth/auth.api"
 import { useDispatch } from "react-redux"
 import { Loader1 } from "@/utils/Loader1"
+import { ConfirmDialogue } from "@/utils/ConfirmDialogue"
+import { LogOut } from "lucide-react"
 
 export default function Navbar() {
     const { data, isLoading } = useGetMeQuery(undefined)
     const [logout] = useLogoutMutation()
     const dispatch = useDispatch()
-    
+
     const role = data?.data?.user?.role
-    
+
     const navigationLinks = [
         { href: "/", label: "Home" },
         { href: "about", label: "About" },
@@ -200,13 +202,13 @@ export default function Navbar() {
         { href: "track-parcel", label: "Track Parcel" },
         { href: role === Role.SUPER_ADMIN ? "/dashboard/admin" : role === Role.SENDER ? "/dashboard/sender" : role === Role.DELIVERY_PERSON ? "/dashboard/delivery-person" : "/dashboard/receiver", label: "Dashboard" },
     ]
-    
+
     const handleLogout = async () => {
         await logout().unwrap()
         dispatch(userApi.util.resetApiState())
         dispatch(authApi.util.resetApiState())
     }
-    
+
     return (
         <header className="border-b border-primary-foreground/20 px-4 md:px-6 w-full fixed top-0 bg-primary dark:bg-background z-[100] text-primary-foreground dark:text-foreground backdrop-blur-3xl">
             <div className="flex h-24 items-center justify-between gap-4 container mx-auto">
@@ -266,13 +268,13 @@ export default function Navbar() {
                             </NavigationMenu>
                         </PopoverContent>
                     </Popover>
-                    
+
                     {/* Main nav */}
                     <div className="flex items-center gap-6 p-1">
                         <Link to="/" className="text-primary-foreground hover:text-primary-foreground/80 transition-colors">
                             <Logo />
                         </Link>
-                        
+
                         {/* Navigation menu */}
                         <NavigationMenu className="max-lg:hidden">
                             <NavigationMenuList className="gap-1 flex">
@@ -295,30 +297,32 @@ export default function Navbar() {
                         </NavigationMenu>
                     </div>
                 </div>
-                
+
                 {/* Right side */}
                 <div className="flex items-center gap-2 text-primary">
                     <ModeToggle />
                     {
-                        data?.data?.user ? 
-                        <div>
-                            <Button 
-                                onClick={handleLogout}
-                                variant="secondary"
-                                className="bg-primary-foreground text-primary hover:bg-primary-foreground/90"
-                            >
-                                {isLoading ? <Loader1 /> : "Sign Out"}
-                            </Button>
-                        </div> :
-                        <div>
-                            <Button 
-                                asChild 
-                                variant="secondary"
-                                className="bg-primary-foreground text-primary hover:bg-primary-foreground/90"
-                            >
-                                <Link to="/login">Sign In</Link>
-                            </Button>
-                        </div>
+                        data?.data?.user ?
+                            <div>
+
+                                <ConfirmDialogue title="Sign Out" description="Are you sure you want to sign out? You’ll need to log in again to access your account."
+                                    onConfirm={handleLogout}>
+                                    <div className="flex items-center justify-center">
+                                        <LogOut className="mr-2 h-4 w-4" />
+                                        {isLoading ? <Loader1 /> : "Sign Out"}
+                                    </div>
+
+                                </ConfirmDialogue>
+                            </div> :
+                            <div>
+                                <Button
+                                    asChild
+                                    variant="secondary"
+                                    className="bg-primary-foreground text-primary hover:bg-primary-foreground/90"
+                                >
+                                    <Link to="/login">Sign In</Link>
+                                </Button>
+                            </div>
                     }
                 </div>
             </div>

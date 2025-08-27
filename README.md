@@ -1,9 +1,9 @@
 
-# 📦 Parcel Delivery Management System
+# 📦 Parcelo - Parcel Delivery Management System
 
 
 
-A comprehensive, modern parcel delivery and tracking system built with React, TypeScript, and cutting-edge web technologies.
+A comprehensive, full-stack parcel delivery and tracking platform designed for modern logistics operations across Bangladesh. Built with React, TypeScript, and a robust backend architecture to handle everything from parcel booking to real-time delivery tracking.
 
 ## Features
 
