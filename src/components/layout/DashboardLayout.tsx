@@ -8,19 +8,32 @@ import {
 import { AppSidebar } from "../app-sidebar"
 import { Outlet } from "react-router"
 import { ModeToggle } from "../ModeToggle"
-import { useGetMeQuery } from "@/redux/feature/user/user.api"
+import { useGetMeQuery, userApi } from "@/redux/feature/user/user.api"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
+import { ConfirmDialogue } from "@/utils/ConfirmDialogue"
+import { LogOut } from "lucide-react"
+import { Loader1 } from "@/utils/Loader1"
+import { useDispatch } from "react-redux"
+import { authApi, useLogoutMutation } from "@/redux/feature/auth/auth.api"
 
 export default function DashboardLayout() {
 
-  const { data: user } = useGetMeQuery(undefined)
+  const { data: user, isLoading } = useGetMeQuery(undefined)
   // const res = generateRoutes(SenderRoutesItems)
   // console.log(user?.data?.user)
+  const [logout] = useLogoutMutation()
+  const dispatch = useDispatch()
+  const handleLogout = async () => {
+    // console.log("object")
+    await logout().unwrap()
+    dispatch(userApi.util.resetApiState())
+    dispatch(authApi.util.resetApiState())
+  }
   return (
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex justify-between px-10  h-20 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+        <header className="flex justify-between px-10  h-20 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 ">
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator
@@ -86,8 +99,15 @@ export default function DashboardLayout() {
 
                 <DropdownMenuSeparator />
 
-                <DropdownMenuItem className="px-2 py-2 cursor-pointer text-red-500 focus:text-red-600">
-                  Logout
+                <DropdownMenuItem asChild className="px-2 py-2 cursor-pointer text-red-500 focus:text-red-600">
+                  <ConfirmDialogue title="Sign Out" description="Are you sure you want to sign out? You’ll need to log in again to access your account."
+                    onConfirm={handleLogout}>
+                    <div className="flex items-center justify-center">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      {isLoading ? <Loader1 /> : "Sign Out"}
+                    </div>
+
+                  </ConfirmDialogue>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -115,6 +135,7 @@ export default function DashboardLayout() {
             </DropdownMenu> */}
           </div>
         </header>
+        <Separator className="mb-7" />
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
 
           <Outlet />

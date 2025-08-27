@@ -75,7 +75,13 @@ const ManageUsers = () => {
                                     <TableCell className="border-2 dark:bg-background bg-gray-50">{user.email}</TableCell>
                                     <TableCell className="border-2 dark:bg-background bg-orange-50">{user.role}</TableCell>
                                     <TableCell className="border-2 dark:bg-background bg-red-50">{user.isActive}</TableCell>
-                                    <TableCell className="border-2 dark:bg-background bg-pink-50"><ConfirmDialogue
+                                    <TableCell className="border-2 dark:bg-background bg-pink-50"><ConfirmDialogue title={`${user?.isActive ? "ACTIVE" : "Block"} User`}
+                                        description={
+                                            user?.isActive === "ACTIVE"
+                                                ? "This user is currently blocked. Unblocking will restore their account access."
+                                                : "Blocking this user will restrict their access to the platform until you unblock them."
+                                        }
+
                                         onConfirm={() => handleBlockUnblock(user)}>{
                                             user.isActive === "ACTIVE" ? <CircleOff /> : <SquareCheckBigIcon />
                                         }</ConfirmDialogue></TableCell>

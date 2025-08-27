@@ -41,7 +41,7 @@ export function NavUser({
 }) {
 
   const { isMobile } = useSidebar()
-  const [logout, {isLoading}] = useLogoutMutation()
+  const [logout, { isLoading }] = useLogoutMutation()
   const dispatch = useDispatch()
   const handleLogout = async () => {
     // console.log("object")
@@ -91,10 +91,11 @@ export function NavUser({
 
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <ConfirmDialogue onConfirm={handleLogout}>
+              <ConfirmDialogue title="Sign Out" description="Are you sure you want to sign out? You’ll need to log in again to access your account."
+                onConfirm={handleLogout}>
                 <div className="flex items-center justify-center">
                   <LogOut className="mr-2 h-4 w-4" />
-                 {isLoading ? <Loader1 /> : "Sign Out" }
+                  {isLoading ? <Loader1 /> : "Sign Out"}
                 </div>
 
               </ConfirmDialogue>

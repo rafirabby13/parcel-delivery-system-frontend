@@ -117,14 +117,23 @@ const UpdateStatus = () => {
                                     </SelectContent>
                                 </Select>
 
-                                <ConfirmDialogue onConfirm={() => handleConfirm(item._id)}>
+                                <ConfirmDialogue
+                                    title="Confirm Parcel Status Update"
+                                    description="Are you sure you want to change the status of this parcel? This action will be recorded and cannot be undone."
+
+
+                                    onConfirm={() => handleConfirm(item._id)}>
                                     <Button className="w-fit">
                                         <SquarePenIcon />
                                     </Button>
                                 </ConfirmDialogue>
                             </TableCell>
                             <TableCell className="border-2 dark:bg-background bg-pink-50">
-                                <ConfirmDialogue onConfirm={() => handleConfirmPayment(item.trackingId)}>
+                                <ConfirmDialogue
+                                    title="Confirm Payment Collection"
+                                    description="Are you sure you want to confirm that the payment has been collected for this parcel? This action will update the payment status and cannot be undone."
+
+                                    onConfirm={() => handleConfirmPayment(item.trackingId)}>
                                     <Button className="w-fit">
                                         <CheckCheckIcon />
                                     </Button>

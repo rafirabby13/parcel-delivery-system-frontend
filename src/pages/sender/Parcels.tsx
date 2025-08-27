@@ -98,8 +98,10 @@ const Parcels = () => {
                                     <TableCell className="border-2 dark:bg-background bg-orange-50">{item.paymentMethod}</TableCell>
                                     <TableCell className="border-2 dark:bg-background bg-red-100">{item.paymentStatus}</TableCell>
                                     <TableCell className="border-2 dark:bg-background bg-pink-50">{item.receiverInfo.name}</TableCell>
-                                    <TableCell><ConfirmDialogue onConfirm={() => handleDelete(item)}><Button className="w-fit" disabled={item.status !== "REQUESTED" && item.status !== "APPROVED"} ><CircleXIcon /></Button></ConfirmDialogue></TableCell>
-                                    <TableCell><ConfirmDialogue onConfirm={() => handleMakePayment(item)}><Button className="w-fit"  ><WalletCardsIcon /></Button></ConfirmDialogue></TableCell>
+                                    <TableCell><ConfirmDialogue title="Cancel Parcel"
+                                        description="Are you sure you want to cancel this parcel? This action cannot be undone and the parcel will be marked as cancelled." onConfirm={() => handleDelete(item)}><Button className="w-fit" disabled={item.status !== "REQUESTED" && item.status !== "APPROVED"} ><CircleXIcon /></Button></ConfirmDialogue></TableCell>
+                                    <TableCell><ConfirmDialogue title="Confirm Payment"
+                                        description="Are you sure you want to confirm this payment? Once confirmed, the payment status will be updated." onConfirm={() => handleMakePayment(item)}><Button className="w-fit"  ><WalletCardsIcon /></Button></ConfirmDialogue></TableCell>
 
                                 </TableRow>)
                             )

@@ -75,7 +75,9 @@ const IncomingParcels = () => {
                                     <TableCell className="border-2 dark:bg-background bg-orange-50">{item.paymentStatus === "PAID" ? <p className="flex items-center gap-1">{item.paymentStatus}<CheckCheckIcon /> </p> : item.paymentStatus}</TableCell>
                                     <TableCell className="border-2 dark:bg-background bg-orange-50">{item.paymentMethod}</TableCell>
 
-                                    <TableCell><ConfirmDialogue onConfirm={() => handleConfirm(item)}><Button className="w-fit" >Confirm</Button></ConfirmDialogue></TableCell>
+                                    <TableCell><ConfirmDialogue title = "Confirm Delivery"
+description = "Are you sure you want to mark this parcel as delivered? This action will update the parcel status and cannot be undone."
+ onConfirm={() => handleConfirm(item)}><Button className="w-fit" >Confirm</Button></ConfirmDialogue></TableCell>
 
                                 </TableRow>)
                             )

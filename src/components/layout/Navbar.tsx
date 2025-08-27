@@ -208,7 +208,7 @@ export default function Navbar() {
     }
     
     return (
-        <header className="border-b border-primary-foreground/20 px-4 md:px-6 w-full fixed top-0 bg-primary z-10 text-primary-foreground ">
+        <header className="border-b border-primary-foreground/20 px-4 md:px-6 w-full fixed top-0 bg-primary dark:bg-background z-[100] text-primary-foreground dark:text-foreground backdrop-blur-3xl">
             <div className="flex h-24 items-center justify-between gap-4 container mx-auto">
                 {/* Left side */}
                 <div className="flex items-center gap-2">
@@ -283,8 +283,8 @@ export default function Navbar() {
                                             end={link.href === "/"} // make Home exact
                                             className={({ isActive }) =>
                                                 isActive
-                                                    ? "border-b-4 border-x-2 border-primary-foreground bg-primary-foreground text-primary px-7 py-2 rounded-sm font-medium shadow-md transition-all duration-200" // active style
-                                                    : "px-7 py-2 border-r-2 border-t-2 border-l-2 border-primary-foreground/30 text-primary-foreground font-bold rounded-md hover:bg-primary-foreground/10 transition-colors" // normal style
+                                                    ? "border-b-4 border-x-2 border-primary-foreground bg-primary-foreground dark:bg-foreground dark:border-foreground/30 text-primary dark:text-primary-foreground  px-7 py-2 rounded-sm font-medium shadow-md transition-all duration-200" // active style
+                                                    : "px-7 py-2 border-r-2 border-t-2 border-l-2 border-primary-foreground/30 dark:border-foreground/30 text-primary-foreground font-bold rounded-md hover:bg-primary-foreground/10 transition-colors dark:text-foreground" // normal style
                                             }
                                         >
                                             {link.label}

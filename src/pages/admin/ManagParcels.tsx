@@ -98,6 +98,13 @@ const ManagParcels = () => {
                                     <TableCell className="border-2 dark:bg-background bg-purple-50">{parcel.paymentStatus}</TableCell>
                                     {/* <TableCell className="border-2 dark:bg-background bg-red-50">{parcel.isActive}</TableCell> */}
                                     <TableCell className="border-2 dark:bg-background bg-ocean-50"><ConfirmDialogue
+                                        title={`${parcel.status === "BLOCKED" ? "Unblock Parcel" : "Block Parcel"}`}
+                                        description={
+                                            parcel.status === "BLOCKED"
+                                                ? "This parcel is currently blocked. Unblocking will allow it to continue through the delivery process."
+                                                : "Blocking this parcel will pause its processing and prevent delivery until unblocked."
+                                        }
+
                                         onConfirm={() => handleBlockUnblock(parcel)}>{
                                             parcel.status === "BLOCKED" ? <CircleOff /> : <SquareCheckBigIcon />
                                         }</ConfirmDialogue></TableCell>

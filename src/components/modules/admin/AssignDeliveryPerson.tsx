@@ -36,7 +36,7 @@ export function AssignDeliveryPerson({ children, parcelId }: AssignProps) {
     // const [isLoading, setIsLoading] = useState<boolean>(false)
     const { data: me } = useGetMeQuery(undefined)
     // console.log(me)
-    const { data, isLoading } = useGetAllUsersQuery({page:1, limit :100})
+    const { data, isLoading } = useGetAllUsersQuery({ page: 1, limit: 100 })
     const [assignToDeliveryMan] = useAssignToDeliveryManMutation(undefined)
     if (isLoading) {
         return <LoaderIcon />
@@ -95,7 +95,9 @@ export function AssignDeliveryPerson({ children, parcelId }: AssignProps) {
                                         <TableCell className="border-2 bg-gray-50">{user.email}</TableCell>
                                         <TableCell className="border-2 bg-orange-50">{user.phone}</TableCell>
                                         <TableCell className="border-2 bg-red-50">{user.isActive}</TableCell>
-                                        <TableCell className="border-2 bg-pink-50"><ConfirmDialogue
+                                        <TableCell className="border-2 bg-pink-50"><ConfirmDialogue title="Confirm Assignment"
+                                            description="You are about to assign this parcel to a delivery person. This action will notify them and cannot be undone."
+
                                             onConfirm={() => handleParcelAssign(user)}>{
                                                 "assign"
                                             }</ConfirmDialogue></TableCell>
