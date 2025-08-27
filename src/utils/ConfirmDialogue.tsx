@@ -16,11 +16,13 @@ interface ConfirmDialogueProps {
     children: React.ReactNode                 // button text
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onConfirm: () => any // callback when confirmed
+    title: string,
+    description: string
 }
 
 
-export function ConfirmDialogue({ children, onConfirm }: ConfirmDialogueProps) {
-    
+export function ConfirmDialogue({ children, onConfirm, title, description }: ConfirmDialogueProps) {
+
 
     return (
         <AlertDialog>
@@ -29,10 +31,9 @@ export function ConfirmDialogue({ children, onConfirm }: ConfirmDialogueProps) {
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogTitle>{title}</AlertDialogTitle>
                     <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete your
-                        account and remove your data from our servers.
+                        {description}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

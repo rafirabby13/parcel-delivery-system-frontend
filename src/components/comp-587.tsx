@@ -1,7 +1,6 @@
 import { useId } from "react"
 import { HouseIcon, InboxIcon, SearchIcon, ZapIcon } from "lucide-react"
 
-import Logo from "@/components/logo"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -15,6 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import Logo from "@/assets/icons/Logo"
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [

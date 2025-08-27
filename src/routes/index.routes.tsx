@@ -4,7 +4,7 @@ import About from "@/pages/About";
 import login from "@/pages/Login";
 import Register from "@/pages/Register";
 import { generateRoutes } from "@/utils/generateRoutes";
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import { ReceiverRoutes } from "./ReceiverRoutes";
 import { withAuth } from "@/utils/withAuth";
 import { Role } from "@/constants/role";
@@ -14,6 +14,11 @@ import { AdminRoutes } from "./AdminRoutes";
 import { SenderRoutesItems } from "./SenderRoutesItems";
 import TrackParcel from "@/pages/TrackParcel";
 import { DeliveryPersonRoutes } from "./DeliveryPersonRoutes";
+import Home from "@/pages/home/Home";
+import Contact from "@/components/layout/home/Contact";
+import Successed from "@/pages/payment/Successed";
+import Cancel from "@/pages/payment/Cancel";
+import Failed from "@/pages/payment/Failed";
 
 export const router = createBrowserRouter([
     {
@@ -23,6 +28,14 @@ export const router = createBrowserRouter([
             {
                 Component: About,
                 path: "about"
+            },
+            {
+                Component: Contact,
+                path: "/contact"
+            },
+            {
+                Component: Home,
+                path: "/"
             },
             {
                 Component: TrackParcel,
@@ -46,11 +59,24 @@ export const router = createBrowserRouter([
         Component: Unauthorized,
         path: "/unauthorized"
     },
+    {
+        Component: Successed,
+        path: "/payment/success"
+    },
+    {
+        Component: Cancel,
+        path: "/payment/cancel"
+    },
+    {
+        Component: Failed,
+        path: "/payment/fail"
+    },
 
     {
         Component: withAuth(DashboardLayout, Role.SUPER_ADMIN),
         path: "/dashboard/admin",
         children: [
+            { index: true, element: <Navigate to={"/dashboard/admin/dashboard"} /> },
             ...generateRoutes(AdminRoutes)
         ]
     },
@@ -58,20 +84,27 @@ export const router = createBrowserRouter([
         Component: withAuth(DashboardLayout, Role.RECEIVER),
         path: "/dashboard/receiver",
         children: [
+            { index: true, element: <Navigate to={"/dashboard/receiver/incoming-parcel"} /> },
+
             ...generateRoutes(ReceiverRoutes)
         ]
     },
     {
         Component: withAuth(DashboardLayout, Role.SENDER),
         path: "/dashboard/sender",
+
         children: [
+            { index: true, element: <Navigate to={"/dashboard/sender/create-parcel"} /> },
+
             ...generateRoutes(SenderRoutesItems)
         ]
     },
     {
         Component: withAuth(DashboardLayout, Role.DELIVERY_PERSON),
         path: "/dashboard/delivery-person",
+        
         children: [
+            { index: true, element: <Navigate to={"/dashboard/delivery-person/update-percel-status"} /> },
             ...generateRoutes(DeliveryPersonRoutes)
         ]
     }

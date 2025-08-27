@@ -9,7 +9,7 @@ import type {  TRole } from "@/types/route.type";
 
  const getSidebarByRole= (role: TRole) => {
 
-    console.log(role)
+    // console.log(role)
 
     switch (role) {
 

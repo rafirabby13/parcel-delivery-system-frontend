@@ -17,7 +17,8 @@ export const authApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["USER"]
         }),
-        logout: builder.mutation({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        logout: builder.mutation<any, void>({
             query: () => ({
                 url: "/auth/logout",
                 method: "POST",

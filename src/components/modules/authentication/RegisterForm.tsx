@@ -64,7 +64,7 @@ export function RegisterForm({
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { confirmPassword, ...rest } = values
 
-            console.log(rest)
+            // console.log(rest)
             const res = await register(rest)
             if (res?.data?.success) {
                 toast.success("Registered Successfully..")

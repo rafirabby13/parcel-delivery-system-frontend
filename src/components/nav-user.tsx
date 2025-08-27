@@ -28,6 +28,7 @@ import { ConfirmDialogue } from "@/utils/ConfirmDialogue"
 import { authApi, useLogoutMutation } from "@/redux/feature/auth/auth.api"
 import { useDispatch } from "react-redux"
 import { userApi } from "@/redux/feature/user/user.api"
+import { Loader1 } from "@/utils/Loader1"
 
 export function NavUser({
   user,
@@ -40,11 +41,11 @@ export function NavUser({
 }) {
 
   const { isMobile } = useSidebar()
-  const [logout] = useLogoutMutation(undefined)
+  const [logout, { isLoading }] = useLogoutMutation()
   const dispatch = useDispatch()
-  const handleLogout = () => {
-    console.log("object")
-    logout(undefined).unwrap()
+  const handleLogout = async () => {
+    // console.log("object")
+    await logout().unwrap()
     dispatch(userApi.util.resetApiState())
     dispatch(authApi.util.resetApiState())
   }
@@ -59,12 +60,12 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg  ">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">{user.name.slice(0, 1)}</AvatarFallback>
+                <AvatarImage src={user?.avatar} alt={user?.name} />
+                <AvatarFallback className="rounded-lg">{user?.name.slice(0, 1)}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+                <span className="truncate font-medium">{user?.name}</span>
+                <span className="truncate text-xs">{user?.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -78,22 +79,23 @@ export function NavUser({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">{user.name.slice(0, 1)}</AvatarFallback>
+                  <AvatarImage src={user?.avatar} alt={user?.name} />
+                  <AvatarFallback className="rounded-lg">{user?.name.slice(0, 1)}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                  <span className="truncate font-medium">{user?.name}</span>
+                  <span className="truncate text-xs">{user?.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
 
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <ConfirmDialogue onConfirm={handleLogout}>
+              <ConfirmDialogue title="Sign Out" description="Are you sure you want to sign out? You’ll need to log in again to access your account."
+                onConfirm={handleLogout}>
                 <div className="flex items-center justify-center">
                   <LogOut className="mr-2 h-4 w-4" />
-                  Log out
+                  {isLoading ? <Loader1 /> : "Sign Out"}
                 </div>
 
               </ConfirmDialogue>
