@@ -307,10 +307,10 @@ export default function Navbar() {
 
                                 <ConfirmDialogue title="Sign Out" description="Are you sure you want to sign out? You’ll need to log in again to access your account."
                                     onConfirm={handleLogout}>
-                                    <div className="flex items-center justify-center">
+                                    <Button className="flex items-center justify-center bg-background text-primary dark:text-primary">
                                         <LogOut className="mr-2 h-4 w-4" />
                                         {isLoading ? <Loader1 /> : "Sign Out"}
-                                    </div>
+                                    </Button>
 
                                 </ConfirmDialogue>
                             </div> :
@@ -318,7 +318,7 @@ export default function Navbar() {
                                 <Button
                                     asChild
                                     variant="secondary"
-                                    className="bg-primary-foreground text-primary hover:bg-primary-foreground/90"
+                                    className="bg-background text-primary dark:text-primary hover:bg-primary-foreground/90"
                                 >
                                     <Link to="/login">Sign In</Link>
                                 </Button>
