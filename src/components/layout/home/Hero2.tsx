@@ -51,7 +51,7 @@ const Hero2 = () => {
         flexWrap: "wrap",
     }
     return (
-        <section className="relative bg-gradient-to-br from-white via-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
+        <section className="relative bg-gradient-to-br from-white via-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 z-1">
             <div className="container mx-auto   py-8  grid lg:grid-cols-2 gap-12 items-center relative z-10">
 
                 {/* LEFT SIDE: Content */}
