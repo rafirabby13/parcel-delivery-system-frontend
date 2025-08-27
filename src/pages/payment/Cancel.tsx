@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { XCircle, ArrowLeft, Home, RefreshCw, Clock } from 'lucide-react';
 
 const Cancel = () => {

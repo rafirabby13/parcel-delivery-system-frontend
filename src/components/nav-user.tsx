@@ -28,6 +28,7 @@ import { ConfirmDialogue } from "@/utils/ConfirmDialogue"
 import { authApi, useLogoutMutation } from "@/redux/feature/auth/auth.api"
 import { useDispatch } from "react-redux"
 import { userApi } from "@/redux/feature/user/user.api"
+import { Loader1 } from "@/utils/Loader1"
 
 export function NavUser({
   user,
@@ -40,11 +41,11 @@ export function NavUser({
 }) {
 
   const { isMobile } = useSidebar()
-  const [logout] = useLogoutMutation(undefined)
+  const [logout, {isLoading}] = useLogoutMutation()
   const dispatch = useDispatch()
-  const handleLogout = () => {
+  const handleLogout = async () => {
     // console.log("object")
-    logout(undefined).unwrap()
+    await logout().unwrap()
     dispatch(userApi.util.resetApiState())
     dispatch(authApi.util.resetApiState())
   }
@@ -93,7 +94,7 @@ export function NavUser({
               <ConfirmDialogue onConfirm={handleLogout}>
                 <div className="flex items-center justify-center">
                   <LogOut className="mr-2 h-4 w-4" />
-                  Log out
+                 {isLoading ? <Loader1 /> : "Sign Out" }
                 </div>
 
               </ConfirmDialogue>

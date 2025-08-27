@@ -18,7 +18,7 @@ const PArcelHistory = () => {
     }
 
     const notConfirmed = parcels?.data?.filter((parcel: { status: string }) => parcel.status == "CONFIRMED")
-    console.log(notConfirmed)
+    // console.log(notConfirmed)
     return (
         <div>
             <div className="border border-muted rounded-lg">
@@ -42,7 +42,7 @@ const PArcelHistory = () => {
                                     <TableCell className="border-2 bg-gray-50">{item.parcelType}</TableCell>
                                     <TableCell className="border-2 bg-orange-50">{item.status}</TableCell>
                                     <TableCell className="border-2 bg-pink-50">{item.senderInfo.name}__{item.senderInfo.detailAddress}</TableCell>
-                                    <TableCell className="border-2 bg-pink-50">
+                                    <TableCell className="border-2 bg-yellow-50">
                                         {new Date(item.trackingEvents[item.trackingEvents.length - 1].updatedAt)
                                             .toLocaleString("en-US", {
                                                 year: "numeric",

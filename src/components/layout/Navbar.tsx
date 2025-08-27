@@ -18,18 +18,18 @@ import { useGetMeQuery, userApi } from "@/redux/feature/user/user.api"
 import { Role } from "@/constants/role"
 import { authApi, useLogoutMutation } from "@/redux/feature/auth/auth.api"
 import { useDispatch } from "react-redux"
-import { LoaderIcon } from "lucide-react"
+import { Loader1 } from "@/utils/Loader1"
 
 // Navigation links array to be used in both desktop and mobile menus
 
 
 export default function Navbar() {
-    const { data, refetch, isLoading } = useGetMeQuery(undefined)
-    const [logout] = useLogoutMutation(undefined)
+    const { data, isLoading } = useGetMeQuery(undefined)
+    const [logout] = useLogoutMutation()
     const dispatch = useDispatch()
-    if (isLoading) {
-        return <LoaderIcon />
-    }
+    // if (isLoading) {
+    //     return <LoaderIcon />
+    // }
     // console.log(data?.data?.user)
     const role = data?.data?.user?.role
     // console.log(role)
@@ -41,15 +41,14 @@ export default function Navbar() {
         { href: role === Role.SUPER_ADMIN ? "/dashboard/admin" : role === Role.SENDER ? "/dashboard/sender" : role === Role.DELIVERY_PERSON ? "/dashboard/delivery-person" : "/dashboard/receiver", label: "Dashboard" },
     ]
     const handleLogout = async () => {
-        logout(undefined).unwrap()
-        refetch()
+        await logout().unwrap()
         dispatch(userApi.util.resetApiState())
         dispatch(authApi.util.resetApiState())
 
     }
     return (
-        <header className="border-b px-4 md:px-6   ">
-            <div className="flex h-16 items-center justify-between gap-4 container mx-auto">
+        <header className="border-b px-4 md:px-6 w-full fixed top-0  bg-primary text-foreground ">
+            <div className="flex h-24 items-center justify-between gap-4 container mx-auto">
                 {/* Left side */}
                 <div className="flex items-center gap-2">
                     {/* Mobile menu trigger */}
@@ -131,8 +130,8 @@ export default function Navbar() {
 
                                             className={({ isActive }) =>
                                                 isActive
-                                                    ? "border-b-4 border border-primary px-7 py-2 rounded-sm font-medium shadow-md transition-all duration-200" // active style
-                                                    : "px-7 py-2 border-t-2 border-l-2  border-primary  font-bold  rounded-md hover:bg-gray-100 transition-colors" // normal style
+                                                    ? "border-b-4 border-x-2 border-foreground bg-foreground px-7 py-2 rounded-sm font-medium shadow-md transition-all duration-200" // active style
+                                                    : "px-7 py-2 border-r-2 border-t-2 border-l-2  border-primary  font-bold  rounded-md hover:bg-gray-100 transition-colors" // normal style
                                             }
                                         >
                                             {link.label}
@@ -151,7 +150,7 @@ export default function Navbar() {
                         data?.data?.user ? <div>
 
                             <Button onClick={handleLogout}>
-                                Sign Out
+                                {isLoading ? <Loader1 /> : "Sign Out" }
                             </Button>
                         </div> :
                             <div>

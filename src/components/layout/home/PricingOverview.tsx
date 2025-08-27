@@ -4,19 +4,18 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
-import { useForm } from "react-hook-form"
+
 import { 
     Calculator, 
     MapPin, 
     Weight,
     DollarSign,
     CheckCircle,
-    Clock,
-    TruckIcon,
+    Truck,
     Zap,
     Package,
-    ArrowRight
+    ArrowRight,
+    Star
 } from "lucide-react"
 
 interface PricingTier {
@@ -45,8 +44,8 @@ const pricingTiers: PricingTier[] = [
             "Email support"
         ],
         icon: <Package size={24} />,
-        color: "text-blue-600",
-        gradient: "from-blue-500 to-cyan-500"
+        color: "text-primary",
+        gradient: "from-primary/20 to-primary/10"
     },
     {
         name: "Express",
@@ -61,8 +60,8 @@ const pricingTiers: PricingTier[] = [
             "Phone support"
         ],
         icon: <Zap size={24} />,
-        color: "text-purple-600",
-        gradient: "from-purple-500 to-pink-500",
+        color: "text-primary",
+        gradient: "from-primary/30 to-primary/15",
         popular: true
     },
     {
@@ -78,9 +77,9 @@ const pricingTiers: PricingTier[] = [
             "24/7 dedicated support",
             "Insurance included"
         ],
-        icon: <TruckIcon size={24} />,
-        color: "text-orange-600",
-        gradient: "from-orange-500 to-red-500"
+        icon: <Truck size={24} />,
+        color: "text-primary",
+        gradient: "from-primary/40 to-primary/20"
     }
 ]
 
@@ -97,20 +96,11 @@ const getDistanceCharge = (from: string, to: string): number => {
 }
 
 const PricingOverview = () => {
-    const [selectedTier] = useState<PricingTier>(pricingTiers[1]) // Express as default
+    const [selectedTier, setSelectedTier] = useState<PricingTier>(pricingTiers[1]) // Express as default
     const [calculatedPrice, setCalculatedPrice] = useState<number>(0)
-
-    const form = useForm({
-        defaultValues: {
-            weight: 1,
-            fromDivision: "",
-            toDivision: ""
-        }
-    })
-
-    const weight = form.watch("weight")
-    const fromDivision = form.watch("fromDivision")
-    const toDivision = form.watch("toDivision")
+    const [weight, setWeight] = useState<number>(1)
+    const [fromDivision, setFromDivision] = useState<string>("")
+    const [toDivision, setToDivision] = useState<string>("")
 
     useEffect(() => {
         if (weight && fromDivision && toDivision) {
@@ -126,221 +116,263 @@ const PricingOverview = () => {
     }
 
     return (
-        <section className="py-20 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
-            <div className="container mx-auto">
+        <section className="py-20 bg-background">
+            <div className="container mx-auto px-6">
                 
                 {/* Section Header */}
                 <div className="text-center mb-16">
-                    <Badge className="bg-gradient-to-r from-green-500 to-blue-600 text-white px-4 py-2 text-sm font-medium border-0 mb-4">
+                    <Badge className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2 text-sm font-medium border-0 mb-6 shadow-lg">
+                        <Calculator size={16} />
                         Transparent Pricing
                     </Badge>
-                    <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-                        Simple{" "}
-                        <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-foreground mb-6 tracking-tight">
+                        Simple & Fair{" "}
+                        <span className="text-primary">
                             Pricing
                         </span>
                     </h2>
-                    <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                        No hidden fees, no surprises. Calculate your delivery cost instantly 
-                        and choose the service that fits your needs.
+                    <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                        Calculate your delivery cost instantly. No hidden fees, just transparent pricing 
+                        for reliable parcel delivery across Bangladesh.
                     </p>
                 </div>
 
-                {/* Pricing Calculator */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
+                {/* Service Tiers Selection */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 -z-10">
+                    {pricingTiers.map((tier) => (
+                        <Card 
+                            key={tier.name} 
+                            className={`relative cursor-pointer transition-all duration-300 hover:shadow-xl border-2 ${
+                                selectedTier.name === tier.name 
+                                    ? 'border-primary shadow-lg bg-card' 
+                                    : 'border-border hover:border-muted-foreground bg-card'
+                            }`}
+                            onClick={() => setSelectedTier(tier)}
+                        >
+                            {tier.popular && (
+                                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                                    <Badge className="bg-primary text-primary-foreground px-4 py-1 text-xs font-semibold border-0 shadow-md">
+                                        <Star size={12} className="mr-1" />
+                                        Most Popular
+                                    </Badge>
+                                </div>
+                            )}
+                            
+                            <CardHeader className="text-center pb-4">
+                                <div className={`mx-auto w-16 h-16 rounded-full bg-primary flex items-center justify-center text-primary-foreground mb-4 shadow-lg`}>
+                                    {tier.icon}
+                                </div>
+                                <CardTitle className="text-xl font-bold text-card-foreground">
+                                    {tier.name}
+                                </CardTitle>
+                                <p className="text-sm text-muted-foreground mt-1">
+                                    {tier.description}
+                                </p>
+                                <div className="mt-4">
+                                    <div className="text-3xl font-bold text-card-foreground">
+                                        {formatCurrency(tier.baseRate)}
+                                        <span className="text-lg text-muted-foreground font-normal">+ weight</span>
+                                    </div>
+                                    <p className="text-sm text-muted-foreground mt-1">
+                                        {formatCurrency(tier.weightRate)} per kg
+                                    </p>
+                                </div>
+                            </CardHeader>
+                            
+                            <CardContent>
+                                <ul className="space-y-3">
+                                    {tier.features.map((feature, idx) => (
+                                        <li key={idx} className="flex items-start gap-3 text-sm">
+                                            <CheckCircle size={16} className="text-primary mt-0.5 flex-shrink-0" />
+                                            <span className="text-muted-foreground">{feature}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+
+                {/* Calculator and Results */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
                     
-                    {/* Calculator */}
-                    <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border-0 shadow-2xl">
-                        <CardHeader className="pb-4">
-                            <CardTitle className="flex items-center gap-3 text-2xl">
-                                <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-3 rounded-full text-white">
+                    {/* Calculator Form */}
+                    <Card className="bg-card border shadow-xl">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-3 text-2xl font-bold text-card-foreground">
+                                <div className="bg-primary p-3 rounded-xl text-primary-foreground shadow-lg">
                                     <Calculator size={24} />
                                 </div>
-                                Price Calculator
+                                Calculate Your Cost
                             </CardTitle>
-                            <p className="text-gray-600 dark:text-gray-300">
-                                Get instant pricing for your delivery
+                            <p className="text-muted-foreground">
+                                Get instant pricing for your {selectedTier.name.toLowerCase()} delivery
                             </p>
                         </CardHeader>
                         <CardContent className="space-y-6">
-                            <Form {...form}>
-                                <div className="space-y-4">
-                                    {/* Weight Input */}
-                                    <FormField
-                                        control={form.control}
-                                        name="weight"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel className="flex items-center gap-2">
-                                                    <Weight size={16} />
-                                                    Parcel Weight (kg)
-                                                </FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        type="number"
-                                                        step="0.1"
-                                                        min="0.1"
-                                                        placeholder="Enter weight"
-                                                        className="h-12 text-lg"
-                                                        {...field}
-                                                        onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                                                    />
-                                                </FormControl>
-                                            </FormItem>
-                                        )}
-                                    />
-
-                                    {/* From Division */}
-                                    <FormField
-                                        control={form.control}
-                                        name="fromDivision"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel className="flex items-center gap-2">
-                                                    <MapPin size={16} />
-                                                    From Division
-                                                </FormLabel>
-                                                <Select onValueChange={field.onChange} value={field.value}>
-                                                    <FormControl>
-                                                        <SelectTrigger className="h-12">
-                                                            <SelectValue placeholder="Select pickup division" />
-                                                        </SelectTrigger>
-                                                    </FormControl>
-                                                    <SelectContent>
-                                                        {divisions.map((division) => (
-                                                            <SelectItem key={division} value={division}>
-                                                                {division}
-                                                            </SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
-                                            </FormItem>
-                                        )}
-                                    />
-
-                                    {/* To Division */}
-                                    <FormField
-                                        control={form.control}
-                                        name="toDivision"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel className="flex items-center gap-2">
-                                                    <MapPin size={16} />
-                                                    To Division
-                                                </FormLabel>
-                                                <Select onValueChange={field.onChange} value={field.value}>
-                                                    <FormControl>
-                                                        <SelectTrigger className="h-12">
-                                                            <SelectValue placeholder="Select delivery division" />
-                                                        </SelectTrigger>
-                                                    </FormControl>
-                                                    <SelectContent>
-                                                        {divisions.map((division) => (
-                                                            <SelectItem key={division} value={division}>
-                                                                {division}
-                                                            </SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
-                                            </FormItem>
-                                        )}
-                                    />
+                            <div className="space-y-6">
+                                {/* Weight Input */}
+                                <div>
+                                    <label className="flex items-center gap-2 text-sm font-semibold text-card-foreground mb-2">
+                                        <Weight size={16} className="text-primary" />
+                                        Package Weight
+                                    </label>
+                                    <div className="relative">
+                                        <Input
+                                            type="number"
+                                            step="0.1"
+                                            min="0.1"
+                                            placeholder="0.0"
+                                            className="h-14 text-lg pl-4 pr-12 border-2 focus:border-primary"
+                                            value={weight}
+                                            onChange={(e) => setWeight(parseFloat(e.target.value) || 0)}
+                                        />
+                                        <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted-foreground font-medium">
+                                            kg
+                                        </span>
+                                    </div>
                                 </div>
-                            </Form>
 
-                         
+                                {/* From Division */}
+                                <div>
+                                    <label className="flex items-center gap-2 text-sm font-semibold text-card-foreground mb-2">
+                                        <MapPin size={16} className="text-primary" />
+                                        Pickup Location
+                                    </label>
+                                    <Select onValueChange={setFromDivision} value={fromDivision}>
+                                        <SelectTrigger className="h-14 text-lg border-2 focus:border-primary">
+                                            <SelectValue placeholder="Select pickup division" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {divisions.map((division) => (
+                                                <SelectItem key={division} value={division} className="py-3">
+                                                    {division}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                {/* To Division */}
+                                <div>
+                                    <label className="flex items-center gap-2 text-sm font-semibold text-card-foreground mb-2">
+                                        <MapPin size={16} className="text-primary" />
+                                        Delivery Location
+                                    </label>
+                                    <Select onValueChange={setToDivision} value={toDivision}>
+                                        <SelectTrigger className="h-14 text-lg border-2 focus:border-primary">
+                                            <SelectValue placeholder="Select delivery division" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {divisions.map((division) => (
+                                                <SelectItem key={division} value={division} className="py-3">
+                                                    {division}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
                         </CardContent>
                     </Card>
 
-                    {/* Price Breakdown */}
-                    <Card className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border-0 shadow-2xl">
-                        <CardHeader className="pb-4">
-                            <CardTitle className="flex items-center gap-3 text-2xl">
-                                <div className="bg-gradient-to-r from-green-500 to-blue-600 p-3 rounded-full text-white">
+                    {/* Results Panel */}
+                    <Card className="bg-card border shadow-xl">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-3 text-2xl font-bold text-card-foreground">
+                                <div className="bg-primary p-3 rounded-xl text-primary-foreground shadow-lg">
                                     <DollarSign size={24} />
                                 </div>
-                                Price Breakdown
+                                Cost Breakdown
                             </CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-6">
+                        <CardContent>
                             {calculatedPrice > 0 ? (
-                                <div className="space-y-4">
-                                    {/* Service Details */}
-                                    <div className="bg-white/60 dark:bg-gray-800/60 p-4 rounded-xl">
-                                        <div className="flex items-center gap-3 mb-3">
-                                            <div className={`${selectedTier.color}`}>
+                                <div className="space-y-6">
+                                    {/* Selected Service */}
+                                    <div className="bg-muted/50 p-5 rounded-xl border border-border">
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <div className={`p-2 rounded-lg bg-primary text-primary-foreground`}>
                                                 {selectedTier.icon}
                                             </div>
                                             <div>
-                                                <h4 className="font-semibold text-gray-900 dark:text-white">
+                                                <h4 className="text-lg font-bold text-card-foreground">
                                                     {selectedTier.name} Service
                                                 </h4>
-                                                <p className="text-sm text-gray-600 dark:text-gray-300">
+                                                <p className="text-sm text-muted-foreground">
                                                     {selectedTier.description}
                                                 </p>
                                             </div>
                                         </div>
-                                        <ul className="space-y-1">
-                                            {selectedTier.features.slice(0, 3).map((feature, idx) => (
-                                                <li key={idx} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-                                                    <CheckCircle size={12} className="text-green-500" />
-                                                    {feature}
-                                                </li>
+                                        
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                            {selectedTier.features.slice(0, 4).map((feature, idx) => (
+                                                <div key={idx} className="flex items-center gap-2 text-sm">
+                                                    <CheckCircle size={14} className="text-primary flex-shrink-0" />
+                                                    <span className="text-muted-foreground">{feature}</span>
+                                                </div>
                                             ))}
-                                        </ul>
+                                        </div>
                                     </div>
 
-                                    {/* Cost Breakdown */}
-                                    <div className="space-y-3">
-                                        <div className="flex justify-between items-center py-2">
-                                            <span className="text-gray-600 dark:text-gray-300">Base Rate</span>
-                                            <span className="font-medium">{formatCurrency(selectedTier.baseRate)}</span>
-                                        </div>
-                                        <div className="flex justify-between items-center py-2">
-                                            <span className="text-gray-600 dark:text-gray-300">
-                                                Weight Charge ({weight}kg × {formatCurrency(selectedTier.weightRate)})
+                                    {/* Price Details */}
+                                    <div className="space-y-4">
+                                        <div className="flex justify-between items-center py-3 border-b border-border">
+                                            <span className="text-muted-foreground font-medium">Base Rate</span>
+                                            <span className="text-lg font-semibold text-card-foreground">
+                                                {formatCurrency(selectedTier.baseRate)}
                                             </span>
-                                            <span className="font-medium">
+                                        </div>
+                                        <div className="flex justify-between items-center py-3 border-b border-border">
+                                            <span className="text-muted-foreground font-medium">
+                                                Weight ({weight}kg × {formatCurrency(selectedTier.weightRate)})
+                                            </span>
+                                            <span className="text-lg font-semibold text-card-foreground">
                                                 {formatCurrency(weight * selectedTier.weightRate)}
                                             </span>
                                         </div>
-                                        <div className="flex justify-between items-center py-2">
-                                            <span className="text-gray-600 dark:text-gray-300">Distance Charge</span>
-                                            <span className="font-medium">
+                                        <div className="flex justify-between items-center py-3 border-b border-border">
+                                            <span className="text-muted-foreground font-medium">Distance Charge</span>
+                                            <span className="text-lg font-semibold text-card-foreground">
                                                 {formatCurrency(getDistanceCharge(fromDivision, toDivision))}
                                             </span>
                                         </div>
-                                        <hr className="border-gray-300 dark:border-gray-600" />
-                                        <div className="flex justify-between items-center py-2">
-                                            <span className="text-lg font-semibold text-gray-900 dark:text-white">
-                                                Total Cost
-                                            </span>
-                                            <span className="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
-                                                {formatCurrency(calculatedPrice)}
-                                            </span>
+                                        
+                                        {/* Total */}
+                                        <div className="bg-primary/10 p-5 rounded-xl">
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-xl font-bold text-card-foreground">
+                                                    Total Cost
+                                                </span>
+                                                <span className="text-3xl font-bold text-primary">
+                                                    {formatCurrency(calculatedPrice)}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    {/* CTA Button */}
-                                    <Button className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 shadow-xl hover:shadow-2xl transition-all duration-300">
-                                        <Package size={20} className="mr-2" />
+                                    {/* Book Button */}
+                                    <Button className="w-full h-16 text-lg font-semibold bg-primary hover:bg-primary/90 text-primary-foreground border-0 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl">
+                                        <Package size={20} className="mr-3" />
                                         Book This Delivery
-                                        <ArrowRight size={16} className="ml-2" />
+                                        <ArrowRight size={18} className="ml-3" />
                                     </Button>
                                 </div>
                             ) : (
-                                <div className="text-center py-12">
-                                    <Calculator size={48} className="text-gray-400 mx-auto mb-4" />
-                                    <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                                        Ready to Calculate?
+                                <div className="text-center py-16">
+                                    <div className="bg-muted w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                                        <Calculator size={40} className="text-muted-foreground" />
+                                    </div>
+                                    <h4 className="text-xl font-bold text-card-foreground mb-3">
+                                        Calculate Your Cost
                                     </h4>
-                                    <p className="text-gray-600 dark:text-gray-300 mb-4">
-                                        Fill in the weight and locations to see your delivery cost
+                                    <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                                        Enter your package details and locations to get an instant price quote
                                     </p>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">
-                                        <p>• Base rates start from {formatCurrency(60)}</p>
-                                        <p>• Weight charges from {formatCurrency(8)} per kg</p>
-                                        <p>• Distance charges vary by location</p>
+                                    <div className="space-y-2 text-sm text-muted-foreground">
+                                        <p>✓ Base rates from {formatCurrency(60)}</p>
+                                        <p>✓ Weight-based pricing</p>
+                                        <p>✓ Distance-based charges</p>
                                     </div>
                                 </div>
                             )}
@@ -348,58 +380,83 @@ const PricingOverview = () => {
                     </Card>
                 </div>
 
-              
+                {/* Additional Information */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {/* Pricing Info */}
+                    <Card className="bg-card border shadow-lg">
+                        <CardHeader>
+                            <CardTitle className="text-xl font-bold text-card-foreground flex items-center gap-3">
+                                <CheckCircle size={24} className="text-primary" />
+                                Pricing Details
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-4">
+                                <div className="flex items-center gap-3 p-4 bg-primary/5 rounded-xl">
+                                    <div className="w-2 h-2 bg-primary rounded-full"></div>
+                                    <span className="text-muted-foreground">
+                                        Same division delivery: <strong>+৳20</strong>
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-3 p-4 bg-primary/5 rounded-xl">
+                                    <div className="w-2 h-2 bg-primary rounded-full"></div>
+                                    <span className="text-muted-foreground">
+                                        Major cities: <strong>+৳50</strong>
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-3 p-4 bg-primary/5 rounded-xl">
+                                    <div className="w-2 h-2 bg-primary rounded-full"></div>
+                                    <span className="text-muted-foreground">
+                                        Different divisions: <strong>+৳80</strong>
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-xl">
+                                    <CheckCircle size={16} className="text-primary" />
+                                    <span className="text-muted-foreground">
+                                        <strong>No hidden fees</strong> or surprises
+                                    </span>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
 
-                {/* Additional Pricing Info */}
-                <div className="bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20 rounded-2xl p-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div>
-                            <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-                                Pricing Notes
-                            </h4>
-                            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
-                                <li className="flex items-start gap-2">
-                                    <CheckCircle size={16} className="text-green-500 mt-0.5 flex-shrink-0" />
-                                    <span>Same division delivery: +৳20 distance charge</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <CheckCircle size={16} className="text-green-500 mt-0.5 flex-shrink-0" />
-                                    <span>Major cities (Dhaka, Chittagong, Sylhet, Khulna): +৳50</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <CheckCircle size={16} className="text-green-500 mt-0.5 flex-shrink-0" />
-                                    <span>Different divisions: +৳80 distance charge</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <CheckCircle size={16} className="text-green-500 mt-0.5 flex-shrink-0" />
-                                    <span>No hidden fees or additional charges</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                    {/* Special Offers */}
+                    <Card className="bg-card border shadow-lg">
+                        <CardHeader>
+                            <CardTitle className="text-xl font-bold text-card-foreground flex items-center gap-3">
+                                <Star size={24} className="text-primary" />
                                 Special Offers
-                            </h4>
-                            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
-                                <li className="flex items-start gap-2">
-                                    <Clock size={16} className="text-blue-500 mt-0.5 flex-shrink-0" />
-                                    <span>Bulk orders (10+ parcels): 15% discount</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <TruckIcon size={16} className="text-blue-500 mt-0.5 flex-shrink-0" />
-                                    <span>Corporate accounts: Custom pricing available</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <Package size={16} className="text-blue-500 mt-0.5 flex-shrink-0" />
-                                    <span>First-time users: 10% off your first delivery</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <Zap size={16} className="text-blue-500 mt-0.5 flex-shrink-0" />
-                                    <span>Monthly subscription: Up to 25% savings</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-4">
+                                <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-xl">
+                                    <Badge className="bg-primary text-primary-foreground border-0">10%</Badge>
+                                    <span className="text-muted-foreground">
+                                        First-time user discount
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-xl">
+                                    <Badge className="bg-primary text-primary-foreground border-0">15%</Badge>
+                                    <span className="text-muted-foreground">
+                                        Bulk orders (10+ parcels)
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-xl">
+                                    <Badge className="bg-primary text-primary-foreground border-0">25%</Badge>
+                                    <span className="text-muted-foreground">
+                                        Monthly subscription plans
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-xl">
+                                    <Truck size={16} className="text-primary" />
+                                    <span className="text-muted-foreground">
+                                        Corporate custom pricing
+                                    </span>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
         </section>
