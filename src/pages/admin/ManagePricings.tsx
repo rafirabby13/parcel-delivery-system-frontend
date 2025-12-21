@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   useGetPricingTiersQuery,
   useUpdateLocationChargeMutation,
   useUpdatePricingTierMutation
-} from "@/redux/feature/pricing/pricing.api";
+} from "@/features/pricing/api/pricing.api";
 import { Edit2Icon, Loader2Icon, PencilIcon, PlusIcon } from "lucide-react";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -14,10 +14,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useState } from "react";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import CreatePricingForm from "@/components/modules/admin/pricing/CreatePricingForm";
-import { PRICING_TIER, type IPricingTierResponse } from "@/components/modules/admin/pricing/pricing.type";
+import CreatePricingForm from "@/features/pricing/components/CreatePricingForm";
+import { PRICING_TIER, type IPricingTierResponse } from "@/features/pricing/types/pricing.type";
 import { Label } from "@/components/ui/label";
-import PricingForms from "@/components/shared/forms/PricingForms";
+import PricingForms from "@/features/pricing/components/PricingForms";
 import { useFieldArray, useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";

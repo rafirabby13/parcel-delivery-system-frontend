@@ -5,16 +5,16 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { AppSidebar } from "../app-sidebar"
+import { AppSidebar } from "./sidebar/app-sidebar"
 import { Outlet } from "react-router"
-import { ModeToggle } from "../ModeToggle"
-import { useGetMeQuery, userApi } from "@/redux/feature/user/user.api"
+import { useGetMeQuery, userApi } from "@/features/admin/api/user.api"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
-import { ConfirmDialogue } from "@/utils/ConfirmDialogue"
+import { ConfirmDialogue } from "@/components/shared/interactions/ConfirmDialogue"
 import { LogOut } from "lucide-react"
-import { Loader1 } from "@/utils/Loader1"
 import { useDispatch } from "react-redux"
-import { authApi, useLogoutMutation } from "@/redux/feature/auth/auth.api"
+import { authApi, useLogoutMutation } from "@/features/auth/api/auth.api"
+import { ModeToggle } from "../shared/interactions/ModeToggle"
+import { Loader } from "../shared/feedback/Loader"
 
 export default function DashboardLayout() {
 
@@ -104,7 +104,7 @@ export default function DashboardLayout() {
                     onConfirm={handleLogout}>
                     <div className="flex items-center justify-center">
                       <LogOut className="mr-2 h-4 w-4" />
-                      {isLoading ? <Loader1 /> : "Sign Out"}
+                      {isLoading ? <Loader /> : "Sign Out"}
                     </div>
 
                   </ConfirmDialogue>

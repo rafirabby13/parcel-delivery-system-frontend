@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useCollectCODAMountMutation, useGetAllParcelByIdQuery, useUpdateParcelStatusMutation } from "@/redux/feature/parcel/parcel.api"
-import { useGetMeQuery } from "@/redux/feature/user/user.api"
+import { useCollectCODAMountMutation, useGetAllParcelByIdQuery, useUpdateParcelStatusMutation } from "@/features/parcel/api/parcel.api"
+import { useGetMeQuery } from "@/features/admin/api/user.api"
 import { CheckCheckIcon, Loader2Icon, SquarePenIcon } from "lucide-react"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { ConfirmDialogue } from "@/utils/ConfirmDialogue"
+import { ConfirmDialogue } from "@/components/shared/interactions/ConfirmDialogue"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useState } from "react"
 import { toast } from "sonner"

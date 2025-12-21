@@ -1,5 +1,5 @@
-import { useIncomingParcelQuery } from '@/redux/feature/parcel/parcel.api'
-import { useGetMeQuery } from '@/redux/feature/user/user.api'
+import { useIncomingParcelQuery } from '@/features/parcel/api/parcel.api'
+import { useGetMeQuery } from '@/features/admin/api/user.api'
 import { Loader2Icon } from 'lucide-react'
 import {
     Table,
