@@ -1,6 +1,5 @@
 import React from 'react'
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { 
     Package, 
@@ -12,6 +11,7 @@ import {
     Smartphone,
     Shield
 } from "lucide-react"
+import { SectionHeader } from '@/components/shared/SectionHeader'
 
 interface Step {
     id: number;
@@ -78,22 +78,17 @@ const HowItWorks = () => {
             <div className="container mx-auto px-6">
                 
                 {/* Section Header */}
-                <div className="text-center mb-16">
-                    <Badge className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2 text-sm font-medium border-0 mb-6 shadow-lg">
-                        <Package size={16} />
-                        Simple Process
-                    </Badge>
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-foreground mb-6 tracking-tight">
-                        How It{" "}
-                        <span className="text-primary">
-                            Works
-                        </span>
-                    </h2>
-                    <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                        Send your parcel in 4 simple steps. Our streamlined process ensures 
-                        fast, secure, and reliable delivery across Bangladesh.
-                    </p>
-                </div>
+                <SectionHeader
+                title='How It'
+                highlight='Works'
+                description='Send your parcel in 4 simple steps. Our streamlined process ensures 
+                fast, secure, and reliable delivery across Bangladesh.'
+                className='text-center mb-16'
+                badge='Simple Process'
+                icon={Package}
+
+                />
+              
 
                 {/* Steps Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">

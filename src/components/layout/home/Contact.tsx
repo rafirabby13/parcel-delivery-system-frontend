@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent} from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -15,11 +15,11 @@ import {
     MapPin,
     MessageSquare,
     Send,
-    HelpCircle,
     Loader2,
     CheckCircle,
 } from "lucide-react"
 import { Textarea } from '@/components/ui/textarea'
+import { SectionHeader } from '@/components/shared/SectionHeader'
 
 const formSchema = z.object({
     name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -84,24 +84,6 @@ const categories = [
     "Other"
 ]
 
-const faqs = [
-    {
-        question: "How can I track my parcel?",
-        answer: "You can track your parcel using the tracking ID provided via SMS or email. Enter the tracking ID on our website or mobile app."
-    },
-    {
-        question: "What are your delivery hours?",
-        answer: "We deliver from 9 AM to 8 PM, Monday to Saturday. Sunday deliveries are available for express services."
-    },
-    {
-        question: "How do I change my delivery address?",
-        answer: "Contact our support team before the parcel is out for delivery. Address changes may incur additional charges."
-    },
-    {
-        question: "What if my parcel is damaged?",
-        answer: "We provide full insurance coverage. Report damage within 24 hours with photos for immediate compensation."
-    }
-]
 
 const Contact = () => {
     const [isLoading, setIsLoading] = useState(false)
@@ -193,22 +175,22 @@ const Contact = () => {
                     </div>
                 </section>
 
-                {/* Contact Form & Office Hours */}
-                <Card className="">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-3 text-2xl">
-                            <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-3 rounded-full text-white">
-                                <Send size={24} />
-                            </div>
-                            Send us a Message
-                        </CardTitle>
-                        <p className="text-gray-600 dark:text-gray-300">
-                            Fill out the form below and we'll get back to you as soon as possible
-                        </p>
-                    </CardHeader>
-                </Card>
+                
+           
+                    
+                        <SectionHeader
+                            badge="Contact"
+                            title="We'd Love to Hear From You"
+                            highlight="Get in Touch"
+                            description="Whether you have a question about our services, need assistance with a delivery, or just want to provide feedback, our team is here to help. Fill out the form below and we'll respond as soon as possible."
+                            className="mb-0"
+
+                        />
+                     
+                  
+              
                 <section className="py-10">
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                    <div className="grid max-w-3xl mx-auto gap-12">
 
                         {/* Contact Form */}
                         <div className="lg:col-span-2">
@@ -382,44 +364,7 @@ const Contact = () => {
                     </div>
                 </section>
 
-                {/* FAQ Section */}
-                <section className="py-20">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">
-                            Frequently Asked{" "}
-                            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                                Questions
-                            </span>
-                        </h2>
-                        <p className="text-xl text-gray-600 dark:text-gray-300">
-                            Quick answers to common questions about our services
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {faqs.map((faq, index) => (
-                            <Card key={index} className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200 dark:border-gray-700">
-                                <CardContent className="p-6">
-                                    <div className="flex items-start gap-4">
-                                        <div className="bg-blue-100 dark:bg-blue-800 p-2 rounded-full flex-shrink-0">
-                                            <HelpCircle size={20} className="text-blue-600 dark:text-blue-400" />
-                                        </div>
-                                        <div>
-                                            <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
-                                                {faq.question}
-                                            </h4>
-                                            <p className="text-gray-600 dark:text-gray-300 text-sm">
-                                                {faq.answer}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </div>
-
-
-                </section>
+              
             </div>
         </div>
     )
