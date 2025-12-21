@@ -106,11 +106,11 @@ export const PricingCalculator = () => {
 
 
             />
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16 animate-in slide-in-from-bottom-4 duration-500 fade-in">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16 animate-in slide-in-from-bottom-4 duration-500 fade-in container mx-auto">
 
                 {/* --- LEFT: Input Form --- */}
                 <Card className="bg-card border shadow-lg">
-                    <CardHeader>
+                    <CardHeader classna>
                         <CardTitle className="flex items-center gap-3 text-2xl font-bold text-card-foreground">
                             <div className="bg-primary/10 p-3 rounded-xl text-primary shadow-sm">
                                 <Calculator size={24} />
@@ -300,7 +300,7 @@ export const PricingCalculator = () => {
                 {/* Additional Information (Static Content) */}
 
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 container mx-auto">
                 {/* Pricing Info */}
                 <Card className="bg-card border shadow-lg">
                     <CardHeader>

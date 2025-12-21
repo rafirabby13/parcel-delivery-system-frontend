@@ -30,44 +30,12 @@ export function NavMain({
 
   const isActive = (url: string) => currentPath.endsWith(`/${url}`);
   return (
-    // <SidebarGroup>
-    //   {/* <SidebarGroupLabel>Platform</SidebarGroupLabel> */}
-    //   <SidebarMenu>
-    //     {items.map((item) => (
-
-    //       <SidebarMenuItem key={item.title}>
-
-
-
-
-    //         <SidebarMenu>
-    //           {item.items?.map((subItem) => (
-    //             <SidebarMenuItem key={subItem.title}>
-    //               <SidebarMenuButton asChild>
-    //                 <Link to={subItem.url}>
-    //                   <subItem.icon />
-    //                   <span>{subItem.title}</span>
-    //                 </Link>
-    //               </SidebarMenuButton>
-    //             </SidebarMenuItem>
-    //           ))}
-    //         </SidebarMenu>
-
-    //       </SidebarMenuItem>
-
-    //     ))}
-    //   </SidebarMenu>
-    // </SidebarGroup>
+    
      <SidebarGroup>
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.title} >
-            {/* <SidebarMenuButton>
-              <div className="flex items-center gap-2">
-                {/* <item.icon className="w-5 h-5" /> 
-                <span>{item.title}</span>
-              </div>
-            </SidebarMenuButton> */}
+         
 
             <SidebarMenu>
               {item.items?.map((subItem) => (

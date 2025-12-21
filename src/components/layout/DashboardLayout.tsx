@@ -1,146 +1,158 @@
-
-import { Separator } from "@/components/ui/separator"
+import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
-import { AppSidebar } from "./sidebar/app-sidebar"
-import { Outlet } from "react-router"
-import { useGetMeQuery, userApi } from "@/features/admin/api/user.api"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
-import { ConfirmDialogue } from "@/components/shared/interactions/ConfirmDialogue"
-import { LogOut } from "lucide-react"
-import { useDispatch } from "react-redux"
-import { authApi, useLogoutMutation } from "@/features/auth/api/auth.api"
-import { ModeToggle } from "../shared/interactions/ModeToggle"
-import { Loader } from "../shared/feedback/Loader"
+} from "@/components/ui/sidebar";
+import { AppSidebar } from "./sidebar/app-sidebar";
+import { Outlet, useLocation } from "react-router";
+import { useGetMeQuery, userApi } from "@/features/admin/api/user.api";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { ConfirmDialogue } from "@/components/shared/interactions/ConfirmDialogue";
+import { LogOut, User, Settings, Bell } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { authApi, useLogoutMutation } from "@/features/auth/api/auth.api";
+import { ModeToggle } from "../shared/interactions/ModeToggle";
+import { Loader } from "../shared/feedback/Loader";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 export default function DashboardLayout() {
+  const { data: user, isLoading } = useGetMeQuery(undefined);
+  const [logout] = useLogoutMutation();
+  const dispatch = useDispatch();
+  const location = useLocation();
 
-  const { data: user, isLoading } = useGetMeQuery(undefined)
-  // const res = generateRoutes(SenderRoutesItems)
-  // console.log(user?.data?.user)
-  const [logout] = useLogoutMutation()
-  const dispatch = useDispatch()
+  // Robust Logout Handler
   const handleLogout = async () => {
-    // console.log("object")
-    await logout().unwrap()
-    dispatch(userApi.util.resetApiState())
-    dispatch(authApi.util.resetApiState())
-  }
+    try {
+      await logout().unwrap();
+      // Reset API state to clear cache immediately
+      dispatch(userApi.util.resetApiState());
+      dispatch(authApi.util.resetApiState());
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
+
+  // Generate dynamic breadcrumbs based on path
+  const pathSegments = location.pathname.split("/").filter((p) => p !== "");
+
+  if (isLoading) return <div className="h-screen w-full flex items-center justify-center"><Loader /></div>;
+
   return (
     <SidebarProvider>
-      <AppSidebar />
+      {/* Pass user data to Sidebar to avoid double-fetching if needed */}
+      <AppSidebar user={user?.data?.user} />
+      
       <SidebarInset>
-        <header className="flex justify-between px-10  h-20 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 ">
-          <div className="flex items-center gap-2 px-4">
+        {/* HIGH CLASS: Sticky, Blurry Header */}
+        <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b bg-background/95 px-6 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+          
+          {/* Left Side: Trigger & Breadcrumbs */}
+          <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
-            <Separator
-              orientation="vertical"
-              className="mr-2 data-[orientation=vertical]:h-4"
-            />
-
-
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="#">Dashboard</BreadcrumbLink>
+                </BreadcrumbItem>
+                {pathSegments.map((segment, index) => (
+                  <div key={segment} className="flex items-center">
+                    <BreadcrumbSeparator className="hidden md:block" />
+                    <BreadcrumbItem>
+                      {index === pathSegments.length - 1 ? (
+                        <BreadcrumbPage className="capitalize">{segment}</BreadcrumbPage>
+                      ) : (
+                        <BreadcrumbLink href="#" className="capitalize hidden md:block">
+                          {segment}
+                        </BreadcrumbLink>
+                      )}
+                    </BreadcrumbItem>
+                  </div>
+                ))}
+              </BreadcrumbList>
+            </Breadcrumb>
           </div>
-          <div className="hidden lg:flex items-center gap-4">
+
+          {/* Right Side: Actions */}
+          <div className="flex items-center gap-3">
             <ModeToggle />
+            
+            {/* Minimalist User Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-2 rounded-xl border  px-3 py-1.5 hover:bg-accent transition">
-                  <div className="h-7 w-7 rounded-full bg-background  border-2 border-primary flex items-center justify-center  font-semibold shadow-sm">
-                    {user?.data?.user?.name?.[0]}
+                <button className="relative flex h-9 w-9 items-center justify-center rounded-full border bg-background hover:bg-accent transition ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                  <div className="font-semibold text-sm">
+                    {user?.data?.user?.name?.[0]?.toUpperCase()}
                   </div>
-
-                  {/* User info */}
-                  <div className="flex flex-col">
-                    <span className="text-xs font-semibold leading-tight">
-                      {user?.data?.user?.name}
-                    </span>
-                    <span className="text-xs text-muted-foreground  max-w-[140px]">
-                      {user?.data?.user?.role}
-                    </span>
-                  </div>
+                  {/* Online Indicator */}
+                  <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-background bg-green-500" />
                 </button>
               </DropdownMenuTrigger>
 
-              <DropdownMenuContent
-                align="end"
-                className="w-56 rounded-lg shadow-lg border bg-popover p-2"
-              >
-                {/* Header */}
-                <DropdownMenuLabel className="flex items-center gap-3 px-2 py-2">
-                  {/* Avatar with initials */}
-                  <div className="h-10 w-10 rounded-full bg-background border-2 border-primary flex items-center justify-center  font-semibold shadow-sm">
-                    {user?.data?.user?.name?.[0]}
-                  </div>
-
-                  {/* User info */}
-                  <div className="flex flex-col">
-                    <span className="text-sm font-semibold leading-tight">
-                      {user?.data?.user?.name}
-                    </span>
-                    <span className="text-xs text-muted-foreground truncate max-w-[140px]">
+              <DropdownMenuContent align="end" className="w-56 p-2">
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">{user?.data?.user?.name}</p>
+                    <p className="text-xs leading-none text-muted-foreground">
                       {user?.data?.user?.email}
-                    </span>
+                    </p>
                   </div>
                 </DropdownMenuLabel>
-
-
                 <DropdownMenuSeparator />
-
-                {/* Items */}
-                <DropdownMenuItem className="px-2 py-2 cursor-pointer">
-                  Profile
+                <DropdownMenuItem className="cursor-pointer">
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="px-2 py-2 cursor-pointer">
-                  Settings
+                <DropdownMenuItem className="cursor-pointer">
+                  <Bell className="mr-2 h-4 w-4" />
+                  <span>Notifications</span>
                 </DropdownMenuItem>
-
+                <DropdownMenuItem className="cursor-pointer">
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
-
-                <DropdownMenuItem asChild className="px-2 py-2 cursor-pointer text-red-500 focus:text-red-600">
-                  <ConfirmDialogue title="Sign Out" description="Are you sure you want to sign out? You’ll need to log in again to access your account."
-                    onConfirm={handleLogout}>
-                    <div className="flex items-center justify-center">
+                
+                {/* Logout with Dialogue */}
+                <DropdownMenuItem asChild className="text-red-600 focus:text-red-600 focus:bg-red-100 dark:focus:bg-red-900/20 cursor-pointer">
+                  <ConfirmDialogue
+                    title="Sign Out"
+                    description="Are you sure you want to sign out?"
+                    onConfirm={handleLogout}
+                  >
+                    <div className="flex w-full items-center">
                       <LogOut className="mr-2 h-4 w-4" />
-                      {isLoading ? <Loader /> : "Sign Out"}
+                      <span>Sign Out</span>
                     </div>
-
                   </ConfirmDialogue>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-
-            {/* <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-2 rounded-full border px-3 py-1 hover:bg-muted/50 transition">
-                  <span className="text-sm font-medium">{user?.data?.user?.name}</span>
-                  <span className="text-xs text-muted-foreground">{user?.data?.user?.role}</span>
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>
-                  <div className="flex flex-col">
-                    <span className="font-medium">{user?.data?.user?.name}</span>
-                    <span className="text-xs text-muted-foreground">{user?.data?.user?.email}</span>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-500">Logout</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu> */}
           </div>
         </header>
-        <Separator className="mb-7" />
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
 
+        {/* Content Area */}
+        <div className="flex flex-1 flex-col gap-4 p-4 md:p-8 pt-6 max-w-7xl mx-auto w-full">
           <Outlet />
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }
