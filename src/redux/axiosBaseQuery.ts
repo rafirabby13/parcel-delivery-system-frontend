@@ -17,7 +17,7 @@ const axiosBaseQuery =
   > =>
   async ({ url, method, data, params, headers }) => {
     try {
-      // console.log(url)
+      console.log(url, data)
       const result = await axiosInstance({
         url: url,
         method,

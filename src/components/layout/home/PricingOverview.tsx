@@ -5,9 +5,9 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-import { 
-    Calculator, 
-    MapPin, 
+import {
+    Calculator,
+    MapPin,
     Weight,
     DollarSign,
     CheckCircle,
@@ -17,6 +17,7 @@ import {
     ArrowRight,
     Star
 } from "lucide-react"
+import { SectionHeader } from '@/components/shared/SectionHeader'
 
 interface PricingTier {
     name: string;
@@ -84,7 +85,7 @@ const pricingTiers: PricingTier[] = [
 ]
 
 const divisions = [
-    "Dhaka", "Chittagong", "Sylhet", "Khulna", "Barishal", 
+    "Dhaka", "Chittagong", "Sylhet", "Khulna", "Barishal",
     "Rangpur", "Rajshahi", "Mymensingh"
 ]
 
@@ -118,46 +119,36 @@ const PricingOverview = () => {
     return (
         <section className="py-20 bg-background">
             <div className="container mx-auto px-6">
-                
-                {/* Section Header */}
-                <div className="text-center mb-16">
-                    <Badge className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2 text-sm font-medium border-0 mb-6 shadow-lg">
-                        <Calculator size={16} />
-                        Transparent Pricing
-                    </Badge>
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-foreground mb-6 tracking-tight">
-                        Simple & Fair{" "}
-                        <span className="text-primary">
-                            Pricing
-                        </span>
-                    </h2>
-                    <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                        Calculate your delivery cost instantly. No hidden fees, just transparent pricing 
-                        for reliable parcel delivery across Bangladesh.
-                    </p>
-                </div>
+                <SectionHeader
+                    badge="Transparent Pricing"
+                    icon={Calculator}
+                    title="Simple & Fair"
+                    highlight="Pricing"
+                    description="Calculate your delivery cost instantly. No hidden fees, just transparent pricing for reliable parcel delivery across Bangladesh."
+                />
 
-                {/* Service Tiers Selection */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 -z-10">
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 -z-10" style={{ filter: "drop-shadow(0 10px 10px rgba(0,0,0,0.1))" }} >
                     {pricingTiers.map((tier) => (
-                        <Card 
-                            key={tier.name} 
-                            className={`relative cursor-pointer transition-all duration-300 hover:shadow-xl border-2 ${
-                                selectedTier.name === tier.name 
-                                    ? 'border-primary shadow-lg bg-card' 
+                        <Card
+                        
+                        style={{ clipPath: "polygon(0px 0, 100% 0, 70% 100%, 0 100%, 0 40px)" }}
+                            key={tier.name}
+                            className={`relative cursor-pointer transition-all duration-300 hover:shadow-xl border-2 ${selectedTier.name === tier.name
+                                    ? 'border-primary shadow-lg bg-card'
                                     : 'border-border hover:border-muted-foreground bg-card'
-                            }`}
+                                }`}
                             onClick={() => setSelectedTier(tier)}
                         >
                             {tier.popular && (
                                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                                    <Badge className="bg-primary text-primary-foreground px-4 py-1 text-xs font-semibold border-0 shadow-md">
+                                    <Badge className="bg-primary text-primary-foreground px-4 py-3 text-xs font-semibold border-0 shadow-md">
                                         <Star size={12} className="mr-1" />
                                         Most Popular
                                     </Badge>
                                 </div>
                             )}
-                            
+
                             <CardHeader className="text-center pb-4">
                                 <div className={`mx-auto w-16 h-16 rounded-full bg-primary flex items-center justify-center text-primary-foreground mb-4 shadow-lg`}>
                                     {tier.icon}
@@ -178,7 +169,7 @@ const PricingOverview = () => {
                                     </p>
                                 </div>
                             </CardHeader>
-                            
+
                             <CardContent>
                                 <ul className="space-y-3">
                                     {tier.features.map((feature, idx) => (
@@ -195,7 +186,7 @@ const PricingOverview = () => {
 
                 {/* Calculator and Results */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-                    
+
                     {/* Calculator Form */}
                     <Card className="bg-card border shadow-xl">
                         <CardHeader>
@@ -219,7 +210,7 @@ const PricingOverview = () => {
                                     </label>
                                     <div className="relative">
                                         <Input
-                                            type="number"
+                                            type="string"
                                             step="0.1"
                                             min="0.1"
                                             placeholder="0.0"
@@ -304,7 +295,7 @@ const PricingOverview = () => {
                                                 </p>
                                             </div>
                                         </div>
-                                        
+
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                             {selectedTier.features.slice(0, 4).map((feature, idx) => (
                                                 <div key={idx} className="flex items-center gap-2 text-sm">
@@ -337,7 +328,7 @@ const PricingOverview = () => {
                                                 {formatCurrency(getDistanceCharge(fromDivision, toDivision))}
                                             </span>
                                         </div>
-                                        
+
                                         {/* Total */}
                                         <div className="bg-primary/10 p-5 rounded-xl">
                                             <div className="flex justify-between items-center">

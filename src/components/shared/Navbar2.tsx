@@ -43,7 +43,7 @@ const Navbar2 = () => {
     return (
         <nav className="fixed inset-x-0 top-0 h-24 bg-primary   mx-auto  z-50 ">
             <div className="h-full flex items-center container  justify-between mx-auto ">
-                <div className=" bg-background/80 p-2 rounded-xl">
+                <div className=" bg-background/0 px-2 rounded-xl">
                     <Logo />
                 </div>
 
