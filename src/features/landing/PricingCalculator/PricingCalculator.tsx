@@ -110,7 +110,7 @@ export const PricingCalculator = () => {
 
                 {/* --- LEFT: Input Form --- */}
                 <Card className="bg-card border shadow-lg">
-                    <CardHeader classna>
+                    <CardHeader >
                         <CardTitle className="flex items-center gap-3 text-2xl font-bold text-card-foreground">
                             <div className="bg-primary/10 p-3 rounded-xl text-primary shadow-sm">
                                 <Calculator size={24} />
