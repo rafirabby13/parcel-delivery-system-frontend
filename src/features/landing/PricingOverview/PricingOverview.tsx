@@ -1,20 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
     Calculator,
-    MapPin,
-    Weight,
-    DollarSign,
     CheckCircle,
     Truck,
     Zap,
     Package,
-    ArrowRight,
     Star,
     Loader2,
     AlertCircle
@@ -64,10 +57,6 @@ const DEFAULT_VISUAL = {
     popular: false
 }
 
-const DIVISIONS = [
-    "Dhaka", "Chittagong", "Sylhet", "Khulna", "Barishal",
-    "Rangpur", "Rajshahi", "Mymensingh"
-]
 
 const getDistanceCharge = (from: string, to: string): number => {
     if (!from || !to) return 0;
@@ -82,16 +71,19 @@ const PricingOverview = () => {
     const { data: apiResponse, isLoading, isError } = useGetPricingTiersQuery(undefined);
 
     // Access the array safely (handles if response is wrapped in { data: [...] } or just [...])
-    const pricingTiers: IPricingTier[] = Array.isArray(apiResponse) 
-        ? apiResponse 
-        : apiResponse?.data || [];
+    const pricingTiers: IPricingTier[] = useMemo(() => 
+        Array.isArray(apiResponse) 
+            ? apiResponse 
+            : apiResponse?.data || [],
+        [apiResponse]
+    );
 
     // --- 4. State Management ---
     const [selectedTier, setSelectedTier] = useState<IPricingTier | null>(null);
-    const [calculatedPrice, setCalculatedPrice] = useState<number>(0);
-    const [weight, setWeight] = useState<number>(1);
-    const [fromDivision, setFromDivision] = useState<string>("");
-    const [toDivision, setToDivision] = useState<string>("");
+    const [, setCalculatedPrice] = useState<number>(0);
+    const [weight] = useState<number>(1);
+    const [fromDivision] = useState<string>("");
+    const [toDivision] = useState<string>("");
 
     // Set default selected tier when data loads
     useEffect(() => {

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { Logo } from "@/components/logo";
-import { NavMenu } from "@/components/layout/header/nav-menu";
 import { NavigationSheet } from "@/components/layout/header/navigation-sheet";
+import Logo from "@/components/brand/Logo";
+import { NavMenu } from "./nav-menu";
 
 const Navbar = () => {
   return (
@@ -10,7 +10,12 @@ const Navbar = () => {
         <Logo />
 
         {/* Desktop Menu */}
-        <NavMenu className="hidden md:block" />
+        <NavMenu className="hidden md:block" navigationLinks={[
+          { href: "/", label: "Home" },
+          { href: "/about", label: "About" },
+          { href: "/services", label: "Services" },
+          { href: "/contact", label: "Contact" },
+        ]} />
 
         <div className="flex items-center gap-3">
           <Button
@@ -23,7 +28,12 @@ const Navbar = () => {
 
           {/* Mobile Menu */}
           <div className="md:hidden">
-            <NavigationSheet />
+            <NavigationSheet navigationLinks={[
+              { href: "/", label: "Home" },
+              { href: "/about", label: "About" },
+              { href: "/services", label: "Services" },
+              { href: "/contact", label: "Contact" },
+            ]} />
           </div>
         </div>
       </div>

@@ -15,7 +15,7 @@ import { SenderRoutesItems } from "./SenderRoutesItems";
 import TrackParcel from "@/pages/public/TrackParcel";
 import { DeliveryPersonRoutes } from "./DeliveryPersonRoutes";
 import Home from "@/pages/public/Home";
-import Contact from "@/features/landing/components/Contact/Contact";
+import Contact from "@/pages/public/Contact/Contact";
 import Cancel from "@/pages/payment/Cancel";
 import Failed from "@/pages/payment/Failed";
 import Success from "@/pages/payment/Success";

@@ -31,9 +31,7 @@ export interface IPricingTier {
     description?: string;
 }
 
-interface PricingCalculatorProps {
-    tiers: IPricingTier[];
-}
+
 
 // --- Visual Config (You can move this to a constants file) ---
 const TIER_VISUALS: Record<string, { icon: React.ReactNode; color: string }> = {
@@ -54,7 +52,7 @@ export const PricingCalculator = () => {
     const [fromDivision, setFromDivision] = useState<string>("");
     const [toDivision, setToDivision] = useState<string>("");
     const [calculatedPrice, setCalculatedPrice] = useState<number>(0);
-    const { data: apiResponse, isLoading, isError } = useGetPricingTiersQuery(undefined);
+    const { data: apiResponse } = useGetPricingTiersQuery(undefined);
     const tiers: IPricingTier[] = Array.isArray(apiResponse)
         ? apiResponse
         : apiResponse?.data || [];

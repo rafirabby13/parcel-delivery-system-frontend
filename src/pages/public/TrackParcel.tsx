@@ -1,16 +1,30 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react'
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
+import { Badge } from "@/components/ui/badge" // Assuming you have this, otherwise standard div with classes works
+import { Separator } from "@/components/ui/separator" // Optional, using border classes if not available
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { toast } from "sonner"
-import { SearchIcon, PackageIcon, TruckIcon, CheckCircleIcon, ClockIcon, Loader2 } from "lucide-react"
+import { 
+  SearchIcon, 
+  PackageIcon, 
+  TruckIcon, 
+  MapPinIcon, 
+  ArrowRight, 
+  WalletCards, 
+  WeightIcon,
+  CheckCircle2,
+  Clock
+} from "lucide-react"
 import { useTrackParcelStatusQuery } from '@/features/parcel/api/parcel.api'
 
+// --- Schema and Interfaces (Unchanged) ---
 const formSchema = z.object({
     trackingId: z.string().min(1, { message: "Tracking ID is required" }),
 })
@@ -57,264 +71,280 @@ const TrackParcel = ({
     ...props
 }: React.ComponentProps<"div">) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [parcelDataa, setParcelData] = useState<ParcelData[] | null>(null)
+    const [parcelResults, setParcelResults] = useState<ParcelData[] | null>(null)
     const [trackingId, setTrackingId] = useState<string | null>(null)
+    
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             trackingId: "",
         },
     })
-    // console.log(trackingId)
-    const { data: parcel } = useTrackParcelStatusQuery(trackingId)
-    if (isLoading) {
-        return <Loader2 />
-    }
 
-    // console.log(parcel)
+    const { data: parcel } = useTrackParcelStatusQuery(trackingId)
+
     async function onSubmit() {
         setIsLoading(true)
         try {
-            // Here you would make your API call to track the parcel
-            // const res = await trackParcel(values.trackingId).unwrap()
-
-            // Mock data for demonstration
-            // const mockData: ParcelData = {
-            //     trackingId: values.trackingId,
-            //     status: "IN_TRANSIT",
-            //     senderInfo: {
-            //         name: "Karim Rahman",
-            //         phone: "01787654321",
-            //         division: "Khulna",
-            //         city: "Khulna",
-            //         area: "Sonadanga",
-            //         detailAddress: "H#44, R#7, Sector 1"
-            //     },
-            //     receiverInfo: {
-            //         name: "Lima Akter",
-            //         phone: "01894356001",
-            //         division: "Dhaka",
-            //         city: "Narayanganj",
-            //         area: "Fatullah",
-            //         detailAddress: "Road 2, Plot 3"
-            //     },
-            //     parcelType: "PACKAGE",
-            //     weight: 5,
-            //     trackingEvents: [
-            //         { status: "REQUESTED", updaterId: "688b750e3f91fd2909891a4e", timestamp: "2025-01-20T10:00:00Z" },
-            //         { status: "PICKED_UP", updaterId: "688b750e3f91fd2909891a4e", timestamp: "2025-01-20T14:30:00Z" },
-            //         { status: "IN_TRANSIT", updaterId: "688b750e3f91fd2909891a4e", timestamp: "2025-01-21T09:15:00Z" }
-            //     ],
-            //     parcelFee: {
-            //         baseRate: 60,
-            //         weightCharge: 40,
-            //         distanceCharge: 50,
-            //         totalFee: 150
-            //     },
-            //     paymentMethod: "PREPAID",
-            //     paymentStatus: "PAID"
-            // }
+            // Logic preserved
             if (parcel?.success) {
-                setParcelData(parcel?.data?.parcel)
+                setParcelResults(parcel?.data?.parcel)
                 toast.success("Parcel found successfully")
-
             }
-
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.log(error)
             toast.error("Parcel not found or invalid tracking ID")
-            setParcelData(null)
+            setParcelResults(null)
         } finally {
             setIsLoading(false)
         }
     }
 
-    const getStatusIcon = (status: string) => {
+    // Map status to semantic colors using Shadcn-like utility classes
+    // Note: We use specific colors (green/yellow) for statuses as "Primary/Secondary" 
+    // can be confusing for status contexts, but we use the design system's utility classes.
+    const getStatusStyles = (status: string) => {
         switch (status) {
-            case "REQUESTED":
-                return <ClockIcon size={16} className="text-yellow-500" />
-            case "PICKED_UP":
-                return <TruckIcon size={16} className="text-blue-500" />
-            case "IN_TRANSIT":
-                return <TruckIcon size={16} className="text-orange-500" />
-            case "DELIVERED":
-                return <CheckCircleIcon size={16} className="text-green-500" />
-            default:
-                return <ClockIcon size={16} className="text-gray-500" />
-        }
-    }
-
-    const getStatusColor = (status: string) => {
-        switch (status) {
-            case "REQUESTED":
-                return "text-yellow-600 bg-yellow-50"
-            case "PICKED_UP":
-                return "text-blue-600 bg-blue-50"
-            case "IN_TRANSIT":
-                return "text-orange-600 bg-orange-50"
-            case "DELIVERED":
-                return "text-green-600 bg-green-50"
-            default:
-                return "text-gray-600 bg-gray-50"
+            case "REQUESTED": 
+                return "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+            case "PICKED_UP": 
+                return "bg-blue-500/15 text-blue-700 dark:text-blue-400 hover:bg-blue-500/25 border-transparent"
+            case "IN_TRANSIT": 
+                return "bg-orange-500/15 text-orange-700 dark:text-orange-400 hover:bg-orange-500/25 border-transparent"
+            case "DELIVERED": 
+                return "bg-green-500/15 text-green-700 dark:text-green-400 hover:bg-green-500/25 border-transparent"
+            default: 
+                return "bg-muted text-muted-foreground hover:bg-muted/80"
         }
     }
 
     return (
-        <div className={cn("min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50  dark:from-background dark:via-muted/95 dark:to-card py-8 px-4", className)} {...props}>
-            <div className="max-w-4xl mx-auto md:space-y-8">
-                {/* Search Section */}
-                <Card className="overflow-hidden border-0 shadow-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl">
-                    <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50 py-10  dark:from-background dark:via-muted/95 dark:to-card">
-                        <div className="flex flex-col items-center text-center">
-                            <div className="bg-white/20 p-3 rounded-full mb-4">
-                                <SearchIcon size={32} />
-                            </div>
-                            <h1 className="text-3xl font-bold mb-2">Track Your Parcel</h1>
-                            <p className=" text-lg">
-                                Enter your tracking ID to get real-time updates
-                            </p>
-                        </div>
+        <div className={cn("min-h-screen bg-background font-sans", className)} {...props}>
+            
+            {/* --- Hero / Search Section --- */}
+            <div className="border-b border-border bg-card pb-12 pt-16 px-4">
+                <div className="max-w-3xl mx-auto space-y-8 text-center">
+                    <div className="space-y-4">
+                        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
+                            Track Your <span className="text-primary">Shipment</span>
+                        </h1>
+                        <p className="text-lg text-muted-foreground max-w-xl mx-auto">
+                            Enter your tracking ID below to see real-time updates, delivery estimates, and shipment details.
+                        </p>
                     </div>
 
-                    <CardContent className="px-8">
-                        <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" id="track-parcel-form">
-                                <FormField
-                                    control={form.control}
-                                    name="trackingId"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="text-lg font-medium">Tracking ID</FormLabel>
-                                            <FormControl>
-                                                <div className="flex flex-col justify-center md:flex-row gap-4">
-                                                    <Input
+                    <Card className="border-border shadow-2xl shadow-primary/5 bg-background/50 backdrop-blur-sm">
+                        <CardContent className="p-2">
+                            <Form {...form}>
+                                <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col sm:flex-row gap-2">
+                                    <FormField
+                                        control={form.control}
+                                        name="trackingId"
+                                        render={({ field }) => (
+                                            <FormItem className="flex-1">
+                                                <FormControl>
+                                                    <div className="relative">
+                                                        <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5" />
+                                                        <Input
+                                                            placeholder="Ex: TRK-123456789"
+                                                            className="h-14 pl-12 border-transparent bg-muted/50 text-lg placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:bg-background transition-colors"
+                                                            {...field}
+                                                            onChange={(e) => {
+                                                                field.onChange(e);
+                                                                setTrackingId(e.target.value);
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </FormControl>
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <Button 
+                                        type="submit" 
+                                        size="lg" 
+                                        className="h-14 px-8 rounded-lg font-semibold text-primary-foreground shadow-lg shadow-primary/20"
+                                        disabled={isLoading}
+                                    >
+                                        {isLoading ? (
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                                                <span>Searching...</span>
+                                            </div>
+                                        ) : (
+                                            <span className="flex items-center gap-2">Track Parcel <ArrowRight size={18} /></span>
+                                        )}
+                                    </Button>
+                                </form>
+                            </Form>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
 
-                                                        placeholder="Enter your tracking ID"
-                                                        className="border-2 border-gray-200 focus:border-indigo-500 transition-colors duration-200 rounded-lg h-12 text-lg"
-                                                        {...field}
-                                                        onChange={(e) => {
-                                                            field.onChange(e); // keep RHF working
-                                                            setTrackingId(e.target.value); // your custom logic
-                                                        }}
-                                                    />
-                                                    <Button
-                                                        type="submit"
-                                                        className="px-8 h-12 bg-gradient-to-r from-primary to-primary/80 hover:from-primary hover:to-primary  dark:from-background dark:via-muted/95 dark:to-card text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 w-fit"
-                                                        disabled={isLoading}
-                                                    >
-                                                        {isLoading ? (
-                                                            <div className="flex items-center gap-2">
-                                                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                                                Tracking...
-                                                            </div>
-                                                        ) : (
-                                                            <div className="flex items-center gap-2">
-                                                                <SearchIcon size={18} />
-                                                                Track
-                                                            </div>
-                                                        )}
-                                                    </Button>
-                                                </div>
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </form>
-                        </Form>
-                    </CardContent>
-                </Card>
+            {/* --- Results Section --- */}
+            <div className="max-w-6xl mx-auto px-4 py-12">
+                {parcelResults?.map((parcelData, index) => (
+                    <div key={index} className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-6 duration-700">
+                        
+                        {/* 1. Main Status & Timeline Card */}
+                        <Card className="lg:col-span-2 shadow-sm overflow-hidden border-border">
+                            <div className="h-1.5 bg-gradient-to-r from-primary to-secondary" />
+                            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                                <CardTitle className="text-xl font-bold flex items-center gap-2 text-foreground">
+                                    <TruckIcon className="text-primary" /> Shipment Status
+                                </CardTitle>
+                                <Badge variant="outline" className={cn("px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider", getStatusStyles(parcelData.status))}>
+                                    {parcelData.status.replace('_', ' ')}
+                                </Badge>
+                            </CardHeader>
+                            <CardContent className="p-6 md:p-8">
+                                <div className="mb-8">
+                                    <h3 className="text-4xl font-bold text-foreground mb-2">{parcelData.status.replace('_', ' ')}</h3>
+                                    <p className="text-muted-foreground flex items-center gap-2">
+                                        <Clock className="w-4 h-4" />
+                                        Last updated: {new Date(parcelData.updatedAt).toLocaleString()}
+                                    </p>
+                                </div>
 
-
-                <div className='flex flex-wrap justify-between gap-5'>
-                    {parcelDataa?.map(parcelData => (
-                        <Card className="overflow-hidden border-0 shadow-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl ">
-                            <CardContent className="p-8  ">
-                                <div className="space-y-8">
-                                    {/* Status Header */}
-                                    <div className="text-center">
-                                        <div className="flex items-center justify-center gap-3 mb-4">
-                                            {getStatusIcon(parcelData.status)}
-                                            <h2 className="text-2xl font-bold">Parcel Status</h2>
-                                        </div>
-                                        <div className={cn("inline-flex items-center gap-2 px-4 py-2 rounded-full font-medium", getStatusColor(parcelData.status))}>
-                                            <PackageIcon size={16} />
-                                            {parcelData?.status.replace('_', ' ')}
-                                        </div>
-                                    </div>
-
-
-                                    <div className="space-y-4">
-                                        <h3 className="text-lg font-semibold flex items-center gap-2">
-                                            <TruckIcon size={20} />
-                                            Tracking Timeline
-                                        </h3>
-                                        <div className="space-y-3">
-
-                                            <div className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                                                {getStatusIcon(parcelData.status)}
-                                                <div className="flex-1">
-                                                    <p className="font-medium">{parcelData.status.replace('_', ' ')}</p>
-                                                    {parcelData.updatedAt && (
-                                                        <p className="text-sm text-gray-500">
-                                                            {new Date(parcelData.updatedAt).toLocaleString()}
+                                {/* Timeline Construction */}
+                                <div className="relative pl-4 border-l border-border space-y-8">
+                                    {parcelData.trackingEvents && parcelData.trackingEvents.length > 0 ? (
+                                        [...parcelData.trackingEvents].reverse().map((event, idx) => (
+                                            <div key={idx} className="relative pl-6">
+                                                <div className={cn(
+                                                    "absolute -left-[6.5px] top-1.5 w-3 h-3 rounded-full ring-4 ring-background",
+                                                    idx === 0 ? "bg-primary" : "bg-muted-foreground/30"
+                                                )} />
+                                                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1">
+                                                    <div>
+                                                        <p className={cn("font-medium text-base", idx === 0 ? "text-foreground" : "text-muted-foreground")}>
+                                                            {event.status.replace('_', ' ')}
                                                         </p>
+                                                        <p className="text-xs text-muted-foreground font-mono mt-0.5">ID: {event.updaterId.slice(0, 8)}...</p>
+                                                    </div>
+                                                    {event.timestamp && (
+                                                        <span className="text-xs font-medium text-muted-foreground bg-secondary/50 px-2 py-1 rounded-md">
+                                                            {new Date(event.timestamp).toLocaleDateString()}
+                                                        </span>
                                                     )}
                                                 </div>
                                             </div>
-
+                                        ))
+                                    ) : (
+                                        // Fallback
+                                        <div className="relative pl-6">
+                                            <div className="absolute -left-[6.5px] top-1.5 w-3 h-3 rounded-full bg-primary ring-4 ring-background" />
+                                            <div>
+                                                <p className="font-medium text-foreground">{parcelData.status.replace('_', ' ')}</p>
+                                                <p className="text-sm text-muted-foreground">Current Status</p>
+                                            </div>
                                         </div>
-                                    </div>
-
-
-
+                                    )}
                                 </div>
                             </CardContent>
                         </Card>
-                    ))
-                    }
-                </div>
 
-                {/* Instructions Card
-                {!parcelData && (
-                    <Card className="overflow-hidden border-0 shadow-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl">
-                        <CardContent className="p-8">
-                            <div className="text-center space-y-4">
-                                <h3 className="text-xl font-semibold">How to Track Your Parcel</h3>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                                    <div className="flex flex-col items-center gap-3">
-                                        <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full">
-                                            <SearchIcon size={24} className="text-blue-600" />
+                        {/* 2. Details Sidebar */}
+                        <div className="space-y-6">
+                            
+                            {/* Route Info */}
+                            <Card className="shadow-sm">
+                                <CardHeader className="pb-3">
+                                    <CardTitle className="text-base font-semibold flex items-center gap-2">
+                                        <MapPinIcon size={18} className="text-primary" /> Route Details
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent className="space-y-4 text-sm">
+                                    <div className="relative pl-6 border-l border-dashed border-muted-foreground/30">
+                                        <div className="mb-6">
+                                            <div className="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-muted-foreground/30 ring-4 ring-background" />
+                                            <p className="text-xs text-muted-foreground uppercase font-bold tracking-wider mb-1">From</p>
+                                            <p className="font-medium text-foreground text-base">{parcelData.senderInfo.city}</p>
+                                            <p className="text-muted-foreground">{parcelData.senderInfo.area}</p>
                                         </div>
-                                        <div className="text-center">
-                                            <h4 className="font-medium">Enter Tracking ID</h4>
-                                            <p className="text-sm text-gray-600 dark:text-gray-400">Input your unique tracking number</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col items-center gap-3">
-                                        <div className="bg-green-100 dark:bg-green-900/30 p-3 rounded-full">
-                                            <TruckIcon size={24} className="text-green-600" />
-                                        </div>
-                                        <div className="text-center">
-                                            <h4 className="font-medium">Get Real-time Updates</h4>
-                                            <p className="text-sm text-gray-600 dark:text-gray-400">See current status and location</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col items-center gap-3">
-                                        <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-full">
-                                            <CheckCircleIcon size={24} className="text-purple-600" />
-                                        </div>
-                                        <div className="text-center">
-                                            <h4 className="font-medium">Track Delivery</h4>
-                                            <p className="text-sm text-gray-600 dark:text-gray-400">Monitor until delivered</p>
+                                        <div>
+                                            <div className="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-primary ring-4 ring-background" />
+                                            <p className="text-xs text-muted-foreground uppercase font-bold tracking-wider mb-1">To</p>
+                                            <p className="font-medium text-foreground text-base">{parcelData.receiverInfo.city}</p>
+                                            <p className="text-muted-foreground">{parcelData.receiverInfo.detailAddress}</p>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-                )} */}
+                                </CardContent>
+                            </Card>
+
+                            {/* Payment Info */}
+                            <Card className="shadow-sm bg-accent/20">
+                                <CardHeader className="pb-3">
+                                    <CardTitle className="text-base font-semibold flex items-center gap-2">
+                                        <WalletCards size={18} className="text-primary" /> Payment Info
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent className="space-y-3">
+                                    <div className="flex justify-between items-center p-3 bg-background rounded-lg border border-border">
+                                        <span className="text-sm text-muted-foreground">Total Fee</span>
+                                        <span className="font-bold text-lg text-foreground">৳ {parcelData.parcelFee.totalFee}</span>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-2 text-sm">
+                                        <div className="p-2 rounded bg-background border border-border">
+                                            <p className="text-xs text-muted-foreground">Method</p>
+                                            <p className="font-medium text-foreground">{parcelData.paymentMethod}</p>
+                                        </div>
+                                        <div className="p-2 rounded bg-background border border-border">
+                                            <p className="text-xs text-muted-foreground">Status</p>
+                                            <div className="flex items-center gap-1.5">
+                                                {parcelData.paymentStatus === "PAID" ? (
+                                                     <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
+                                                ) : null}
+                                                <p className={cn("font-bold text-xs uppercase", parcelData.paymentStatus === "PAID" ? "text-green-600" : "text-orange-600")}>
+                                                    {parcelData.paymentStatus}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
+
+                            {/* Package Specs */}
+                            <Card className="shadow-sm">
+                                <CardContent className="p-4 flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2.5 bg-primary/10 rounded-full text-primary">
+                                            <WeightIcon size={18} />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs text-muted-foreground uppercase">Weight</p>
+                                            <p className="font-medium text-foreground">{parcelData.weight} KG</p>
+                                        </div>
+                                    </div>
+                                    <Separator orientation="vertical" className="h-8" />
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2.5 bg-primary/10 rounded-full text-primary">
+                                            <PackageIcon size={18} />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs text-muted-foreground uppercase">Type</p>
+                                            <p className="font-medium text-foreground">{parcelData.parcelType}</p>
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
+
+                        </div>
+                    </div>
+                ))}
+
+                {/* --- Empty State / Placeholder --- */}
+                {!parcelResults && !isLoading && (
+                    <div className="flex flex-col items-center justify-center py-20 opacity-60">
+                        <div className="p-4 bg-muted rounded-full mb-4">
+                            <PackageIcon className="h-10 w-10 text-muted-foreground" />
+                        </div>
+                        <h3 className="text-lg font-medium text-foreground">Ready to track</h3>
+                        <p className="text-muted-foreground text-center max-w-sm">
+                            Enter a parcel tracking ID in the search bar above to view the shipment timeline.
+                        </p>
+                    </div>
+                )}
             </div>
         </div>
     )
