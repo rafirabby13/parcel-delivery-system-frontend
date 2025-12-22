@@ -1,11 +1,11 @@
 import React, { Suspense } from 'react';
 
-const ParcelStats = React.lazy(() => import('@/components/modules/admin/ParcelStats'));
-const PaymentStats = React.lazy(() => import('@/components/modules/admin/PaymentStats'));
-const UserStats = React.lazy(() => import('@/components/modules/admin/UserStats'));
-import { useGetParcelStatsQuery, useGetPaymentStatsQuery, useGetUsersStatsQuery } from '@/redux/feature/stats/stats.api'
+const ParcelStats = React.lazy(() => import('@/features/parcel/components/ParcelStats'));
+const PaymentStats = React.lazy(() => import('@/features/payment/components/PaymentStats'));
+const UserStats = React.lazy(() => import('@/features/stats/components/UserStats'));
+import { useGetParcelStatsQuery, useGetPaymentStatsQuery, useGetUsersStatsQuery } from '@/features/stats/api/stats.api'
 
-import { Skeleton } from '@/utils/Skeleton';
+import { Skeleton } from '@/components/shared/feedback/Skeleton';
 
 
 const Dashboard = () => {
