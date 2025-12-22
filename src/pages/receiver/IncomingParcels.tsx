@@ -1,5 +1,5 @@
-import { useConfirmDeliveryMutation, useIncomingParcelQuery } from "@/redux/feature/parcel/parcel.api"
-import { useGetMeQuery } from "@/redux/feature/user/user.api"
+import { useConfirmDeliveryMutation, useIncomingParcelQuery } from "@/features/parcel/api/parcel.api"
+import { useGetMeQuery } from "@/features/admin/api/user.api"
 import { CheckCheckIcon, Loader2Icon } from "lucide-react"
 import {
     Table,
@@ -10,7 +10,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { ConfirmDialogue } from "@/utils/ConfirmDialogue"
+import { ConfirmDialogue } from "@/components/shared/interactions/ConfirmDialogue"
 import { toast } from "sonner"
 const IncomingParcels = () => {
     const { data: user, isLoading } = useGetMeQuery(undefined)

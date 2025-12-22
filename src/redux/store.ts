@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 // Or from '@reduxjs/toolkit/query/react'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import baseApi from './baseApi'
-import { bdApi } from './feature/BDAPI/bd.api'
+import { bdApi } from '../features/location/api/bd.api'
 
 export const store = configureStore({
   reducer: {

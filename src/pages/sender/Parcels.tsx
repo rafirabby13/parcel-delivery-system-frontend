@@ -1,4 +1,4 @@
-import { CreateParcel } from "@/components/modules/parcel/CreateParcel"
+import { CreateParcel } from "@/features/parcel/components/CreateParcel"
 import { Button } from "@/components/ui/button"
 import {
     Table,
@@ -8,10 +8,10 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useCancelParcelMutation, useGetAllParcelByIdQuery } from "@/redux/feature/parcel/parcel.api"
-import { useInitPaymentMutation } from "@/redux/feature/payment/payment.api"
-import { useGetMeQuery } from "@/redux/feature/user/user.api"
-import { ConfirmDialogue } from "@/utils/ConfirmDialogue"
+import { useCancelParcelMutation, useGetAllParcelByIdQuery } from "@/features/parcel/api/parcel.api"
+import { useInitPaymentMutation } from "@/features/payment/api/payment.api"
+import { useGetMeQuery } from "@/features/admin/api/user.api"
+import { ConfirmDialogue } from "@/components/shared/interactions/ConfirmDialogue"
 import { CircleXIcon, WalletCardsIcon } from "lucide-react"
 import { toast } from "sonner"
 

@@ -1,4 +1,4 @@
-import { useBlockUnblockUserMutation, useGetAllUsersQuery } from "@/redux/feature/user/user.api"
+import { useBlockUnblockUserMutation, useGetAllUsersQuery } from "@/features/admin/api/user.api"
 import { CircleOff, SquareCheckBigIcon } from "lucide-react"
 import {
     Table,
@@ -8,8 +8,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import type { IUser } from "@/types/user.types"
-import { ConfirmDialogue } from "@/utils/ConfirmDialogue"
+import type { IUser } from "@/features/admin/types/user.types"
+import { ConfirmDialogue } from "@/components/shared/interactions/ConfirmDialogue"
 import { toast } from "sonner"
 import { useState } from "react"
 import {
@@ -20,7 +20,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
-import { Loader } from "@/utils/Loader"
+import { Loader } from "@/components/shared/feedback/Loader"
 
 
 
