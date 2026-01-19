@@ -11,16 +11,16 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { toast } from "sonner"
-import { 
-  SearchIcon, 
-  PackageIcon, 
-  TruckIcon, 
-  MapPinIcon, 
-  ArrowRight, 
-  WalletCards, 
-  WeightIcon,
-  CheckCircle2,
-  Clock
+import {
+    SearchIcon,
+    PackageIcon,
+    TruckIcon,
+    MapPinIcon,
+    ArrowRight,
+    WalletCards,
+    WeightIcon,
+    CheckCircle2,
+    Clock
 } from "lucide-react"
 import { useTrackParcelStatusQuery } from '@/features/parcel/api/parcel.api'
 
@@ -73,7 +73,7 @@ const TrackParcel = ({
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [parcelResults, setParcelResults] = useState<ParcelData[] | null>(null)
     const [trackingId, setTrackingId] = useState<string | null>(null)
-    
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -105,22 +105,22 @@ const TrackParcel = ({
     // can be confusing for status contexts, but we use the design system's utility classes.
     const getStatusStyles = (status: string) => {
         switch (status) {
-            case "REQUESTED": 
+            case "REQUESTED":
                 return "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-            case "PICKED_UP": 
+            case "PICKED_UP":
                 return "bg-blue-500/15 text-blue-700 dark:text-blue-400 hover:bg-blue-500/25 border-transparent"
-            case "IN_TRANSIT": 
+            case "IN_TRANSIT":
                 return "bg-orange-500/15 text-orange-700 dark:text-orange-400 hover:bg-orange-500/25 border-transparent"
-            case "DELIVERED": 
+            case "DELIVERED":
                 return "bg-green-500/15 text-green-700 dark:text-green-400 hover:bg-green-500/25 border-transparent"
-            default: 
+            default:
                 return "bg-muted text-muted-foreground hover:bg-muted/80"
         }
     }
 
     return (
         <div className={cn("min-h-screen bg-background font-sans", className)} {...props}>
-            
+
             {/* --- Hero / Search Section --- */}
             <div className="border-b border-border bg-card pb-12 pt-16 px-4">
                 <div className="max-w-3xl mx-auto space-y-8 text-center">
@@ -159,9 +159,9 @@ const TrackParcel = ({
                                             </FormItem>
                                         )}
                                     />
-                                    <Button 
-                                        type="submit" 
-                                        size="lg" 
+                                    <Button
+                                        type="submit"
+                                        size="lg"
                                         className="h-14 px-8 rounded-lg font-semibold text-primary-foreground shadow-lg shadow-primary/20"
                                         disabled={isLoading}
                                     >
@@ -185,7 +185,7 @@ const TrackParcel = ({
             <div className="max-w-6xl mx-auto px-4 py-12">
                 {parcelResults?.map((parcelData, index) => (
                     <div key={index} className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-6 duration-700">
-                        
+
                         {/* 1. Main Status & Timeline Card */}
                         <Card className="lg:col-span-2 shadow-sm overflow-hidden border-border">
                             <div className="h-1.5 bg-gradient-to-r from-primary to-secondary" />
@@ -246,7 +246,7 @@ const TrackParcel = ({
 
                         {/* 2. Details Sidebar */}
                         <div className="space-y-6">
-                            
+
                             {/* Route Info */}
                             <Card className="shadow-sm">
                                 <CardHeader className="pb-3">
@@ -293,7 +293,7 @@ const TrackParcel = ({
                                             <p className="text-xs text-muted-foreground">Status</p>
                                             <div className="flex items-center gap-1.5">
                                                 {parcelData.paymentStatus === "PAID" ? (
-                                                     <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
+                                                    <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
                                                 ) : null}
                                                 <p className={cn("font-bold text-xs uppercase", parcelData.paymentStatus === "PAID" ? "text-green-600" : "text-orange-600")}>
                                                     {parcelData.paymentStatus}
